@@ -1,1199 +1,1345 @@
 * {
-    box-sizing: border-box;
-}
-
+  box-sizing: border-box;
+  }
 
 /* =================================
-   CORES BASE
+CORES BASE
 ================================= */
 
 :root {
-    --race-main: #7c3aed;
-    --race-light: #c084fc;
-    --race-dark: #241044;
+--race-main: #7c3aed;
+--race-light: #c084fc;
+--race-dark: #241044;
 
-    --element-main: #22d3ee;
-    --element-light: #a5f3fc;
+--element-main: #22d3ee;
+--element-light: #a5f3fc;
 
-    --card-border: var(--race-main);
-    --card-glow: rgba(124, 58, 237, 0.25);
+--card-border: var(--race-main);
+--card-glow: rgba(124, 58, 237, 0.25);
+
 }
 
-
 /* =================================
-   BODY
+BODY
 ================================= */
 
 body {
-    margin: 0;
-    min-height: 100vh;
+margin: 0;
+min-height: 100vh;
 
-    font-family: Arial, sans-serif;
+font-family: Arial, sans-serif;
 
-    background:
-        radial-gradient(
-            circle at top,
-            #241044 0%,
-            #0a0712 45%,
-            #050409 100%
-        );
+background:
+    radial-gradient(
+        circle at top,
+        #241044 0%,
+        #0a0712 45%,
+        #050409 100%
+    );
 
-    color: #f5f0ff;
+color: #f5f0ff;
+
 }
 
-
 /* =================================
-   APP
+APP
 ================================= */
 
 .app {
-    width: 100%;
-    max-width: 500px;
+width: 100%;
+max-width: 500px;
 
-    margin: 0 auto;
+margin: 0 auto;
 
-    padding: 25px 15px 40px;
+padding: 25px 15px 40px;
+
 }
-
 
 .app-header {
-    text-align: center;
+text-align: center;
 
-    margin-bottom: 25px;
+margin-bottom: 25px;
+
 }
-
 
 .app-header h1 {
-    margin: 0;
+margin: 0;
 
-    font-size: 28px;
+font-size: 28px;
 
-    letter-spacing: 2px;
+letter-spacing: 2px;
+
 }
-
 
 .app-header p {
-    margin-top: 8px;
+margin-top: 8px;
 
-    color: #aaa0bd;
+color: #aaa0bd;
+
 }
 
-
 /* =================================
-   CARD
+CARD
 ================================= */
 
 .character-card {
-    position: relative;
+position: relative;
 
-    width: 100%;
-    height: 720px;
+width: 100%;
+height: 720px;
 
-    perspective: 1200px;
+perspective: 1200px;
+
 }
 
-
 /* =================================
-   FACES
+FACES
 ================================= */
 
 .card-face {
-    position: absolute;
+position: absolute;
 
-    width: 100%;
-    height: 720px;
+width: 100%;
+height: 720px;
 
-    border-radius: 22px;
+border-radius: 22px;
 
-    background:
-        linear-gradient(
-            160deg,
-            #171020,
-            #0b0910
-        );
+background:
+    linear-gradient(
+        160deg,
+        #171020,
+        #0b0910
+    );
 
-    border: 1px solid var(--card-border);
+border: 1px solid var(--card-border);
 
-    box-shadow:
-        0 0 30px var(--card-glow),
-        inset 0 0 30px rgba(255, 255, 255, 0.02);
+box-shadow:
+    0 0 30px var(--card-glow),
+    inset 0 0 30px rgba(255, 255, 255, 0.02);
 
-    backface-visibility: hidden;
+backface-visibility: hidden;
 
-    overflow: hidden;
+overflow: hidden;
 
-    transform-style: preserve-3d;
+transform-style: preserve-3d;
 
-    transition:
-        transform 0.8s ease,
-        box-shadow 0.5s ease,
-        border-color 0.5s ease;
+transition:
+    transform 0.8s ease,
+    box-shadow 0.5s ease,
+    border-color 0.5s ease;
+
 }
-
-
-/* Brilho sutil da borda */
-
-.card-face::before {
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    border-radius: 22px;
-
-    pointer-events: none;
-
-    box-shadow:
-        inset 0 0 25px var(--card-glow);
-
-    opacity: 0.7;
-}
-
 
 /* =================================
-   FRENTE
+BRILHO DA BORDA
+================================= */
+
+.card-face::before {
+content: "";
+
+position: absolute;
+
+inset: 0;
+
+border-radius: 22px;
+
+pointer-events: none;
+
+box-shadow:
+    inset 0 0 25px var(--card-glow);
+
+opacity: 0.7;
+
+}
+
+/* =================================
+FRENTE
 ================================= */
 
 .card-front {
-    transform: rotateY(0deg);
+transform: rotateY(0deg);
 }
 
-
 /* =================================
-   VERSO
+VERSO
 ================================= */
 
 .card-back {
-    transform: rotateY(180deg);
+transform: rotateY(180deg);
 
-    padding: 20px;
+padding: 20px;
 
-    overflow-y: auto;
+overflow-y: auto;
+
 }
 
-
 /* =================================
-   GIRO
+GIRO
 ================================= */
 
 .character-card.flipped .card-front {
-    transform: rotateY(-180deg);
+transform: rotateY(-180deg);
 }
-
 
 .character-card.flipped .card-back {
-    transform: rotateY(0deg);
+transform: rotateY(0deg);
 }
 
-
 /* =================================
-   CABEÇALHO
+CABEÇALHO
 ================================= */
 
 .card-header,
 .back-header {
-    display: flex;
+display: flex;
 
-    justify-content: space-between;
-    align-items: center;
+justify-content: space-between;
+align-items: center;
 
-    padding: 15px 18px;
+padding: 15px 18px;
 
-    background:
-        rgba(0, 0, 0, 0.25);
+background:
+    rgba(0, 0, 0, 0.25);
+
 }
-
 
 .rarity {
-    color: var(--race-light);
+color: var(--race-light);
 
-    font-weight: bold;
+font-weight: bold;
 
-    letter-spacing: 1px;
+letter-spacing: 1px;
+
 }
-
 
 .level {
-    font-weight: bold;
+font-weight: bold;
 
-    color: var(--element-light);
+color: var(--element-light);
+
 }
 
-
 /* =================================
-   IMAGEM
+IMAGEM
 ================================= */
 
 .character-image {
-    height: 350px;
+height: 350px;
 
-    display: flex;
+display: flex;
 
-    justify-content: center;
-    align-items: center;
+justify-content: center;
+align-items: center;
 
-    background:
-        radial-gradient(
-            circle,
-            var(--race-dark) 0%,
-            #171020 55%,
-            #08060b 100%
-        );
+background:
+    radial-gradient(
+        circle,
+        var(--race-dark) 0%,
+        #171020 55%,
+        #08060b 100%
+    );
 
-    color: #81758f;
+color: #81758f;
 
-    font-size: 14px;
+font-size: 14px;
 
-    letter-spacing: 1px;
+letter-spacing: 1px;
+
 }
-
 
 .image-placeholder {
-    display: flex;
+display: flex;
 
-    flex-direction: column;
+flex-direction: column;
 
-    align-items: center;
+align-items: center;
 
-    gap: 15px;
+gap: 15px;
+
 }
-
 
 .image-button {
-    padding: 9px 14px;
+padding: 9px 14px;
 
-    border: 1px solid var(--element-main);
+border: 1px solid var(--element-main);
 
-    border-radius: 10px;
+border-radius: 10px;
 
-    background: #1b1424;
+background: #1b1424;
 
-    color: #d8c7e8;
+color: #d8c7e8;
 
-    cursor: pointer;
+cursor: pointer;
 
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
+transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+
 }
-
 
 .image-button:hover {
-    border-color: var(--element-light);
+border-color: var(--element-light);
 
-    box-shadow:
-        0 0 12px var(--element-main);
+box-shadow:
+    0 0 12px var(--element-main);
+
 }
 
-
 /* =================================
-   INFORMAÇÕES
+INFORMAÇÕES
 ================================= */
 
 .character-info {
-    padding: 20px;
+padding: 20px;
 }
-
 
 .character-info h2 {
-    margin: 0;
+margin: 0;
 
-    font-size: 25px;
+font-size: 25px;
+
 }
-
 
 .title {
-    margin: 5px 0 20px;
+margin: 5px 0 20px;
 
-    color: #a99db7;
+color: #a99db7;
 
-    font-style: italic;
+font-style: italic;
+
 }
 
-
 /* =================================
-   IDENTIDADE
+IDENTIDADE
 ================================= */
 
 .identity {
-    display: grid;
+display: grid;
 
-    grid-template-columns: 1fr 1fr;
+grid-template-columns: 1fr 1fr;
 
-    gap: 10px;
+gap: 10px;
 
-    margin-bottom: 20px;
+margin-bottom: 20px;
+
 }
-
 
 .identity div {
-    padding: 10px;
+padding: 10px;
 
-    border-radius: 12px;
+border-radius: 12px;
 
-    background:
-        rgba(255, 255, 255, 0.04);
+background:
+    rgba(255, 255, 255, 0.04);
 
-    border:
-        1px solid rgba(255, 255, 255, 0.07);
+border:
+    1px solid rgba(255, 255, 255, 0.07);
 
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
+transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+
 }
-
 
 .identity div:hover {
-    border-color: var(--race-main);
+border-color: var(--race-main);
 
-    box-shadow:
-        0 0 10px var(--card-glow);
+box-shadow:
+    0 0 10px var(--card-glow);
+
 }
-
 
 .identity span {
-    display: block;
+display: block;
 
-    font-size: 10px;
+font-size: 10px;
 
-    color: #8f839d;
+color: #8f839d;
 
-    margin-bottom: 5px;
+margin-bottom: 5px;
+
 }
-
 
 .identity strong {
-    font-size: 14px;
+font-size: 14px;
 }
 
-
 /* =================================
-   XP
+XP
 ================================= */
 
 .xp-info {
-    display: flex;
+display: flex;
 
-    justify-content: space-between;
+justify-content: space-between;
 
-    font-size: 13px;
+font-size: 13px;
 
-    margin-bottom: 7px;
+margin-bottom: 7px;
 
-    color: #c9bdd5;
+color: #c9bdd5;
+
 }
-
 
 .xp-bar {
-    width: 100%;
+width: 100%;
 
-    height: 9px;
+height: 9px;
 
-    background: #211a29;
+background: #211a29;
 
-    border-radius: 10px;
+border-radius: 10px;
 
-    overflow: hidden;
+overflow: hidden;
+
 }
-
 
 .xp-progress {
-    width: 0%;
+width: 0%;
 
-    height: 100%;
+height: 100%;
 
-    background:
-        linear-gradient(
-            90deg,
-            var(--race-main),
-            var(--element-main),
-            var(--race-light)
-        );
+background:
+    linear-gradient(
+        90deg,
+        var(--race-main),
+        var(--element-main),
+        var(--race-light)
+    );
 
-    border-radius: 10px;
+border-radius: 10px;
 
-    transition:
-        width 0.4s ease;
+transition:
+    width 0.4s ease;
+
 }
 
-
 /* =================================
-   BRASÃO
+BRASÃO
 ================================= */
 
 .front-emblem {
-    display: flex;
+display: flex;
 
-    flex-direction: column;
+flex-direction: column;
 
-    align-items: center;
+align-items: center;
 
-    margin-top: 25px;
+margin-top: 25px;
+
 }
-
 
 .affinity-emblem {
-    width: 65px;
-    height: 65px;
+width: 65px;
+height: 65px;
 
-    display: flex;
+display: flex;
 
-    align-items: center;
-    justify-content: center;
+align-items: center;
+justify-content: center;
 
-    border-radius: 50%;
+border-radius: 50%;
 
-    border: 1px solid var(--element-main);
+border: 1px solid var(--element-main);
 
-    background:
-        radial-gradient(
-            circle,
-            var(--race-dark),
-            #100b18
-        );
+background:
+    radial-gradient(
+        circle,
+        var(--race-dark),
+        #100b18
+    );
 
-    color: var(--element-light);
+color: var(--element-light);
 
-    font-size: 28px;
+font-size: 28px;
 
-    box-shadow:
-        0 0 15px var(--card-glow),
-        0 0 25px var(--element-main);
+box-shadow:
+    0 0 15px var(--card-glow),
+    0 0 25px var(--element-main);
 
-    margin-bottom: 8px;
+margin-bottom: 8px;
 
-    transition:
-        box-shadow 0.4s ease,
-        transform 0.4s ease,
-        border-color 0.4s ease;
+transition:
+    box-shadow 0.4s ease,
+    transform 0.4s ease,
+    border-color 0.4s ease;
+
 }
-
 
 .front-emblem span {
-    font-size: 9px;
+font-size: 9px;
 
-    letter-spacing: 2px;
+letter-spacing: 2px;
 
-    color: #8f839d;
+color: #8f839d;
+
 }
-
 
 .badge-stage {
-    margin-top: 5px;
+margin-top: 5px;
 
-    font-size: 9px;
+font-size: 9px;
 
-    letter-spacing: 1px;
+letter-spacing: 1px;
 
-    color: var(--race-light);
+color: var(--race-light);
+
 }
 
-
 /* =================================
-   INDICAÇÃO DE GIRO
+INDICAÇÃO DE GIRO
 ================================= */
 
 .flip-hint {
-    margin-top: 20px;
+margin-top: 20px;
 
-    text-align: center;
+text-align: center;
 
-    font-size: 11px;
+font-size: 11px;
 
-    color: #75687f;
+color: #75687f;
 
-    letter-spacing: 1px;
+letter-spacing: 1px;
+
 }
 
-
 /* =================================
-   ESTATÍSTICAS
+ESTATÍSTICAS
 ================================= */
 
 .stats {
-    margin-top: 10px;
+margin-top: 10px;
 }
-
 
 .stats-title {
-    margin: 20px 0 10px;
+margin: 20px 0 10px;
 
-    font-size: 13px;
+font-size: 13px;
 
-    letter-spacing: 2px;
+letter-spacing: 2px;
 
-    color: var(--race-light);
+color: var(--race-light);
 
-    text-align: left;
+text-align: left;
+
 }
-
 
 .stats-grid {
-    display: grid;
+display: grid;
 
-    grid-template-columns:
-        repeat(2, 1fr);
+grid-template-columns:
+    repeat(2, 1fr);
 
-    gap: 8px;
+gap: 8px;
+
 }
-
 
 .stat {
-    position: relative;
+position: relative;
 
-    text-align: center;
+text-align: center;
 
-    padding: 12px 5px;
+padding: 12px 5px;
 
-    border-radius: 12px;
+border-radius: 12px;
 
-    background:
-        rgba(255, 255, 255, 0.04);
+background:
+    rgba(255, 255, 255, 0.04);
 
-    border:
-        1px solid rgba(255, 255, 255, 0.07);
+border:
+    1px solid rgba(255, 255, 255, 0.07);
 
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
+transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+
 }
-
 
 .stat:hover {
-    border-color: var(--race-main);
+border-color: var(--race-main);
 
-    box-shadow:
-        0 0 10px var(--card-glow);
+box-shadow:
+    0 0 10px var(--card-glow);
+
 }
-
 
 .stat span {
-    display: block;
+display: block;
 
-    font-size: 20px;
+font-size: 20px;
+
 }
-
 
 .stat strong {
-    display: block;
+display: block;
 
-    margin-top: 5px;
+margin-top: 5px;
 
-    font-size: 18px;
+font-size: 18px;
+
 }
-
 
 .stat small {
-    color: #8f839d;
+color: #8f839d;
 
-    font-size: 10px;
+font-size: 10px;
+
 }
 
-
 /* =================================
-   BOTÕES DE ATRIBUTO
+BOTÕES DE ATRIBUTO
 ================================= */
 
 .attribute-plus {
-    position: absolute;
+position: absolute;
 
-    top: 6px;
-    right: 6px;
+top: 6px;
+right: 6px;
 
-    width: 22px;
-    height: 22px;
+width: 22px;
+height: 22px;
 
-    border:
-        1px solid var(--element-main);
+border:
+    1px solid var(--element-main);
 
-    border-radius: 50%;
+border-radius: 50%;
 
-    background: #1b1424;
+background: #1b1424;
 
-    color: var(--element-light);
+color: var(--element-light);
 
-    font-size: 14px;
+font-size: 14px;
 
-    line-height: 18px;
+line-height: 18px;
 
-    cursor: pointer;
+cursor: pointer;
 
-    opacity: 0.45;
+opacity: 0.7;
 
-    transition:
-        opacity 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
 }
-
 
 .attribute-plus:hover {
-    opacity: 1;
+opacity: 1;
 
-    transform: scale(1.08);
+transform: scale(1.08);
 
-    box-shadow:
-        0 0 10px var(--element-main);
+box-shadow:
+    0 0 10px var(--element-main);
+
 }
 
-
 /* =================================
-   PONTOS DE ATRIBUTO
+PONTOS DE ATRIBUTO
 ================================= */
 
 .attribute-points {
-    margin-top: 20px;
+margin-top: 20px;
 
-    padding: 14px;
+padding: 14px;
 
-    text-align: center;
+text-align: center;
 
-    border-radius: 14px;
+border-radius: 14px;
 
-    border:
-        1px solid var(--race-main);
+border:
+    1px solid var(--race-main);
 
-    background:
-        rgba(124, 58, 237, 0.08);
+background:
+    rgba(124, 58, 237, 0.08);
 
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
+transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+
 }
-
 
 .attribute-points.available {
-    border-color: var(--element-main);
+border-color: var(--element-main);
 
-    box-shadow:
-        0 0 15px var(--card-glow);
+box-shadow:
+    0 0 15px var(--card-glow);
+
 }
-
 
 .attribute-points h3 {
-    margin: 0 0 8px;
+margin: 0 0 8px;
 
-    font-size: 12px;
+font-size: 12px;
 
-    letter-spacing: 1px;
+letter-spacing: 1px;
 
-    color: var(--element-light);
+color: var(--element-light);
+
 }
-
 
 .attribute-points strong {
-    display: block;
+display: block;
 
-    font-size: 25px;
+font-size: 25px;
 
-    color: #f5f0ff;
+color: #f5f0ff;
+
 }
-
 
 .attribute-points span {
-    font-size: 10px;
+font-size: 10px;
 
-    color: #8f839d;
+color: #8f839d;
+
 }
 
+/* =================================
+PONTOS DE RECURSO
+================================= */
+
+.resource-points {
+position: relative;
+
+margin-top: 15px;
+
+padding-bottom: 16px;
+
+}
+
+.resource-points strong {
+color: var(--element-light);
+
+text-shadow:
+    0 0 8px var(--card-glow);
+
+}
+
+.resource-distribution {
+display: grid;
+
+grid-template-columns:
+    repeat(3, 1fr);
+
+gap: 8px;
+
+margin-top: 14px;
+
+}
+
+.resource-option {
+display: flex;
+
+align-items: center;
+justify-content: space-between;
+
+gap: 5px;
+
+min-width: 0;
+
+padding: 7px 8px;
+
+border-radius: 10px;
+
+background:
+    rgba(255, 255, 255, 0.04);
+
+border:
+    1px solid rgba(255, 255, 255, 0.08);
+
+}
+
+.resource-option span {
+font-size: 10px;
+
+color: #c9bdd5;
+
+white-space: nowrap;
+
+}
+
+.resource-plus {
+flex-shrink: 0;
+
+width: 27px;
+height: 27px;
+
+display: flex;
+
+align-items: center;
+justify-content: center;
+
+border:
+    1px solid var(--element-main);
+
+border-radius: 50%;
+
+background:
+    #1b1424;
+
+color:
+    var(--element-light);
+
+font-size: 17px;
+
+font-weight: bold;
+
+line-height: 1;
+
+cursor: pointer;
+
+opacity: 0.9;
+
+transition:
+    transform 0.2s ease,
+    opacity 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+
+}
+
+.resource-plus:hover {
+opacity: 1;
+
+transform: scale(1.1);
+
+background:
+    #241633;
+
+box-shadow:
+    0 0 12px var(--element-main);
+
+}
+
+.resource-plus:active {
+transform: scale(0.95);
+}
 
 /* =================================
-   EDITOR DE PERSONAGEM
+EDITOR DE PERSONAGEM
 ================================= */
 
 .character-editor {
-    margin-bottom: 15px;
+margin-bottom: 15px;
 
-    padding-bottom: 5px;
+padding-bottom: 5px;
+
 }
-
 
 .editor-field {
-    display: flex;
+display: flex;
 
-    flex-direction: column;
+flex-direction: column;
 
-    gap: 5px;
+gap: 5px;
 
-    margin-bottom: 10px;
+margin-bottom: 10px;
+
 }
-
 
 .editor-field label {
-    font-size: 9px;
+font-size: 9px;
 
-    letter-spacing: 1px;
+letter-spacing: 1px;
 
-    color: var(--race-light);
+color: var(--race-light);
+
 }
-
 
 .editor-field input,
 .editor-field select {
-    width: 100%;
+width: 100%;
 
-    padding: 10px;
+padding: 10px;
 
-    border:
-        1px solid var(--race-main);
+border:
+    1px solid var(--race-main);
 
-    border-radius: 9px;
+border-radius: 9px;
 
-    background: #100b18;
+background: #100b18;
 
-    color: #f5f0ff;
+color: #f5f0ff;
 
-    outline: none;
+outline: none;
 
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
+transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+
 }
-
 
 .editor-field input:focus,
 .editor-field select:focus {
-    border-color: var(--element-main);
+border-color: var(--element-main);
 
-    box-shadow:
-        0 0 10px var(--card-glow);
+box-shadow:
+    0 0 10px var(--card-glow);
+
 }
 
+.image-editor small {
+font-size: 9px;
+
+color: #75687f;
+
+line-height: 1.4;
+
+}
+
+.image-remove-button {
+margin-top: 4px;
+
+padding: 8px;
+
+border:
+    1px solid rgba(255, 255, 255, 0.1);
+
+border-radius: 8px;
+
+background: #1b1424;
+
+color: #b9a9c8;
+
+cursor: pointer;
+
+}
 
 /* =================================
-   XP DO BRASÃO
+XP DO BRASÃO
 ================================= */
 
 .badge-xp-section {
-    margin-top: 20px;
+margin-top: 20px;
 
-    padding: 14px;
+padding: 14px;
 
-    border-radius: 14px;
+border-radius: 14px;
 
-    border:
-        1px solid var(--race-main);
+border:
+    1px solid var(--race-main);
 
-    background:
-        rgba(124, 58, 237, 0.06);
+background:
+    rgba(124, 58, 237, 0.06);
+
 }
-
 
 .badge-xp-header {
-    display: flex;
+display: flex;
 
-    justify-content: space-between;
+justify-content: space-between;
 
-    align-items: center;
+align-items: center;
 
-    gap: 10px;
+gap: 10px;
 
-    margin-bottom: 8px;
+margin-bottom: 8px;
+
 }
-
 
 .badge-xp-header strong {
-    color: var(--element-light);
+color: var(--element-light);
 
-    font-size: 12px;
+font-size: 12px;
 
-    letter-spacing: 1px;
+letter-spacing: 1px;
+
 }
-
 
 .badge-xp-header span {
-    color: #b9a9c8;
+color: #b9a9c8;
 
-    font-size: 11px;
+font-size: 11px;
+
 }
-
 
 .badge-xp-bar {
-    width: 100%;
+width: 100%;
 
-    height: 8px;
+height: 8px;
 
-    background: #211a29;
+background: #211a29;
 
-    border-radius: 10px;
+border-radius: 10px;
 
-    overflow: hidden;
+overflow: hidden;
+
 }
-
 
 .badge-xp-progress {
-    width: 0%;
+width: 0%;
 
-    height: 100%;
+height: 100%;
 
-    background:
-        linear-gradient(
-            90deg,
-            var(--race-main),
-            var(--element-main)
-        );
+background:
+    linear-gradient(
+        90deg,
+        var(--race-main),
+        var(--element-main)
+    );
 
-    border-radius: 10px;
+border-radius: 10px;
 
-    transition:
-        width 0.4s ease;
+transition:
+    width 0.4s ease;
+
 }
-
 
 .badge-xp-info {
-    display: flex;
+display: flex;
 
-    flex-wrap: wrap;
+flex-wrap: wrap;
 
-    justify-content: center;
+justify-content: center;
 
-    gap: 5px;
+gap: 5px;
 
-    margin-top: 8px;
+margin-top: 8px;
 
-    font-size: 9px;
+font-size: 9px;
 
-    color: #75687f;
+color: #75687f;
+
 }
-
 
 .badge-xp-info strong {
-    color: var(--element-light);
+color: var(--element-light);
 }
 
-
 /* =================================
-   ELEMENTOS
+ELEMENTOS
 ================================= */
 
 .element-grid {
-    display: grid;
+display: grid;
 
-    grid-template-columns:
-        repeat(3, 1fr);
+grid-template-columns:
+    repeat(3, 1fr);
 
-    gap: 8px;
+gap: 8px;
+
 }
-
 
 .element {
-    padding: 10px 4px;
+padding: 10px 4px;
 
-    text-align: center;
+text-align: center;
 
-    border-radius: 12px;
+border-radius: 12px;
 
-    background:
-        rgba(255, 255, 255, 0.04);
+background:
+    rgba(255, 255, 255, 0.04);
 
-    border:
-        1px solid rgba(255, 255, 255, 0.07);
+border:
+    1px solid rgba(255, 255, 255, 0.07);
 
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
+transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+
 }
-
 
 .element:hover {
-    border-color: var(--element-main);
+border-color: var(--element-main);
 
-    box-shadow:
-        0 0 10px var(--element-main);
+box-shadow:
+    0 0 10px var(--element-main);
+
 }
-
 
 .element span {
-    display: block;
+display: block;
 
-    font-size: 20px;
+font-size: 20px;
 
-    margin-bottom: 4px;
+margin-bottom: 4px;
+
 }
-
 
 .element small {
-    font-size: 8px;
+font-size: 8px;
 
-    color: #8f839d;
+color: #8f839d;
 
-    letter-spacing: 1px;
+letter-spacing: 1px;
+
 }
 
-
 /* =================================
-   BRASÕES
+BRASÕES
 ================================= */
 
 .badges {
-    margin-top: 20px;
+margin-top: 20px;
 }
-
 
 .badges h3 {
-    margin-bottom: 12px;
+margin-bottom: 12px;
 
-    font-size: 13px;
+font-size: 13px;
 
-    letter-spacing: 2px;
+letter-spacing: 2px;
 
-    color: var(--race-light);
+color: var(--race-light);
+
 }
-
 
 .badge-list {
-    display: flex;
+display: flex;
 
-    gap: 10px;
+gap: 10px;
+
 }
-
 
 .badge {
-    width: 48px;
-    height: 48px;
+width: 48px;
+height: 48px;
 
-    display: flex;
+display: flex;
 
-    align-items: center;
-    justify-content: center;
+align-items: center;
+justify-content: center;
 
-    border-radius: 50%;
+border-radius: 50%;
 
-    border:
-        1px solid var(--race-main);
+border:
+    1px solid var(--race-main);
 
-    background: #1b1424;
+background: #1b1424;
 
-    font-weight: bold;
+font-weight: bold;
 
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
+transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+
 }
-
 
 .badge:not(.locked) {
-    box-shadow:
-        0 0 10px var(--card-glow);
+box-shadow:
+0 0 10px var(--card-glow);
 }
-
 
 .badge.locked {
-    color: #51475a;
+color: #51475a;
 
-    border-color: #302735;
+border-color: #302735;
 
-    box-shadow: none;
+box-shadow: none;
+
 }
 
-
 /* =================================
-   MODO MESTRE
+MODO MESTRE
 ================================= */
 
 .master-toggle {
-    width: 100%;
+width: 100%;
 
-    margin-top: 20px;
+margin-top: 20px;
 
-    padding: 12px;
+padding: 12px;
 
-    border:
-        1px solid var(--race-main);
+border:
+    1px solid var(--race-main);
 
-    border-radius: 12px;
+border-radius: 12px;
 
-    background: #1b1424;
+background: #1b1424;
 
-    color: var(--element-light);
+color: var(--element-light);
 
-    font-weight: bold;
+font-weight: bold;
 
-    cursor: pointer;
+cursor: pointer;
 
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
 }
-
 
 .master-toggle:hover {
-    background: #241633;
+background: #241633;
 
-    border-color: var(--element-main);
+border-color: var(--element-main);
 
-    transform: translateY(-1px);
+transform: translateY(-1px);
 
-    box-shadow:
-        0 0 12px var(--card-glow);
+box-shadow:
+    0 0 12px var(--card-glow);
+
 }
 
-
 /* =================================
-   CONTROLES DO MESTRE
+CONTROLES DO MESTRE
 ================================= */
 
 .master-controls {
-    display: none;
+display: none;
 
-    margin-top: 15px;
+margin-top: 15px;
 
-    padding: 15px;
+padding: 15px;
 
-    border-radius: 14px;
+border-radius: 14px;
 
-    background:
-        rgba(0, 0, 0, 0.25);
+background:
+    rgba(0, 0, 0, 0.25);
 
-    border:
-        1px solid rgba(255, 255, 255, 0.08);
+border:
+    1px solid rgba(255, 255, 255, 0.08);
+
 }
-
 
 .master-controls.active {
-    display: block;
+display: block;
 
-    animation:
-        masterOpen 0.25s ease;
+animation:
+    masterOpen 0.25s ease;
+
 }
-
 
 @keyframes masterOpen {
 
-    from {
-        opacity: 0;
+from {
+    opacity: 0;
 
-        transform:
-            translateY(-8px);
-    }
-
-    to {
-        opacity: 1;
-
-        transform:
-            translateY(0);
-    }
-
+    transform:
+        translateY(-8px);
 }
 
+to {
+    opacity: 1;
+
+    transform:
+        translateY(0);
+}
+
+}
 
 .master-controls h3 {
-    margin-top: 0;
+margin-top: 0;
 
-    color: var(--element-light);
+color: var(--element-light);
+
 }
-
 
 .control {
-    display: flex;
+display: flex;
 
-    align-items: center;
+align-items: center;
 
-    gap: 8px;
+gap: 8px;
 
-    margin-bottom: 10px;
+margin-bottom: 10px;
+
 }
-
 
 .control label {
-    flex: 1;
+flex: 1;
 }
-
 
 .control button {
-    width: 38px;
-    height: 32px;
+width: 38px;
+height: 32px;
 
-    border:
-        1px solid var(--race-main);
+border:
+    1px solid var(--race-main);
 
-    border-radius: 8px;
+border-radius: 8px;
 
-    background: #1b1424;
+background: #1b1424;
 
-    color: #fff;
+color: #fff;
 
-    font-size: 18px;
+font-size: 18px;
 
-    cursor: pointer;
+cursor: pointer;
 
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
 }
-
 
 .control button:hover {
-    border-color: var(--element-main);
+border-color: var(--element-main);
 
-    background: #241633;
+background: #241633;
 
-    box-shadow:
-        0 0 10px var(--card-glow);
+box-shadow:
+    0 0 10px var(--card-glow);
+
 }
-
 
 .xp-control {
-    flex-wrap: wrap;
+flex-wrap: wrap;
 }
-
 
 .xp-control input {
-    width: 100%;
+width: 100%;
 
-    padding: 10px;
+padding: 10px;
 
-    border-radius: 8px;
+border-radius: 8px;
 
-    border:
-        1px solid var(--race-main);
+border:
+    1px solid var(--race-main);
 
-    background: #100b18;
+background: #100b18;
 
-    color: #fff;
+color: #fff;
 
-    outline: none;
+outline: none;
+
 }
-
 
 .xp-control input:focus {
-    border-color: var(--element-main);
+border-color: var(--element-main);
 }
-
 
 .xp-control button {
-    flex: 1;
+flex: 1;
 
-    width: auto;
+width: auto;
 
-    font-size: 12px;
+font-size: 12px;
+
 }
 
-
 /* =================================
-   CELULAR
+CELULAR
 ================================= */
 
 @media (max-width: 380px) {
 
-    .character-image {
-        height: 280px;
-    }
+.character-image {
+    height: 280px;
+}
 
-    .character-info {
-        padding: 16px;
-    }
+.character-info {
+    padding: 16px;
+}
 
-    .card-face,
-    .character-card {
-        height: 650px;
-    }
+.card-face,
+.character-card {
+    height: 650px;
+}
 
-    .card-back {
-        padding: 16px;
-    }
+.card-back {
+    padding: 16px;
+}
+
+
+.resource-distribution {
+    grid-template-columns: 1fr;
+}
+
+
+.resource-option {
+    padding: 8px 10px;
+}
 
 }
