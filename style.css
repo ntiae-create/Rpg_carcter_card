@@ -202,3 +202,6 @@ body {
         gap: 5px;
     }
 }
+.master-controls {
+    display: none;
+}
