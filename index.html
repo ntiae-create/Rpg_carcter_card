@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -12,17 +13,24 @@
     <title>RPG Character Cards</title>
 
     <link rel="stylesheet" href="style.css">
+
 </head>
+
 
 <body>
 
 <main class="app">
 
+
+    <!-- ========================= -->
     <!-- CABEÇALHO -->
+    <!-- ========================= -->
 
     <header class="app-header">
 
-        <h1>RPG Character Cards</h1>
+        <h1>
+            RPG Character Cards
+        </h1>
 
         <p>
             Crie e evolua seus personagens.
@@ -31,7 +39,10 @@
     </header>
 
 
+
+    <!-- ========================= -->
     <!-- CARD -->
+    <!-- ========================= -->
 
     <section class="character-card">
 
@@ -41,6 +52,7 @@
         <!-- ========================= -->
 
         <div class="card-face card-front">
+
 
             <div class="card-header">
 
@@ -55,38 +67,50 @@
             </div>
 
 
-            <!-- IMAGEM -->
+
+            <!-- ========================= -->
+            <!-- IMAGEM DO PERSONAGEM -->
+            <!-- ========================= -->
 
             <div class="character-image">
 
-                <div class="image-placeholder">
+                <div
+                    class="image-placeholder"
+                    id="image-placeholder"
+                >
 
-                    <span>
+                    <span id="image-placeholder-text">
                         ARTE DO PERSONAGEM
                     </span>
 
-                    <button
-                        type="button"
-                        class="image-button"
-                    >
-                        📷 Escolher imagem
-                    </button>
-
                 </div>
+
+
+                <img
+                    id="character-image"
+                    class="character-image-preview"
+                    alt="Imagem do personagem"
+                >
 
             </div>
 
 
+
+            <!-- ========================= -->
             <!-- IDENTIDADE -->
+            <!-- ========================= -->
 
             <div class="character-info">
+
 
                 <h2 id="character-name">
                     Nome do Personagem
                 </h2>
 
 
+
                 <div class="identity">
+
 
                     <div>
 
@@ -101,6 +125,7 @@
                     </div>
 
 
+
                     <div>
 
                         <span>
@@ -113,12 +138,17 @@
 
                     </div>
 
+
                 </div>
 
 
+
+                <!-- ========================= -->
                 <!-- XP DO PERSONAGEM -->
+                <!-- ========================= -->
 
                 <div class="xp-section">
+
 
                     <div class="xp-info">
 
@@ -133,6 +163,7 @@
                     </div>
 
 
+
                     <div class="xp-bar">
 
                         <div
@@ -142,12 +173,17 @@
 
                     </div>
 
+
                 </div>
 
 
+
+                <!-- ========================= -->
                 <!-- BRASÃO PRINCIPAL -->
+                <!-- ========================= -->
 
                 <div class="front-emblem">
+
 
                     <div
                         class="affinity-emblem"
@@ -156,9 +192,11 @@
                         ◈
                     </div>
 
+
                     <span id="affinity-name">
                         AFINIDADE
                     </span>
+
 
                     <small
                         id="badge-stage"
@@ -167,10 +205,14 @@
                         BRASÃO INICIAL
                     </small>
 
+
                 </div>
 
 
+
+                <!-- ========================= -->
                 <!-- INDICAÇÃO -->
+                <!-- ========================= -->
 
                 <div class="flip-hint">
                     ↻ Toque para virar
@@ -210,16 +252,20 @@
 
             <section class="character-editor">
 
+
                 <h3 class="stats-title">
                     IDENTIDADE
                 </h3>
 
 
+
                 <div class="editor-field">
+
 
                     <label for="name-input">
                         NOME
                     </label>
+
 
                     <input
                         type="text"
@@ -229,122 +275,195 @@
                         autocomplete="off"
                     >
 
+
                 </div>
 
 
+
                 <div class="editor-field">
+
 
                     <label for="race-select">
                         RAÇA
                     </label>
 
+
                     <select id="race-select">
+
 
                         <option value="Humano">
                             Humano
                         </option>
 
+
                         <option value="Meio-elfo">
                             Meio-elfo
                         </option>
+
 
                         <option value="Elfo">
                             Elfo
                         </option>
 
+
                         <option value="Semi-besta">
                             Semi-besta
                         </option>
+
 
                         <option value="Besta">
                             Besta
                         </option>
 
+
                     </select>
+
 
                 </div>
 
 
+
                 <div class="editor-field">
+
 
                     <label for="class-select">
                         CLASSE
                     </label>
 
+
                     <select id="class-select">
+
 
                         <option value="Saber">
                             Saber
                         </option>
 
+
                         <option value="Archer">
                             Archer
                         </option>
+
 
                         <option value="Rider">
                             Rider
                         </option>
 
+
                         <option value="Caster">
                             Caster
                         </option>
+
 
                         <option value="Assassin">
                             Assassin
                         </option>
 
+
                         <option value="Lancer">
                             Lancer
                         </option>
+
 
                         <option value="Berserker">
                             Berserker
                         </option>
 
+
                         <option value="Tank">
                             Tank
                         </option>
 
+
                     </select>
+
 
                 </div>
 
 
+
                 <div class="editor-field">
+
 
                     <label for="affinity-select">
                         AFINIDADE PRINCIPAL
                     </label>
 
+
                     <select id="affinity-select">
+
 
                         <option value="agua">
                             💧 Água
                         </option>
 
+
                         <option value="luz">
                             💡 Luz
                         </option>
+
 
                         <option value="terra">
                             🌍 Terra
                         </option>
 
+
                         <option value="trevas">
                             🌑 Trevas
                         </option>
+
 
                         <option value="vento">
                             🌪️ Vento
                         </option>
 
+
                         <option value="fogo">
                             🔥 Fogo
                         </option>
 
+
                     </select>
 
+
                 </div>
+
+
+
+                <!-- ========================= -->
+                <!-- IMAGEM -->
+                <!-- ========================= -->
+
+                <div class="editor-field image-editor">
+
+
+                    <label for="character-image-input">
+                        IMAGEM DO PERSONAGEM
+                    </label>
+
+
+                    <input
+                        type="file"
+                        id="character-image-input"
+                        accept="image/*"
+                    >
+
+
+                    <small>
+                        Escolha uma imagem da galeria ou dos arquivos.
+                    </small>
+
+
+                    <button
+                        type="button"
+                        id="remove-character-image"
+                        class="image-remove-button"
+                    >
+                        🗑️ Remover imagem
+                    </button>
+
+
+                </div>
+
 
             </section>
 
@@ -356,12 +475,14 @@
 
             <section class="stats">
 
+
                 <h3 class="stats-title">
                     RECURSOS
                 </h3>
 
 
                 <div class="stats-grid">
+
 
                     <div class="stat">
 
@@ -376,6 +497,7 @@
                         </small>
 
                     </div>
+
 
 
                     <div class="stat">
@@ -393,6 +515,7 @@
                     </div>
 
 
+
                     <div class="stat">
 
                         <span>🟢</span>
@@ -406,6 +529,7 @@
                         </small>
 
                     </div>
+
 
 
                     <div class="stat">
@@ -422,6 +546,7 @@
 
                     </div>
 
+
                 </div>
 
             </section>
@@ -434,12 +559,14 @@
 
             <section class="stats">
 
+
                 <h3 class="stats-title">
                     COMBATE
                 </h3>
 
 
                 <div class="stats-grid">
+
 
                     <div class="stat attribute-stat">
 
@@ -462,6 +589,7 @@
                         </button>
 
                     </div>
+
 
 
                     <div class="stat attribute-stat">
@@ -487,6 +615,7 @@
                     </div>
 
 
+
                     <div class="stat attribute-stat">
 
                         <span>🛡️</span>
@@ -508,6 +637,7 @@
                         </button>
 
                     </div>
+
 
 
                     <div class="stat attribute-stat">
@@ -532,6 +662,7 @@
 
                     </div>
 
+
                 </div>
 
             </section>
@@ -544,12 +675,14 @@
 
             <section class="stats">
 
+
                 <h3 class="stats-title">
                     CARACTERÍSTICAS
                 </h3>
 
 
                 <div class="stats-grid">
+
 
                     <div class="stat attribute-stat">
 
@@ -574,6 +707,7 @@
                     </div>
 
 
+
                     <div class="stat attribute-stat">
 
                         <span>🧠</span>
@@ -595,6 +729,7 @@
                         </button>
 
                     </div>
+
 
                 </div>
 
@@ -694,6 +829,7 @@
 
             <section class="elements">
 
+
                 <h3 class="stats-title">
                     AFINIDADES ELEMENTAIS
                 </h3>
@@ -701,35 +837,42 @@
 
                 <div class="element-grid">
 
+
                     <div class="element">
                         <span>💧</span>
                         <small>ÁGUA</small>
                     </div>
+
 
                     <div class="element">
                         <span>💡</span>
                         <small>LUZ</small>
                     </div>
 
+
                     <div class="element">
                         <span>🌍</span>
                         <small>TERRA</small>
                     </div>
+
 
                     <div class="element">
                         <span>🌑</span>
                         <small>TREVAS</small>
                     </div>
 
+
                     <div class="element">
                         <span>🌪️</span>
                         <small>VENTO</small>
                     </div>
 
+
                     <div class="element">
                         <span>🔥</span>
                         <small>FOGO</small>
                     </div>
+
 
                 </div>
 
@@ -743,6 +886,7 @@
 
             <section class="badges">
 
+
                 <h3>
                     BRASÕES
                 </h3>
@@ -750,21 +894,26 @@
 
                 <div class="badge-list">
 
+
                     <div class="badge">
                         ◈
                     </div>
 
-                    <div class="badge locked">
-                        ?
-                    </div>
 
                     <div class="badge locked">
                         ?
                     </div>
 
+
                     <div class="badge locked">
                         ?
                     </div>
+
+
+                    <div class="badge locked">
+                        ?
+                    </div>
+
 
                 </div>
 
@@ -785,11 +934,14 @@
             </button>
 
 
+
             <div class="master-controls">
+
 
                 <h3>
                     👑 MESTRE
                 </h3>
+
 
 
                 <!-- HP -->
@@ -811,6 +963,7 @@
                 </div>
 
 
+
                 <!-- MP -->
 
                 <div class="control">
@@ -828,6 +981,7 @@
                     </button>
 
                 </div>
+
 
 
                 <!-- EST -->
@@ -849,6 +1003,7 @@
                 </div>
 
 
+
                 <!-- SANIDADE -->
 
                 <div class="control">
@@ -866,6 +1021,7 @@
                     </button>
 
                 </div>
+
 
 
                 <!-- XP DO PERSONAGEM -->
@@ -898,6 +1054,7 @@
                 </div>
 
 
+
                 <!-- XP DO BRASÃO -->
 
                 <div class="control xp-control">
@@ -927,6 +1084,7 @@
 
                 </div>
 
+
             </div>
 
 
@@ -937,9 +1095,13 @@
 </main>
 
 
+
+<!-- ========================= -->
 <!-- JAVASCRIPT -->
+<!-- ========================= -->
 
 <script src="script.js"></script>
 
 </body>
+
 </html>
