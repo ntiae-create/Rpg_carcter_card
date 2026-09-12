@@ -115,10 +115,21 @@ body {
 }
 
 .stats {
+    margin-top: 25px;
+}
+
+.stats-title {
+    margin: 20px 0 10px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: #b9a9c8;
+    text-align: left;
+}
+
+.stats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 8px;
-    margin-top: 25px;
 }
 
 .stat {
