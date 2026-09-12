@@ -87,6 +87,9 @@ seletorRaca.addEventListener("change", function () {
 
     const racaSelecionada = racas[this.value];
 
-    console.log("Raça selecionada:", racaSelecionada);
+    document.getElementById("stat-atk").textContent = racaSelecionada.atk;
+    document.getElementById("stat-def").textContent = racaSelecionada.def;
+    document.getElementById("stat-agi").textContent = racaSelecionada.agi;
+    document.getElementById("stat-int").textContent = racaSelecionada.int;
 
 });
