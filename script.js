@@ -253,49 +253,130 @@ const brasoes = {
     agua: {
         nome: "LOBO",
         brasao: "🐺",
-        guardiao: "Guardião do Lobo"
+        guardiao: "Guardião do Lobo",
+
+        // Identidade visual
+        ornamentos: {
+            leve: "⌁",
+            pequeno: "◈",
+            medio: "✧",
+            grande: "༺",
+            pesado: "☾",
+            arcano: "☾✦",
+            extra: "☾✦"
+        }
     },
 
     luz: {
         nome: "TIGRE",
         brasao: "🐯",
-        guardiao: "Guardião do Tigre"
+        guardiao: "Guardião do Tigre",
+
+        ornamentos: {
+            leve: "✦",
+            pequeno: "◇",
+            medio: "✧",
+            grande: "༺",
+            pesado: "⚜",
+            arcano: "✦⚜",
+            extra: "✦⚜"
+        }
     },
 
     terra: {
         nome: "URSO",
         brasao: "🐻",
-        guardiao: "Guardião do Urso"
+        guardiao: "Guardião do Urso",
+
+        ornamentos: {
+            leve: "•",
+            pequeno: "◆",
+            medio: "⬢",
+            grande: "༺",
+            pesado: "◈",
+            arcano: "◈✦",
+            extra: "◈✦"
+        }
     },
 
     trevas: {
         nome: "RAPOSA",
         brasao: "🦊",
-        guardiao: "Guardião da Raposa"
+        guardiao: "Guardião da Raposa",
+
+        ornamentos: {
+            leve: "⌁",
+            pequeno: "◇",
+            medio: "☽",
+            grande: "༺",
+            pesado: "☽",
+            arcano: "☽✦",
+            extra: "☽✦"
+        }
     },
 
     vento: {
         nome: "ÁGUIA",
         brasao: "🦅",
-        guardiao: "Guardião da Águia"
+        guardiao: "Guardião da Águia",
+
+        ornamentos: {
+            leve: "⌁",
+            pequeno: "〰",
+            medio: "≋",
+            grande: "༺",
+            pesado: "⟡",
+            arcano: "⟡✦",
+            extra: "⟡✦"
+        }
     },
 
     fogo: {
         nome: "DRAGÃO",
         brasao: "🐉",
-        guardiao: "Guardião do Dragão"
+        guardiao: "Guardião do Dragão",
+
+        ornamentos: {
+            leve: "⋆",
+            pequeno: "✦",
+            medio: "✧",
+            grande: "༺",
+            pesado: "🔥",
+            arcano: "✦🔥",
+            extra: "✦🔥"
+        }
     },
 
     fisico: {
         nome: "MAMUTE",
         brasao: "🦣",
-        guardiao: "Guardião do Mamute"
+        guardiao: "Guardião do Mamute",
+
+        ornamentos: {
+            leve: "•",
+            pequeno: "◆",
+            medio: "⬢",
+            grande: "༺",
+            pesado: "⚔",
+            arcano: "◆⚔",
+            extra: "◆⚔"
+        }
     },
 
     magico: {
         nome: "CORUJA",
         brasao: "🦉",
-        guardiao: "Guardião da Coruja"
+        guardiao: "Guardião da Coruja",
+
+        ornamentos: {
+            leve: "✧",
+            pequeno: "◇",
+            medio: "✦",
+            grande: "༺",
+            pesado: "☽",
+            arcano: "☽✧",
+            extra: "☽✧"
+        }
     }
 
 };
@@ -421,16 +502,12 @@ const NIVEL_MAXIMO = 30;
 // PONTOS DE ATRIBUTO
 // ==========================================
 
-// Nível 1 já começa com 3 pontos.
-
 let pontosAtributo = 3;
 
 
 // ==========================================
 // PONTOS DE RECURSO
 // ==========================================
-
-// Recebidos nos níveis 3, 6, 9, 12...
 
 let pontosRecurso = 0;
 
@@ -1330,8 +1407,8 @@ function atualizarAfinidade() {
 
         if (brasaoAtual) {
 
-            emblema.textContent =
-                brasaoAtual.brasao;
+            // A função atualizarBrasao()
+            // cuida da aparência completa.
 
         } else {
 
@@ -1750,10 +1827,6 @@ function aumentarRecurso(
     pontosRecurso--;
 
 
-    const dadosRaca =
-        racas[racaAtual];
-
-
     if (recurso === "hp") {
 
         hp++;
@@ -2068,7 +2141,6 @@ function processarSubidaNivel(
     }
 
 
-    // Marcos de brasão
     atualizarMarcosBrasao(
         nivelAnterior,
         nivelNovo
@@ -2227,7 +2299,6 @@ function adicionarXP() {
         );
 
 
-    // Nível máximo = 30
     while (
         nivel < NIVEL_MAXIMO &&
         xp >=
@@ -2354,7 +2425,6 @@ function removerXP() {
             );
 
 
-        // Recalcula pontos de recurso obtidos por nível.
         const recursosEsperados =
             Math.floor(
                 nivel / 3
@@ -2525,6 +2595,143 @@ function obterBrasaoAtual() {
 
 
 // ==========================================
+// CONFIGURAÇÃO VISUAL DO BRASÃO
+// ==========================================
+
+function obterVisualBrasao(
+    brasaoAtual,
+    estagio
+) {
+
+    const ornamentos =
+        brasaoAtual.ornamentos;
+
+
+    switch (estagio.nome) {
+
+        case "SEM NENHUM":
+
+            return {
+                esquerda: "",
+                direita: "",
+                classe: "brasao-none"
+            };
+
+
+        case "INICIAL":
+
+            return {
+                esquerda: "",
+                direita: "",
+                classe: "brasao-inicial"
+            };
+
+
+        case "LEVE":
+
+            return {
+                esquerda:
+                    ornamentos.leve,
+
+                direita:
+                    ornamentos.leve,
+
+                classe: "brasao-leve"
+            };
+
+
+        case "PEQUENO":
+
+            return {
+                esquerda:
+                    ornamentos.pequeno,
+
+                direita:
+                    ornamentos.pequeno,
+
+                classe: "brasao-pequeno"
+            };
+
+
+        case "MÉDIO":
+
+            return {
+                esquerda:
+                    ornamentos.medio,
+
+                direita:
+                    ornamentos.medio,
+
+                classe: "brasao-medio"
+            };
+
+
+        case "GRANDE":
+
+            return {
+                esquerda:
+                    ornamentos.grande,
+
+                direita:
+                    ornamentos.grande,
+
+                classe: "brasao-grande"
+            };
+
+
+        case "PESADO":
+
+            return {
+                esquerda:
+                    ornamentos.pesado,
+
+                direita:
+                    ornamentos.pesado,
+
+                classe: "brasao-pesado"
+            };
+
+
+        case "ARCANO":
+
+            return {
+                esquerda:
+                    ornamentos.arcano,
+
+                direita:
+                    ornamentos.arcano,
+
+                classe: "brasao-arcano"
+            };
+
+
+        case "EXTRA":
+
+            return {
+                esquerda:
+                    ornamentos.extra,
+
+                direita:
+                    ornamentos.extra,
+
+                classe: "brasao-extra"
+            };
+
+
+        default:
+
+            return {
+                esquerda: "",
+                direita: "",
+                classe: "brasao-inicial"
+            };
+
+    }
+
+}
+
+
+// ==========================================
 // ATUALIZAR BRASÃO
 // ==========================================
 
@@ -2580,14 +2787,38 @@ function atualizarBrasao() {
         );
 
 
-    // --------------------------------------
-    // Brasão visual
-    // --------------------------------------
+    // ======================================
+    // VISUAL
+    // ======================================
+
+    const visual =
+        obterVisualBrasao(
+            brasaoAtual,
+            estagio
+        );
+
 
     if (emblema) {
 
-        emblema.textContent =
-            brasaoAtual.brasao;
+        emblema.innerHTML = `
+
+            <span class="brasao-ornamento brasao-esquerda">
+                ${visual.esquerda}
+            </span>
+
+            <span class="brasao-animal">
+                ${brasaoAtual.brasao}
+            </span>
+
+            <span class="brasao-ornamento brasao-direita">
+                ${visual.direita}
+            </span>
+
+        `;
+
+
+        emblema.className =
+            `affinity-emblem ${visual.classe}`;
 
 
         emblema.style.transform =
@@ -2595,13 +2826,23 @@ function atualizarBrasao() {
 
 
         emblema.style.textShadow =
-            `0 0 ${8 * estagio.brilho}px var(--element-main),
-             0 0 ${18 * estagio.brilho}px var(--element-main),
-             0 0 ${30 * estagio.brilho}px var(--element-light)`;
+            `
+            0 0 ${8 * estagio.brilho}px var(--element-main),
+            0 0 ${18 * estagio.brilho}px var(--element-main),
+            0 0 ${30 * estagio.brilho}px var(--element-light)
+            `;
 
 
         emblema.dataset.brasao =
             brasaoAtual.nome;
+
+
+        emblema.dataset.estagio =
+            estagio.nome;
+
+
+        emblema.dataset.guardiao =
+            brasaoAtual.guardiao;
 
 
         emblema.title =
@@ -2610,9 +2851,9 @@ function atualizarBrasao() {
     }
 
 
-    // --------------------------------------
-    // Nome do estágio
-    // --------------------------------------
+    // ======================================
+    // NOME DO ESTÁGIO
+    // ======================================
 
     if (stageFront) {
 
@@ -2630,9 +2871,9 @@ function atualizarBrasao() {
     }
 
 
-    // --------------------------------------
-    // Nome do Guardião
-    // --------------------------------------
+    // ======================================
+    // GUARDIÃO
+    // ======================================
 
     const guardiao =
         document.getElementById(
@@ -2648,9 +2889,9 @@ function atualizarBrasao() {
     }
 
 
-    // --------------------------------------
-    // XP / progresso
-    // --------------------------------------
+    // ======================================
+    // XP / PROGRESSO
+    // ======================================
 
     const indice =
         estagiosBrasao.indexOf(
@@ -2904,9 +3145,9 @@ function alternarModoMestre() {
 carregarDados();
 
 
-// ------------------------------------------
-// Garantias para personagens antigos
-// ------------------------------------------
+// ==========================================
+// GARANTIAS
+// ==========================================
 
 if (
     nivel < 1
@@ -2952,16 +3193,34 @@ if (
 }
 
 
-// ------------------------------------------
-// Cores
-// ------------------------------------------
+if (
+    typeof xpBrasao !== "number"
+) {
+
+    xpBrasao = 0;
+
+}
+
+
+if (
+    typeof marcosBrasaoRecebidos !== "number"
+) {
+
+    marcosBrasaoRecebidos = 0;
+
+}
+
+
+// ==========================================
+// CORES
+// ==========================================
 
 atualizarCores();
 
 
-// ------------------------------------------
-// Nome / raça / classe / afinidade
-// ------------------------------------------
+// ==========================================
+// NOME / RAÇA / CLASSE / AFINIDADE
+// ==========================================
 
 const dadosRacaInicial =
     racas[racaAtual];
