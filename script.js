@@ -91,5 +91,10 @@ seletorRaca.addEventListener("change", function () {
     document.getElementById("stat-def").textContent = racaSelecionada.def;
     document.getElementById("stat-agi").textContent = racaSelecionada.agi;
     document.getElementById("stat-int").textContent = racaSelecionada.int;
-
+    document.getElementById("stat-hp").textContent = racaSelecionada.hp;
+    document.getElementById("stat-mp").textContent = racaSelecionada.mp;
+    document.getElementById("stat-est").textContent = racaSelecionada.est;
+    document.getElementById("stat-sanidade").textContent = racaSelecionada.sanidade;
+    document.getElementById("stat-atkMgc").textContent = racaSelecionada.atkMgc;
+    document.getElementById("stat-res").textContent = racaSelecionada.res;
 });
