@@ -11,8 +11,7 @@ const racas = {
         def: 8,
         res: 8,
         agi: 8,
-        int: 15,
-        passiva: "Raça adaptativa. Recebe bônus progressivo de XP enquanto estiver em grupo."
+        int: 15
     },
 
     meioElfo: {
@@ -26,8 +25,7 @@ const racas = {
         def: 6,
         res: 9,
         agi: 10,
-        int: 15,
-        passiva: "Harmonia. +5% ATK MGC de Vento. Projéteis mágicos possuem 40% de chance de atordoar por 1 turno."
+        int: 15
     },
 
     elfo: {
@@ -41,8 +39,7 @@ const racas = {
         def: 5,
         res: 9,
         agi: 12,
-        int: 16,
-        passiva: "Orgulho Élfico. +10% ATK MGC de Vento."
+        int: 16
     },
 
     semiBesta: {
@@ -56,8 +53,7 @@ const racas = {
         def: 7,
         res: 6,
         agi: 10,
-        int: 10,
-        passiva: "Frenesi. Pode ser ativado pelo jogador por 2 turnos. +5% ATK."
+        int: 10
     },
 
     besta: {
@@ -71,8 +67,7 @@ const racas = {
         def: 6,
         res: 5,
         agi: 9,
-        int: 6,
-        passiva: "Frenesi. Ativado automaticamente com 20% de HP ou menos."
+        int: 6
     }
 
 };
@@ -89,7 +84,28 @@ let sanidadeAtual = racas.humano.sanidade;
 
 
 // ==========================
-// ATUALIZAR RAÇA
+// XP E NÍVEL
+// ==========================
+
+let xpAtual = 0;
+let nivelAtual = 1;
+
+const xpPorNivel = {
+    1: 100,
+    2: 150,
+    3: 225,
+    4: 325,
+    5: 450,
+    6: 600,
+    7: 775,
+    8: 975,
+    9: 1200,
+    10: 1500
+};
+
+
+// ==========================
+// SELETOR DE RAÇA
 // ==========================
 
 const seletorRaca = document.getElementById("race-select");
@@ -103,17 +119,7 @@ seletorRaca.addEventListener("change", function () {
     estAtual = racaSelecionada.est;
     sanidadeAtual = racaSelecionada.sanidade;
 
-    document.getElementById("stat-hp").textContent =
-        hpAtual + " / " + racaSelecionada.hp;
-
-    document.getElementById("stat-mp").textContent =
-        mpAtual + " / " + racaSelecionada.mp;
-
-    document.getElementById("stat-est").textContent =
-        estAtual + " / " + racaSelecionada.est;
-
-    document.getElementById("stat-sanidade").textContent =
-        sanidadeAtual + " / " + racaSelecionada.sanidade;
+    atualizarRecursos();
 
     document.getElementById("stat-atk").textContent =
         racaSelecionada.atk;
@@ -134,6 +140,28 @@ seletorRaca.addEventListener("change", function () {
         racaSelecionada.int;
 
 });
+
+
+// ==========================
+// RECURSOS
+// ==========================
+
+function atualizarRecursos() {
+
+    const raca = racas[seletorRaca.value];
+
+    document.getElementById("stat-hp").textContent =
+        hpAtual + " / " + raca.hp;
+
+    document.getElementById("stat-mp").textContent =
+        mpAtual + " / " + raca.mp;
+
+    document.getElementById("stat-est").textContent =
+        estAtual + " / " + raca.est;
+
+    document.getElementById("stat-sanidade").textContent =
+        sanidadeAtual + " / " + raca.sanidade;
+}
 
 
 // ==========================
@@ -171,8 +199,7 @@ function alterarHP(valor) {
         hpAtual = raca.hp;
     }
 
-    document.getElementById("stat-hp").textContent =
-        hpAtual + " / " + raca.hp;
+    atualizarRecursos();
 }
 
 
@@ -194,8 +221,7 @@ function alterarMP(valor) {
         mpAtual = raca.mp;
     }
 
-    document.getElementById("stat-mp").textContent =
-        mpAtual + " / " + raca.mp;
+    atualizarRecursos();
 }
 
 
@@ -217,8 +243,7 @@ function alterarEST(valor) {
         estAtual = raca.est;
     }
 
-    document.getElementById("stat-est").textContent =
-        estAtual + " / " + raca.est;
+    atualizarRecursos();
 }
 
 
@@ -240,25 +265,13 @@ function alterarSanidade(valor) {
         sanidadeAtual = raca.sanidade;
     }
 
-    document.getElementById("stat-sanidade").textContent =
-        sanidadeAtual + " / " + raca.sanidade;
+    atualizarRecursos();
 }
-  let xpAtual = 0;
-let nivelAtual = 1;
 
-const xpPorNivel = {
-    1: 100,
-    2: 150,
-    3: 225,
-    4: 325,
-    5: 450,
-    6: 600,
-    7: 775,
-    8: 975,
-    9: 1200,
-    10: 1500
-};
 
+// ==========================
+// XP
+// ==========================
 
 function atualizarXP() {
 
@@ -267,9 +280,6 @@ function atualizarXP() {
     document.getElementById("xp-text").textContent =
         xpAtual + " XP";
 
-    document.getElementById("xp-next").textContent =
-        xpNecessario + " XP";
-
     const porcentagem =
         Math.min((xpAtual / xpNecessario) * 100, 100);
 
@@ -277,6 +287,10 @@ function atualizarXP() {
         porcentagem + "%";
 }
 
+
+// ==========================
+// SUBIR DE NÍVEL
+// ==========================
 
 function atualizarNivel() {
 
@@ -288,7 +302,6 @@ function atualizarNivel() {
         xpAtual -= xpPorNivel[nivelAtual];
 
         nivelAtual++;
-
     }
 
     atualizarXP();
@@ -297,6 +310,10 @@ function atualizarNivel() {
         "LV. " + String(nivelAtual).padStart(2, "0");
 }
 
+
+// ==========================
+// ADICIONAR XP
+// ==========================
 
 function adicionarXP() {
 
@@ -314,6 +331,10 @@ function adicionarXP() {
     atualizarNivel();
 }
 
+
+// ==========================
+// REMOVER XP
+// ==========================
 
 function removerXP() {
 
@@ -336,22 +357,9 @@ function removerXP() {
 }
 
 
+// ==========================
+// INICIALIZAÇÃO
+// ==========================
+
+atualizarRecursos();
 atualizarXP();
-
-    const campo = document.getElementById("xp-amount");
-    const quantidade = Number(campo.value);
-
-    if (quantidade <= 0) {
-        return;
-    }
-
-    xpAtual -= quantidade;
-
-    if (xpAtual < 0) {
-        xpAtual = 0;
-    }
-
-    atualizarXP();
-
-    campo.value = "";
-}
