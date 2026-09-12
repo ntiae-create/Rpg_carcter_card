@@ -98,3 +98,14 @@ seletorRaca.addEventListener("change", function () {
     document.getElementById("stat-atkMgc").textContent = racaSelecionada.atkMgc;
     document.getElementById("stat-res").textContent = racaSelecionada.res;
 });
+function alternarModoMestre() {
+
+    const painel = document.querySelector(".master-controls");
+
+    if (painel.style.display === "block") {
+        painel.style.display = "none";
+    } else {
+        painel.style.display = "block";
+    }
+
+}
