@@ -1,130 +1,192 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<head>
 
-<title>RPG Character Cards</title>
+    <meta charset="UTF-8">
 
-<link rel="stylesheet" href="style.css">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-</head><body><main class="app"><!-- ========================= -->
-<!-- CABEÇALHO -->
-<!-- ========================= -->
+    <title>RPG Character Cards</title>
 
-<header class="app-header">
+    <link rel="stylesheet" href="style.css">
 
-    <h1>
-        RPG Character Cards
-    </h1>
-
-    <p>
-        Crie e evolua seus personagens.
-    </p>
-
-</header>
+</head>
 
 
+<body>
 
-<!-- ========================= -->
-<!-- CARD -->
-<!-- ========================= -->
-
-<section class="character-card">
+<main class="app">
 
 
     <!-- ========================= -->
-    <!-- FRENTE DO CARD -->
+    <!-- CABEÇALHO -->
     <!-- ========================= -->
 
-    <div class="card-face card-front">
+    <header class="app-header">
+
+        <h1>
+            RPG Character Cards
+        </h1>
+
+        <p>
+            Crie e evolua seus personagens.
+        </p>
+
+    </header>
 
 
-        <div class="card-header">
 
-            <span class="rarity">
-                ✦ RARO ✦
-            </span>
+    <!-- ========================= -->
+    <!-- CARD -->
+    <!-- ========================= -->
 
-            <span class="level">
-                LV. 01
-            </span>
-
-        </div>
-
+    <section class="character-card">
 
 
         <!-- ========================= -->
-        <!-- IMAGEM DO PERSONAGEM -->
+        <!-- FRENTE DO CARD -->
         <!-- ========================= -->
 
-        <div class="character-image">
+        <div class="card-face card-front">
 
-            <div
-                class="image-placeholder"
-                id="image-placeholder"
-            >
 
-                <span id="image-placeholder-text">
-                    ARTE DO PERSONAGEM
+            <!-- ========================= -->
+            <!-- TOPO -->
+            <!-- ========================= -->
+
+            <div class="card-header">
+
+                <span class="rarity">
+                    ✦ RARO ✦
+                </span>
+
+
+                <!-- BRASÃO NO TOPO -->
+
+                <div
+                    class="front-top-crest"
+                    id="front-top-crest"
+                >
+
+                    <div
+                        class="affinity-emblem"
+                        id="affinity-emblem"
+                    >
+                        ◈
+                    </div>
+
+
+                    <div
+                        class="crest-symbols"
+                        id="crest-symbols"
+                    ></div>
+
+
+                    <small
+                        id="badge-stage"
+                        class="badge-stage"
+                    >
+                        BRASÃO INICIAL
+                    </small>
+
+                </div>
+
+
+                <span class="level">
+                    LV. 01
                 </span>
 
             </div>
 
 
-            <img
-                id="character-image"
-                class="character-image-preview"
-                alt="Imagem do personagem"
+
+            <!-- ========================= -->
+            <!-- NOME -->
+            <!-- ========================= -->
+
+            <div class="front-name-area">
+
+                <h2 id="character-name">
+                    Nome do Personagem
+                </h2>
+
+
+                <span
+                    id="character-race"
+                    class="front-race"
+                >
+                    Humano
+                </span>
+
+            </div>
+
+
+
+            <!-- ========================= -->
+            <!-- ENFEITE SUPERIOR -->
+            <!-- ========================= -->
+
+            <div
+                class="card-ornament card-ornament-top"
+                aria-hidden="true"
             >
 
-        </div>
+                <span></span>
+
+                <b>✦</b>
+
+                <span></span>
+
+            </div>
 
 
 
-        <!-- ========================= -->
-        <!-- IDENTIDADE -->
-        <!-- ========================= -->
+            <!-- ========================= -->
+            <!-- IMAGEM DO PERSONAGEM -->
+            <!-- ========================= -->
 
-        <div class="character-info">
+            <div class="character-image">
 
+                <div
+                    class="image-placeholder"
+                    id="image-placeholder"
+                >
 
-            <h2 id="character-name">
-                Nome do Personagem
-            </h2>
-
-
-
-            <div class="identity">
-
-
-                <div>
-
-                    <span>
-                        🧬 RAÇA
+                    <span id="image-placeholder-text">
+                        ARTE DO PERSONAGEM
                     </span>
-
-                    <strong id="character-race">
-                        Humano
-                    </strong>
 
                 </div>
 
 
+                <img
+                    id="character-image"
+                    class="character-image-preview"
+                    alt="Imagem do personagem"
+                >
 
-                <div>
+            </div>
 
-                    <span>
-                        ⚔️ CLASSE
-                    </span>
 
-                    <strong id="character-class">
-                        Saber
-                    </strong>
 
-                </div>
+            <!-- ========================= -->
+            <!-- ENFEITE INFERIOR -->
+            <!-- ========================= -->
 
+            <div
+                class="card-ornament card-ornament-bottom"
+                aria-hidden="true"
+            >
+
+                <span></span>
+
+                <b>✦</b>
+
+                <span></span>
 
             </div>
 
@@ -134,13 +196,12 @@
             <!-- XP DO PERSONAGEM -->
             <!-- ========================= -->
 
-            <div class="xp-section">
-
+            <div class="front-xp-section">
 
                 <div class="xp-info">
 
                     <span>
-                        XP
+                        XP DO PERSONAGEM
                     </span>
 
                     <span id="xp-text">
@@ -148,7 +209,6 @@
                     </span>
 
                 </div>
-
 
 
                 <div class="xp-bar">
@@ -160,38 +220,45 @@
 
                 </div>
 
-
             </div>
 
 
 
             <!-- ========================= -->
-            <!-- BRASÃO PRINCIPAL -->
+            <!-- IDENTIDADE INFERIOR -->
             <!-- ========================= -->
 
-            <div class="front-emblem">
+            <div class="front-identity">
 
+                <div class="front-identity-item">
 
-                <div
-                    class="affinity-emblem"
-                    id="affinity-emblem"
-                >
-                    ◈
+                    <span>
+                        ✦ AFINIDADE
+                    </span>
+
+                    <strong id="affinity-name">
+                        AFINIDADE
+                    </strong>
+
                 </div>
 
 
-                <span id="affinity-name">
-                    AFINIDADE
-                </span>
+                <div class="front-identity-divider">
+                    │
+                </div>
 
 
-                <small
-                    id="badge-stage"
-                    class="badge-stage"
-                >
-                    BRASÃO INICIAL
-                </small>
+                <div class="front-identity-item">
 
+                    <span>
+                        ⚔ CLASSE
+                    </span>
+
+                    <strong id="character-class">
+                        Saber
+                    </strong>
+
+                </div>
 
             </div>
 
@@ -208,959 +275,869 @@
 
         </div>
 
-    </div>
-
-
-
-    <!-- ========================= -->
-    <!-- VERSO DO CARD -->
-    <!-- ========================= -->
-
-    <div class="card-face card-back">
-
-
-        <div class="back-header">
-
-            <span>
-                PERSONAGEM
-            </span>
-
-            <span class="level">
-                LV. 01
-            </span>
-
-        </div>
-
 
 
         <!-- ========================= -->
-        <!-- CRIAÇÃO / EDIÇÃO -->
+        <!-- VERSO DO CARD -->
         <!-- ========================= -->
 
-        <section class="character-editor">
+        <div class="card-face card-back">
 
 
-            <h3 class="stats-title">
-                IDENTIDADE
-            </h3>
+            <div class="back-header">
 
+                <span>
+                    PERSONAGEM
+                </span>
 
-
-            <div class="editor-field">
-
-
-                <label for="name-input">
-                    NOME
-                </label>
-
-
-                <input
-                    type="text"
-                    id="name-input"
-                    placeholder="Digite o nome"
-                    maxlength="30"
-                    autocomplete="off"
-                >
-
-
-            </div>
-
-
-
-            <div class="editor-field">
-
-
-                <label for="race-select">
-                    RAÇA
-                </label>
-
-
-                <select id="race-select">
-
-
-                    <option value="Humano">
-                        Humano
-                    </option>
-
-
-                    <option value="Meio-elfo">
-                        Meio-elfo
-                    </option>
-
-
-                    <option value="Elfo">
-                        Elfo
-                    </option>
-
-
-                    <option value="Semi-besta">
-                        Semi-besta
-                    </option>
-
-
-                    <option value="Besta">
-                        Besta
-                    </option>
-
-
-                </select>
-
-
-            </div>
-
-
-
-            <div class="editor-field">
-
-
-                <label for="class-select">
-                    CLASSE
-                </label>
-
-
-                <select id="class-select">
-
-
-                    <option value="Saber">
-                        Saber
-                    </option>
-
-
-                    <option value="Archer">
-                        Archer
-                    </option>
-
-
-                    <option value="Rider">
-                        Rider
-                    </option>
-
-
-                    <option value="Caster">
-                        Caster
-                    </option>
-
-
-                    <option value="Assassin">
-                        Assassin
-                    </option>
-
-
-                    <option value="Lancer">
-                        Lancer
-                    </option>
-
-
-                    <option value="Berserker">
-                        Berserker
-                    </option>
-
-
-                    <option value="Tank">
-                        Tank
-                    </option>
-
-
-                </select>
-
-
-            </div>
-
-
-
-            <div class="editor-field">
-
-
-                <label for="affinity-select">
-                    AFINIDADE PRINCIPAL
-                </label>
-
-
-                <select id="affinity-select">
-
-
-                    <option value="agua">
-                        💧 Água
-                    </option>
-
-
-                    <option value="luz">
-                        💡 Luz
-                    </option>
-
-
-                    <option value="terra">
-                        🌍 Terra
-                    </option>
-
-
-                    <option value="trevas">
-                        🌑 Trevas
-                    </option>
-
-
-                    <option value="vento">
-                        🌪️ Vento
-                    </option>
-
-
-                    <option value="fogo">
-                        🔥 Fogo
-                    </option>
-
-
-                </select>
-
+                <span class="level">
+                    LV. 01
+                </span>
 
             </div>
 
 
 
             <!-- ========================= -->
-            <!-- IMAGEM -->
+            <!-- CRIAÇÃO / EDIÇÃO -->
             <!-- ========================= -->
 
-            <div class="editor-field image-editor">
+            <section class="character-editor">
 
+                <h3 class="stats-title">
+                    IDENTIDADE
+                </h3>
 
-                <label for="character-image-input">
-                    IMAGEM DO PERSONAGEM
-                </label>
 
+                <div class="editor-field">
 
-                <input
-                    type="file"
-                    id="character-image-input"
-                    accept="image/*"
-                >
+                    <label for="name-input">
+                        NOME
+                    </label>
 
-
-                <small>
-                    Escolha uma imagem da galeria ou dos arquivos.
-                </small>
-
-
-                <button
-                    type="button"
-                    id="remove-character-image"
-                    class="image-remove-button"
-                >
-                    🗑️ Remover imagem
-                </button>
-
-
-            </div>
-
-
-        </section>
-
-
-
-        <!-- ========================= -->
-        <!-- RECURSOS -->
-        <!-- ========================= -->
-
-        <section class="stats">
-
-
-            <h3 class="stats-title">
-                RECURSOS
-            </h3>
-
-
-            <div class="stats-grid">
-
-
-                <div class="stat">
-
-                    <span>❤️</span>
-
-                    <strong id="stat-hp">
-                        25 / 25
-                    </strong>
-
-                    <small>
-                        HP
-                    </small>
-
-                </div>
-
-
-
-                <div class="stat">
-
-                    <span>🔷</span>
-
-                    <strong id="stat-mp">
-                        15 / 15
-                    </strong>
-
-                    <small>
-                        MP
-                    </small>
-
-                </div>
-
-
-
-                <div class="stat">
-
-                    <span>🟢</span>
-
-                    <strong id="stat-est">
-                        30 / 30
-                    </strong>
-
-                    <small>
-                        EST
-                    </small>
-
-                </div>
-
-
-
-                <div class="stat">
-
-                    <span>🧠</span>
-
-                    <strong id="stat-sanidade">
-                        100 / 100
-                    </strong>
-
-                    <small>
-                        SANIDADE
-                    </small>
-
-                </div>
-
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ========================= -->
-        <!-- PONTOS DE RECURSO -->
-        <!-- ========================= -->
-
-        <section
-            class="attribute-points resource-points"
-            id="resource-points-box"
-        >
-
-            <h3>
-                ✦ PONTOS DE RECURSO
-            </h3>
-
-
-            <strong id="resource-points">
-                0
-            </strong>
-
-
-            <span>
-                disponíveis
-            </span>
-
-
-            <div class="resource-distribution">
-
-
-                <div class="resource-option">
-
-                    <span>
-                        ❤️ HP
-                    </span>
-
-                    <button
-                        type="button"
-                        class="resource-plus"
-                        onclick="aumentarRecurso('hp')"
+                    <input
+                        type="text"
+                        id="name-input"
+                        placeholder="Digite o nome"
+                        maxlength="30"
+                        autocomplete="off"
                     >
-                        +
-                    </button>
 
                 </div>
 
 
-                <div class="resource-option">
 
-                    <span>
-                        🔷 MP
-                    </span>
+                <div class="editor-field">
 
-                    <button
-                        type="button"
-                        class="resource-plus"
-                        onclick="aumentarRecurso('mp')"
+                    <label for="race-select">
+                        RAÇA
+                    </label>
+
+                    <select id="race-select">
+
+                        <option value="Humano">
+                            Humano
+                        </option>
+
+                        <option value="Meio-elfo">
+                            Meio-elfo
+                        </option>
+
+                        <option value="Elfo">
+                            Elfo
+                        </option>
+
+                        <option value="Semi-besta">
+                            Semi-besta
+                        </option>
+
+                        <option value="Besta">
+                            Besta
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <div class="editor-field">
+
+                    <label for="class-select">
+                        CLASSE
+                    </label>
+
+                    <select id="class-select">
+
+                        <option value="Saber">
+                            Saber
+                        </option>
+
+                        <option value="Archer">
+                            Archer
+                        </option>
+
+                        <option value="Rider">
+                            Rider
+                        </option>
+
+                        <option value="Caster">
+                            Caster
+                        </option>
+
+                        <option value="Assassin">
+                            Assassin
+                        </option>
+
+                        <option value="Lancer">
+                            Lancer
+                        </option>
+
+                        <option value="Berserker">
+                            Berserker
+                        </option>
+
+                        <option value="Tank">
+                            Tank
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <div class="editor-field">
+
+                    <label for="affinity-select">
+                        AFINIDADE PRINCIPAL
+                    </label>
+
+                    <select id="affinity-select">
+
+                        <option value="agua">
+                            💧 Água
+                        </option>
+
+                        <option value="luz">
+                            💡 Luz
+                        </option>
+
+                        <option value="terra">
+                            🌍 Terra
+                        </option>
+
+                        <option value="trevas">
+                            🌑 Trevas
+                        </option>
+
+                        <option value="vento">
+                            🌪️ Vento
+                        </option>
+
+                        <option value="fogo">
+                            🔥 Fogo
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- ========================= -->
+                <!-- IMAGEM -->
+                <!-- ========================= -->
+
+                <div class="editor-field image-editor">
+
+                    <label for="character-image-input">
+                        IMAGEM DO PERSONAGEM
+                    </label>
+
+                    <input
+                        type="file"
+                        id="character-image-input"
+                        accept="image/*"
                     >
-                        +
-                    </button>
-
-                </div>
-
-
-                <div class="resource-option">
-
-                    <span>
-                        🟢 EST
-                    </span>
-
-                    <button
-                        type="button"
-                        class="resource-plus"
-                        onclick="aumentarRecurso('est')"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ========================= -->
-        <!-- COMBATE -->
-        <!-- ========================= -->
-
-        <section class="stats">
-
-
-            <h3 class="stats-title">
-                COMBATE
-            </h3>
-
-
-            <div class="stats-grid">
-
-
-                <div class="stat attribute-stat">
-
-                    <span>⚔️</span>
-
-                    <strong id="stat-atk">
-                        4
-                    </strong>
 
                     <small>
-                        ATK
+                        Escolha uma imagem da galeria ou dos arquivos.
                     </small>
 
                     <button
                         type="button"
-                        class="attribute-plus"
-                        onclick="aumentarAtributo('atk')"
+                        id="remove-character-image"
+                        class="image-remove-button"
                     >
-                        +
+                        🗑️ Remover imagem
                     </button>
 
                 </div>
 
-
-
-                <div class="stat attribute-stat">
-
-                    <span>🔮</span>
-
-                    <strong id="stat-atkMgc">
-                        4
-                    </strong>
-
-                    <small>
-                        ATK MGC
-                    </small>
-
-                    <button
-                        type="button"
-                        class="attribute-plus"
-                        onclick="aumentarAtributo('atkMgc')"
-                    >
-                        +
-                    </button>
-
-                </div>
+            </section>
 
 
 
-                <div class="stat attribute-stat">
+            <!-- ========================= -->
+            <!-- RECURSOS -->
+            <!-- ========================= -->
 
-                    <span>🛡️</span>
+            <section class="stats">
 
-                    <strong id="stat-def">
-                        8
-                    </strong>
-
-                    <small>
-                        DEF
-                    </small>
-
-                    <button
-                        type="button"
-                        class="attribute-plus"
-                        onclick="aumentarAtributo('def')"
-                    >
-                        +
-                    </button>
-
-                </div>
+                <h3 class="stats-title">
+                    RECURSOS
+                </h3>
 
 
+                <div class="stats-grid">
 
-                <div class="stat attribute-stat">
+                    <div class="stat">
 
-                    <span>✨</span>
+                        <span>❤️</span>
 
-                    <strong id="stat-res">
-                        8
-                    </strong>
+                        <strong id="stat-hp">
+                            25 / 25
+                        </strong>
 
-                    <small>
-                        RES
-                    </small>
+                        <small>
+                            HP
+                        </small>
 
-                    <button
-                        type="button"
-                        class="attribute-plus"
-                        onclick="aumentarAtributo('res')"
-                    >
-                        +
-                    </button>
-
-                </div>
+                    </div>
 
 
-            </div>
+                    <div class="stat">
 
-        </section>
+                        <span>🔷</span>
 
+                        <strong id="stat-mp">
+                            15 / 15
+                        </strong>
 
+                        <small>
+                            MP
+                        </small>
 
-        <!-- ========================= -->
-        <!-- CARACTERÍSTICAS -->
-        <!-- ========================= -->
-
-        <section class="stats">
-
-
-            <h3 class="stats-title">
-                CARACTERÍSTICAS
-            </h3>
+                    </div>
 
 
-            <div class="stats-grid">
+                    <div class="stat">
+
+                        <span>🟢</span>
+
+                        <strong id="stat-est">
+                            30 / 30
+                        </strong>
+
+                        <small>
+                            EST
+                        </small>
+
+                    </div>
 
 
-                <div class="stat attribute-stat">
+                    <div class="stat">
 
-                    <span>💨</span>
+                        <span>🧠</span>
 
-                    <strong id="stat-agi">
-                        8
-                    </strong>
+                        <strong id="stat-sanidade">
+                            100 / 100
+                        </strong>
 
-                    <small>
-                        AGI
-                    </small>
+                        <small>
+                            SANIDADE
+                        </small>
 
-                    <button
-                        type="button"
-                        class="attribute-plus"
-                        onclick="aumentarAtributo('agi')"
-                    >
-                        +
-                    </button>
+                    </div>
 
                 </div>
 
-
-
-                <div class="stat attribute-stat">
-
-                    <span>🧠</span>
-
-                    <strong id="stat-int">
-                        15
-                    </strong>
-
-                    <small>
-                        INT
-                    </small>
-
-                    <button
-                        type="button"
-                        class="attribute-plus"
-                        onclick="aumentarAtributo('int')"
-                    >
-                        +
-                    </button>
-
-                </div>
-
-
-            </div>
-
-        </section>
+            </section>
 
 
 
-        <!-- ========================= -->
-        <!-- PONTOS DE ATRIBUTO -->
-        <!-- ========================= -->
+            <!-- ========================= -->
+            <!-- PONTOS DE RECURSO -->
+            <!-- ========================= -->
 
-        <section
-            class="attribute-points"
-            id="attribute-points-box"
-        >
+            <section
+                class="attribute-points resource-points"
+                id="resource-points-box"
+            >
 
-            <h3>
-                ✦ PONTOS DE ATRIBUTO
-            </h3>
+                <h3>
+                    ✦ PONTOS DE RECURSO
+                </h3>
 
-            <strong id="attribute-points">
-                0
-            </strong>
-
-            <span>
-                disponíveis
-            </span>
-
-        </section>
-
-
-
-        <!-- ========================= -->
-        <!-- XP DO BRASÃO -->
-        <!-- ========================= -->
-
-        <section
-            class="badge-xp-section"
-            id="badge-xp-section"
-        >
-
-            <h3 class="stats-title">
-                🏅 XP DO BRASÃO
-            </h3>
-
-
-            <div class="badge-xp-header">
-
-                <strong id="badge-stage-name">
-                    INICIAL
-                </strong>
-
-                <span id="badge-xp-text">
-                    0 / 3.000 XP
-                </span>
-
-            </div>
-
-
-            <div class="badge-xp-bar">
-
-                <div
-                    class="badge-xp-progress"
-                    id="badge-xp-progress"
-                ></div>
-
-            </div>
-
-
-            <div class="badge-xp-info">
-
-                <span>
-                    Próximo:
-                </span>
-
-                <strong id="badge-next-stage">
-                    LEVE
+                <strong id="resource-points">
+                    0
                 </strong>
 
                 <span>
-                    •
+                    disponíveis
                 </span>
 
-                <span id="badge-xp-remaining">
-                    3.000 XP restantes
+
+                <div class="resource-distribution">
+
+                    <div class="resource-option">
+
+                        <span>
+                            ❤️ HP
+                        </span>
+
+                        <button
+                            type="button"
+                            class="resource-plus"
+                            onclick="aumentarRecurso('hp')"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+
+                    <div class="resource-option">
+
+                        <span>
+                            🔷 MP
+                        </span>
+
+                        <button
+                            type="button"
+                            class="resource-plus"
+                            onclick="aumentarRecurso('mp')"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+
+                    <div class="resource-option">
+
+                        <span>
+                            🟢 EST
+                        </span>
+
+                        <button
+                            type="button"
+                            class="resource-plus"
+                            onclick="aumentarRecurso('est')"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ========================= -->
+            <!-- COMBATE -->
+            <!-- ========================= -->
+
+            <section class="stats">
+
+                <h3 class="stats-title">
+                    COMBATE
+                </h3>
+
+
+                <div class="stats-grid">
+
+                    <div class="stat attribute-stat">
+
+                        <span>⚔️</span>
+
+                        <strong id="stat-atk">
+                            4
+                        </strong>
+
+                        <small>
+                            ATK
+                        </small>
+
+                        <button
+                            type="button"
+                            class="attribute-plus"
+                            onclick="aumentarAtributo('atk')"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+
+                    <div class="stat attribute-stat">
+
+                        <span>🔮</span>
+
+                        <strong id="stat-atkMgc">
+                            4
+                        </strong>
+
+                        <small>
+                            ATK MGC
+                        </small>
+
+                        <button
+                            type="button"
+                            class="attribute-plus"
+                            onclick="aumentarAtributo('atkMgc')"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+
+                    <div class="stat attribute-stat">
+
+                        <span>🛡️</span>
+
+                        <strong id="stat-def">
+                            8
+                        </strong>
+
+                        <small>
+                            DEF
+                        </small>
+
+                        <button
+                            type="button"
+                            class="attribute-plus"
+                            onclick="aumentarAtributo('def')"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+
+                    <div class="stat attribute-stat">
+
+                        <span>✨</span>
+
+                        <strong id="stat-res">
+                            8
+                        </strong>
+
+                        <small>
+                            RES
+                        </small>
+
+                        <button
+                            type="button"
+                            class="attribute-plus"
+                            onclick="aumentarAtributo('res')"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ========================= -->
+            <!-- CARACTERÍSTICAS -->
+            <!-- ========================= -->
+
+            <section class="stats">
+
+                <h3 class="stats-title">
+                    CARACTERÍSTICAS
+                </h3>
+
+
+                <div class="stats-grid">
+
+                    <div class="stat attribute-stat">
+
+                        <span>💨</span>
+
+                        <strong id="stat-agi">
+                            8
+                        </strong>
+
+                        <small>
+                            AGI
+                        </small>
+
+                        <button
+                            type="button"
+                            class="attribute-plus"
+                            onclick="aumentarAtributo('agi')"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+
+                    <div class="stat attribute-stat">
+
+                        <span>🧠</span>
+
+                        <strong id="stat-int">
+                            15
+                        </strong>
+
+                        <small>
+                            INT
+                        </small>
+
+                        <button
+                            type="button"
+                            class="attribute-plus"
+                            onclick="aumentarAtributo('int')"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ========================= -->
+            <!-- PONTOS DE ATRIBUTO -->
+            <!-- ========================= -->
+
+            <section
+                class="attribute-points"
+                id="attribute-points-box"
+            >
+
+                <h3>
+                    ✦ PONTOS DE ATRIBUTO
+                </h3>
+
+                <strong id="attribute-points">
+                    0
+                </strong>
+
+                <span>
+                    disponíveis
                 </span>
 
-            </div>
+            </section>
 
-        </section>
 
 
-
-        <!-- ========================= -->
-        <!-- AFINIDADES -->
-        <!-- ========================= -->
-
-        <section class="elements">
-
-
-            <h3 class="stats-title">
-                AFINIDADES ELEMENTAIS
-            </h3>
-
-
-            <div class="element-grid">
-
-
-                <div class="element">
-                    <span>💧</span>
-                    <small>ÁGUA</small>
-                </div>
-
-
-                <div class="element">
-                    <span>💡</span>
-                    <small>LUZ</small>
-                </div>
-
-
-                <div class="element">
-                    <span>🌍</span>
-                    <small>TERRA</small>
-                </div>
-
-
-                <div class="element">
-                    <span>🌑</span>
-                    <small>TREVAS</small>
-                </div>
-
-
-                <div class="element">
-                    <span>🌪️</span>
-                    <small>VENTO</small>
-                </div>
-
-
-                <div class="element">
-                    <span>🔥</span>
-                    <small>FOGO</small>
-                </div>
-
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ========================= -->
-        <!-- BRASÕES -->
-        <!-- ========================= -->
-
-        <section class="badges">
-
-
-            <h3>
-                BRASÕES
-            </h3>
-
-
-            <div class="badge-list">
-
-
-                <div class="badge">
-                    ◈
-                </div>
-
-
-                <div class="badge locked">
-                    ?
-                </div>
-
-
-                <div class="badge locked">
-                    ?
-                </div>
-
-
-                <div class="badge locked">
-                    ?
-                </div>
-
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ========================= -->
-        <!-- MODO MESTRE -->
-        <!-- ========================= -->
-
-        <button
-            type="button"
-            class="master-toggle"
-            onclick="alternarModoMestre()"
-        >
-            👑 Modo Mestre
-        </button>
-
-
-
-        <div class="master-controls">
-
-
-            <h3>
-                👑 MESTRE
-            </h3>
-
-
-
-            <!-- HP -->
-
-            <div class="control">
-
-                <label>
-                    HP
-                </label>
-
-                <button onclick="alterarHP(-1)">
-                    −
-                </button>
-
-                <button onclick="alterarHP(1)">
-                    +
-                </button>
-
-            </div>
-
-
-
-            <!-- MP -->
-
-            <div class="control">
-
-                <label>
-                    MP
-                </label>
-
-                <button onclick="alterarMP(-1)">
-                    −
-                </button>
-
-                <button onclick="alterarMP(1)">
-                    +
-                </button>
-
-            </div>
-
-
-
-            <!-- EST -->
-
-            <div class="control">
-
-                <label>
-                    EST
-                </label>
-
-                <button onclick="alterarEST(-1)">
-                    −
-                </button>
-
-                <button onclick="alterarEST(1)">
-                    +
-                </button>
-
-            </div>
-
-
-
-            <!-- SANIDADE -->
-
-            <div class="control">
-
-                <label>
-                    Sanidade
-                </label>
-
-                <button onclick="alterarSanidade(-1)">
-                    −
-                </button>
-
-                <button onclick="alterarSanidade(1)">
-                    +
-                </button>
-
-            </div>
-
-
-
-            <!-- XP DO PERSONAGEM -->
-
-            <div class="control xp-control">
-
-                <label for="xp-amount">
-                    XP
-                </label>
-
-                <input
-                    type="number"
-                    id="xp-amount"
-                    placeholder="Quantidade"
-                    min="0"
-                    step="1"
-                    inputmode="numeric"
-                >
-
-
-                <button onclick="adicionarXP()">
-                    + XP
-                </button>
-
-
-                <button onclick="removerXP()">
-                    − XP
-                </button>
-
-            </div>
-
-
-
+            <!-- ========================= -->
             <!-- XP DO BRASÃO -->
+            <!-- ========================= -->
 
-            <div class="control xp-control">
+            <section
+                class="badge-xp-section"
+                id="badge-xp-section"
+            >
 
-                <label for="xp-brasao-amount">
-                    🏅 XP BRASÃO
-                </label>
-
-                <input
-                    type="number"
-                    id="xp-brasao-amount"
-                    placeholder="Mérito / conquista"
-                    min="0"
-                    step="1"
-                    inputmode="numeric"
-                >
+                <h3 class="stats-title">
+                    🏅 XP DO BRASÃO
+                </h3>
 
 
-                <button onclick="adicionarXPDoBrasao()">
-                    + XP
-                </button>
+                <div class="badge-xp-header">
+
+                    <strong id="badge-stage-name">
+                        INICIAL
+                    </strong>
+
+                    <span id="badge-xp-text">
+                        0 / 3.000 XP
+                    </span>
+
+                </div>
 
 
-                <button onclick="removerXPDoBrasao()">
-                    − XP
-                </button>
+                <div class="badge-xp-bar">
+
+                    <div
+                        class="badge-xp-progress"
+                        id="badge-xp-progress"
+                    ></div>
+
+                </div>
+
+
+                <div class="badge-xp-info">
+
+                    <span>
+                        Próximo:
+                    </span>
+
+                    <strong id="badge-next-stage">
+                        LEVE
+                    </strong>
+
+                    <span>
+                        •
+                    </span>
+
+                    <span id="badge-xp-remaining">
+                        3.000 XP restantes
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ========================= -->
+            <!-- AFINIDADES -->
+            <!-- ========================= -->
+
+            <section class="elements">
+
+                <h3 class="stats-title">
+                    AFINIDADES ELEMENTAIS
+                </h3>
+
+
+                <div class="element-grid">
+
+                    <div class="element">
+                        <span>💧</span>
+                        <small>ÁGUA</small>
+                    </div>
+
+                    <div class="element">
+                        <span>💡</span>
+                        <small>LUZ</small>
+                    </div>
+
+                    <div class="element">
+                        <span>🌍</span>
+                        <small>TERRA</small>
+                    </div>
+
+                    <div class="element">
+                        <span>🌑</span>
+                        <small>TREVAS</small>
+                    </div>
+
+                    <div class="element">
+                        <span>🌪️</span>
+                        <small>VENTO</small>
+                    </div>
+
+                    <div class="element">
+                        <span>🔥</span>
+                        <small>FOGO</small>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ========================= -->
+            <!-- BRASÕES -->
+            <!-- ========================= -->
+
+            <section class="badges">
+
+                <h3>
+                    BRASÕES
+                </h3>
+
+
+                <div class="badge-list">
+
+                    <div class="badge">
+                        ◈
+                    </div>
+
+                    <div class="badge locked">
+                        ?
+                    </div>
+
+                    <div class="badge locked">
+                        ?
+                    </div>
+
+                    <div class="badge locked">
+                        ?
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ========================= -->
+            <!-- MODO MESTRE -->
+            <!-- ========================= -->
+
+            <button
+                type="button"
+                class="master-toggle"
+                onclick="alternarModoMestre()"
+            >
+                👑 Modo Mestre
+            </button>
+
+
+            <div class="master-controls">
+
+                <h3>
+                    👑 MESTRE
+                </h3>
+
+
+                <div class="control">
+
+                    <label>
+                        HP
+                    </label>
+
+                    <button onclick="alterarHP(-1)">
+                        −
+                    </button>
+
+                    <button onclick="alterarHP(1)">
+                        +
+                    </button>
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>
+                        MP
+                    </label>
+
+                    <button onclick="alterarMP(-1)">
+                        −
+                    </button>
+
+                    <button onclick="alterarMP(1)">
+                        +
+                    </button>
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>
+                        EST
+                    </label>
+
+                    <button onclick="alterarEST(-1)">
+                        −
+                    </button>
+
+                    <button onclick="alterarEST(1)">
+                        +
+                    </button>
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>
+                        Sanidade
+                    </label>
+
+                    <button onclick="alterarSanidade(-1)">
+                        −
+                    </button>
+
+                    <button onclick="alterarSanidade(1)">
+                        +
+                    </button>
+
+                </div>
+
+
+                <div class="control xp-control">
+
+                    <label for="xp-amount">
+                        XP
+                    </label>
+
+                    <input
+                        type="number"
+                        id="xp-amount"
+                        placeholder="Quantidade"
+                        min="0"
+                        step="1"
+                        inputmode="numeric"
+                    >
+
+                    <button onclick="adicionarXP()">
+                        + XP
+                    </button>
+
+                    <button onclick="removerXP()">
+                        − XP
+                    </button>
+
+                </div>
+
+
+                <div class="control xp-control">
+
+                    <label for="xp-brasao-amount">
+                        🏅 XP BRASÃO
+                    </label>
+
+                    <input
+                        type="number"
+                        id="xp-brasao-amount"
+                        placeholder="Mérito / conquista"
+                        min="0"
+                        step="1"
+                        inputmode="numeric"
+                    >
+
+                    <button onclick="adicionarXPDoBrasao()">
+                        + XP
+                    </button>
+
+                    <button onclick="removerXPDoBrasao()">
+                        − XP
+                    </button>
+
+                </div>
 
             </div>
 
 
         </div>
 
+    </section>
 
-    </div>
 
-</section>
+</main>
 
-</main><!-- ========================= --><!-- JAVASCRIPT --><!-- ========================= --><script src="script.js"></script></body></html>
+
+
+<!-- ========================= -->
+<!-- JAVASCRIPT -->
+<!-- ========================= -->
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
