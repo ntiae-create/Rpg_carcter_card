@@ -1,1594 +1,1600 @@
+/* =========================================================
+   VEYDRA — RPG CHARACTER CARDS
+   STYLE.CSS — LAYOUT DA CARTA
+   ========================================================= */
+
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 :root {
-    --race-main: #7c3aed;
-    --race-light: #c084fc;
-    --race-dark: #241044;
+  --race-main: #7c3aed;
+  --race-light: #c084fc;
+  --race-dark: #241044;
 
-    --element-main: #22d3ee;
-    --element-light: #a5f3fc;
+  --element-main: #22d3ee;
+  --element-light: #a5f3fc;
 
-    --card-border: var(--race-main);
-    --card-glow: rgba(124, 58, 237, .25);
+  --card-border: var(--race-main);
+  --card-glow: rgba(124, 58, 237, 0.25);
+}
+
+/* =========================================================
+   BASE
+   ========================================================= */
+
+html {
+  min-height: 100%;
 }
 
 body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
-    background:
-        radial-gradient(circle at top, #241044 0%, #0a0712 45%, #050409 100%);
-    color: #f5f0ff;
+  margin: 0;
+  min-height: 100vh;
+
+  font-family: Arial, sans-serif;
+
+  color: #f5f0ff;
+
+  background:
+    radial-gradient(
+      circle at top,
+      #241044 0%,
+      #0a0712 45%,
+      #050409 100%
+    );
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
 }
 
 .app {
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 25px 15px 40px;
+  width: 100%;
+  max-width: 500px;
+
+  margin: 0 auto;
+  padding: 25px 15px 40px;
 }
 
+/* =========================================================
+   CABEÇALHO DO APP
+   ========================================================= */
+
 .app-header {
-    text-align: center;
-    margin-bottom: 25px;
+  text-align: center;
+  margin-bottom: 25px;
 }
 
 .app-header h1 {
-    margin: 0;
-    font-size: 28px;
-    letter-spacing: 2px;
+  margin: 0;
+
+  font-size: 28px;
+  letter-spacing: 2px;
 }
 
 .app-header p {
-    margin-top: 8px;
-    color: #aaa0bd;
+  margin-top: 8px;
+
+  color: #aaa0bd;
 }
 
-
-/* ==========================================
+/* =========================================================
    CARTA
-========================================== */
+   ========================================================= */
 
 .character-card {
-    position: relative;
-    width: 100%;
-    height: 720px;
-    perspective: 1200px;
+  position: relative;
+
+  width: 100%;
+  height: 720px;
+
+  perspective: 1200px;
 }
 
 .card-face {
-    position: absolute;
-    width: 100%;
-    height: 720px;
+  position: absolute;
 
-    border-radius: 22px;
+  width: 100%;
+  height: 720px;
 
-    background:
-        linear-gradient(160deg, #171020, #0b0910);
+  border-radius: 22px;
 
-    border: 1px solid var(--card-border);
+  background:
+    linear-gradient(
+      160deg,
+      #171020,
+      #0b0910
+    );
 
-    box-shadow:
-        0 0 30px var(--card-glow),
-        inset 0 0 30px rgba(255,255,255,.02);
+  border: 1px solid var(--card-border);
 
-    backface-visibility: hidden;
-    overflow: hidden;
+  box-shadow:
+    0 0 30px var(--card-glow),
+    inset 0 0 30px rgba(255, 255, 255, 0.02);
 
-    transform-style: preserve-3d;
+  backface-visibility: hidden;
 
-    transition:
-        transform .8s ease,
-        box-shadow .5s ease,
-        border-color .5s ease;
+  overflow: hidden;
+
+  transform-style: preserve-3d;
+
+  transition:
+    transform 0.8s ease,
+    box-shadow 0.5s ease,
+    border-color 0.5s ease;
 }
 
 .card-face::before {
-    content: "";
-    position: absolute;
-    inset: 0;
+  content: "";
 
-    border-radius: 22px;
+  position: absolute;
+  inset: 0;
 
-    pointer-events: none;
+  border-radius: 22px;
 
-    box-shadow:
-        inset 0 0 25px var(--card-glow);
+  pointer-events: none;
 
-    opacity: .7;
+  box-shadow:
+    inset 0 0 25px var(--card-glow);
+
+  opacity: 0.7;
+
+  z-index: 0;
 }
 
+/* =========================================================
+   FRENTE DA CARTA
+   ========================================================= */
+
 .card-front {
-    transform: rotateY(0deg);
+  display: flex;
+  flex-direction: column;
+
+  transform: rotateY(0deg);
+}
+
+.card-front > * {
+  position: relative;
+  z-index: 1;
 }
 
 .card-back {
-    transform: rotateY(180deg);
-    padding: 20px;
-    overflow-y: auto;
+  transform: rotateY(180deg);
+
+  padding: 20px;
+
+  overflow-y: auto;
 }
 
 .character-card.flipped .card-front {
-    transform: rotateY(-180deg);
+  transform: rotateY(-180deg);
 }
 
 .character-card.flipped .card-back {
-    transform: rotateY(0deg);
+  transform: rotateY(0deg);
 }
 
+/* =========================================================
+   TOPO DA FRENTE
+   RARIDADE — BRASÃO — NÍVEL
+   ========================================================= */
 
-/* ==========================================
-   CABEÇALHO
-========================================== */
+.card-front .card-header {
+  display: grid;
 
-.card-header,
-.back-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  grid-template-columns: 1fr 76px 1fr;
+  align-items: center;
 
-    padding: 15px 18px;
+  min-height: 72px;
 
-    background: rgba(0,0,0,.25);
+  padding: 7px 16px;
+
+  background: rgba(0, 0, 0, 0.25);
+
+  flex-shrink: 0;
 }
 
 .rarity {
-    color: var(--race-light);
-    font-weight: bold;
-    letter-spacing: 1px;
+  justify-self: start;
+
+  color: var(--race-light);
+
+  font-weight: bold;
+  font-size: 12px;
+
+  letter-spacing: 1px;
+
+  white-space: nowrap;
 }
 
 .level {
-    font-weight: bold;
-    color: var(--element-light);
+  justify-self: end;
+
+  font-weight: bold;
+  font-size: 13px;
+
+  color: var(--element-light);
+
+  white-space: nowrap;
 }
 
+/* =========================================================
+   BRASÃO NO TOPO
+   ========================================================= */
 
-/* ==========================================
-   IMAGEM
-========================================== */
+.front-top-crest {
+  position: relative;
 
-.character-image {
-    height: 350px;
+  width: 76px;
+  height: 66px;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    background:
-        radial-gradient(
-            circle,
-            var(--race-dark) 0%,
-            #171020 55%,
-            #08060b 100%
-        );
+  flex-shrink: 0;
+}
 
-    color: #81758f;
+.front-top-crest .affinity-emblem {
+  position: relative;
 
-    font-size: 14px;
-    letter-spacing: 1px;
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  border: 1px solid var(--element-main);
+
+  background:
+    radial-gradient(
+      circle,
+      var(--race-dark),
+      #100b18
+    );
+
+  color: var(--element-light);
+
+  font-size: 21px;
+
+  box-shadow:
+    0 0 10px var(--card-glow),
+    0 0 17px var(--element-main);
+
+  transition:
+    box-shadow 0.4s ease,
+    transform 0.4s ease,
+    border-color 0.4s ease;
+}
+
+.front-top-crest .affinity-emblem::before {
+  content: "";
+
+  position: absolute;
+  inset: 4px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  pointer-events: none;
+}
+
+.front-top-crest .affinity-emblem::after {
+  content: "";
+
+  position: absolute;
+
+  inset: -5px;
+
+  border-radius: 50%;
+
+  border: 1px solid transparent;
+
+  opacity: 0.8;
+
+  pointer-events: none;
+
+  transition:
+    border-color 0.5s ease,
+    box-shadow 0.5s ease,
+    transform 0.5s ease;
+}
+
+/* =========================================================
+   TEXTO DO ESTÁGIO DO BRASÃO
+   ========================================================= */
+
+.front-top-crest .badge-stage {
+  position: absolute;
+
+  left: 50%;
+  bottom: -1px;
+
+  transform: translateX(-50%);
+
+  width: max-content;
+  max-width: 90px;
+
+  text-align: center;
+
+  font-size: 6px;
+
+  line-height: 1;
+
+  letter-spacing: 0.6px;
+
+  color: #a99db7;
+
+  white-space: nowrap;
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   SÍMBOLOS DA EVOLUÇÃO DO BRASÃO
+   ========================================================= */
+
+.crest-symbols {
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+}
+
+.crest-symbol {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  font-size: 8px;
+
+  color: var(--element-light);
+
+  text-shadow:
+    0 0 5px var(--element-main),
+    0 0 9px var(--race-main);
+
+  pointer-events: none;
+}
+
+/* Caso o script use outras classes para os símbolos */
+.crest-symbols span {
+  pointer-events: none;
+}
+
+/* =========================================================
+   ESTÁGIOS DO BRASÃO
+   ========================================================= */
+
+/* Inicial */
+.affinity-emblem.crest-stage-0::after,
+.affinity-emblem[data-stage="0"]::after,
+.front-top-crest[data-stage="0"] .affinity-emblem::after {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Leve */
+.affinity-emblem.crest-stage-1::after,
+.affinity-emblem[data-stage="1"]::after,
+.front-top-crest[data-stage="1"] .affinity-emblem::after {
+  inset: -6px;
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Pequeno */
+.affinity-emblem.crest-stage-2::after,
+.affinity-emblem[data-stage="2"]::after,
+.front-top-crest[data-stage="2"] .affinity-emblem::after {
+  inset: -7px;
+
+  border-color: var(--element-main);
+
+  box-shadow:
+    0 0 7px var(--element-main);
+}
+
+/* Médio */
+.affinity-emblem.crest-stage-3::after,
+.affinity-emblem[data-stage="3"]::after,
+.front-top-crest[data-stage="3"] .affinity-emblem::after {
+  inset: -8px;
+
+  border-color: var(--race-light);
+
+  box-shadow:
+    0 0 8px var(--race-main),
+    0 0 13px var(--element-main);
+}
+
+/* Grande */
+.affinity-emblem.crest-stage-4::after,
+.affinity-emblem[data-stage="4"]::after,
+.front-top-crest[data-stage="4"] .affinity-emblem::after {
+  inset: -8px;
+
+  border-color: var(--race-light);
+
+  box-shadow:
+    0 0 10px var(--race-main),
+    0 0 15px var(--element-main);
+
+  transform: scale(1.04);
+}
+
+/* Pesado */
+.affinity-emblem.crest-stage-5::after,
+.affinity-emblem[data-stage="5"]::after,
+.front-top-crest[data-stage="5"] .affinity-emblem::after {
+  inset: -9px;
+
+  border-color: var(--element-light);
+
+  box-shadow:
+    0 0 10px var(--element-main),
+    0 0 18px var(--race-main);
+
+  transform: scale(1.06);
+}
+
+/* Arcano */
+.affinity-emblem.crest-stage-6::after,
+.affinity-emblem[data-stage="6"]::after,
+.front-top-crest[data-stage="6"] .affinity-emblem::after {
+  inset: -9px;
+
+  border-color: var(--race-light);
+
+  box-shadow:
+    0 0 12px var(--race-light),
+    0 0 20px var(--element-main);
+
+  transform: scale(1.08);
+}
+
+/* Extra */
+.affinity-emblem.crest-stage-7::after,
+.affinity-emblem[data-stage="7"]::after,
+.front-top-crest[data-stage="7"] .affinity-emblem::after {
+  inset: -10px;
+
+  border-color: var(--element-light);
+
+  box-shadow:
+    0 0 14px var(--element-light),
+    0 0 24px var(--race-light),
+    0 0 30px var(--element-main);
+
+  transform: scale(1.1);
+
+  animation: crestExtraPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes crestExtraPulse {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* =========================================================
+   NOME E RAÇA
+   ========================================================= */
+
+.front-name-area {
+  text-align: center;
+
+  padding: 4px 18px 7px;
+
+  flex-shrink: 0;
+}
+
+.front-name-area h2 {
+  margin: 0;
+
+  font-size: 21px;
+
+  line-height: 1.15;
+
+  color: #f5f0ff;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.front-race {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 9px;
+
+  letter-spacing: 1.5px;
+
+  text-transform: uppercase;
+
+  color: #9d91aa;
+}
+
+/* =========================================================
+   ORNAMENTOS
+   ========================================================= */
+
+.card-ornament {
+  width: calc(100% - 44px);
+
+  height: 20px;
+
+  margin: 0 22px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  flex-shrink: 0;
+
+  pointer-events: none;
+}
+
+.card-ornament span {
+  height: 1px;
+
+  flex: 1;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--race-main),
+      transparent
+    );
+
+  opacity: 0.65;
+}
+
+.card-ornament b {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+
+  color: var(--race-light);
+
+  font-size: 11px;
+
+  text-shadow:
+    0 0 8px var(--race-main);
+}
+
+.card-ornament-top {
+  margin-top: 0;
+}
+
+.card-ornament-bottom {
+  margin-top: 2px;
+}
+
+/* =========================================================
+   IMAGEM DO PERSONAGEM
+   ========================================================= */
+
+.card-front .character-image {
+  position: relative;
+
+  width: calc(100% - 36px);
+
+  height: 355px;
+
+  margin: 0 18px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 16px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      var(--race-dark) 0%,
+      #171020 52%,
+      #08060b 100%
+    );
+
+  color: #81758f;
+
+  font-size: 12px;
+
+  letter-spacing: 1px;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  box-shadow:
+    inset 0 0 25px rgba(0, 0, 0, 0.35),
+    0 0 15px rgba(0, 0, 0, 0.2);
+
+  flex-shrink: 1;
 }
 
 .image-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
 }
 
+#image-placeholder-text {
+  opacity: 0.65;
+}
+
+/* =========================================================
+   IMAGEM ENVIADA
+   ========================================================= */
+
+.character-image-preview {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: none;
+
+  border-radius: 16px;
+}
+
+/* =========================================================
+   BOTÕES DE IMAGEM
+   ========================================================= */
+
 .image-button {
-    padding: 9px 14px;
+  padding: 9px 14px;
 
-    border: 1px solid var(--element-main);
-    border-radius: 10px;
+  border: 1px solid var(--element-main);
 
-    background: #1b1424;
-    color: #d8c7e8;
+  border-radius: 10px;
 
-    cursor: pointer;
+  background: #1b1424;
 
-    transition:
-        border-color .3s ease,
-        box-shadow .3s ease;
+  color: #d8c7e8;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
 }
 
 .image-button:hover {
-    border-color: var(--element-light);
-    box-shadow: 0 0 12px var(--element-main);
+  border-color: var(--element-light);
+
+  box-shadow:
+    0 0 12px var(--element-main);
 }
 
-.character-image-preview {
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-
-    display: none;
+.image-button:active {
+  transform: scale(0.97);
 }
 
+/* =========================================================
+   XP DA FRENTE
+   ========================================================= */
 
-/* ==========================================
-   INFORMAÇÕES
-========================================== */
+.front-xp-section {
+  margin: 6px 20px 0;
 
-.character-info {
-    padding: 20px;
+  flex-shrink: 0;
 }
-
-.character-info h2 {
-    margin: 0;
-    font-size: 25px;
-}
-
-.title {
-    margin: 5px 0 20px;
-
-    color: #a99db7;
-    font-style: italic;
-}
-
-.identity {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-
-    gap: 10px;
-
-    margin-bottom: 20px;
-}
-
-.identity div {
-    padding: 10px;
-
-    border-radius: 12px;
-
-    background: rgba(255,255,255,.04);
-
-    border: 1px solid rgba(255,255,255,.07);
-
-    transition:
-        border-color .3s ease,
-        box-shadow .3s ease;
-}
-
-.identity div:hover {
-    border-color: var(--race-main);
-    box-shadow: 0 0 10px var(--card-glow);
-}
-
-.identity span {
-    display: block;
-
-    font-size: 10px;
-
-    color: #8f839d;
-
-    margin-bottom: 5px;
-}
-
-.identity strong {
-    font-size: 14px;
-}
-
-
-/* ==========================================
-   XP
-========================================== */
 
 .xp-info {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
 
-    font-size: 13px;
+  justify-content: space-between;
 
-    margin-bottom: 7px;
+  align-items: center;
 
-    color: #c9bdd5;
+  font-size: 10px;
+
+  margin-bottom: 6px;
+
+  color: #c9bdd5;
+
+  letter-spacing: 0.4px;
 }
 
 .xp-bar {
-    width: 100%;
-    height: 9px;
+  width: 100%;
 
-    background: #211a29;
+  height: 8px;
 
-    border-radius: 10px;
+  background: #211a29;
 
-    overflow: hidden;
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .xp-progress {
-    width: 0%;
-    height: 100%;
+  width: 0%;
 
-    background:
-        linear-gradient(
-            90deg,
-            var(--race-main),
-            var(--element-main),
-            var(--race-light)
-        );
+  height: 100%;
 
-    border-radius: 10px;
+  background:
+    linear-gradient(
+      90deg,
+      var(--race-main),
+      var(--element-main),
+      var(--race-light)
+    );
 
-    transition: width .4s ease;
+  border-radius: 10px;
+
+  transition: width 0.4s ease;
 }
 
+/* =========================================================
+   IDENTIDADE INFERIOR
+   AFINIDADE — CLASSE
+   ========================================================= */
 
-/* ==========================================
-   BRASÃO / AFINIDADE
-========================================== */
+.front-identity {
+  display: grid;
 
-.front-emblem {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  grid-template-columns: 1fr auto 1fr;
 
-    margin-top: 25px;
+  align-items: center;
 
-    position: relative;
+  gap: 10px;
+
+  margin: 8px 20px 0;
+
+  padding: 8px 0;
+
+  flex-shrink: 0;
 }
 
-.affinity-emblem {
-    width: 55px;
-    height: 55px;
+.front-identity-item {
+  min-width: 0;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    border: 1px solid var(--element-main);
-
-    background:
-        radial-gradient(
-            circle,
-            var(--race-dark),
-            #100b18
-        );
-
-    color: var(--element-light);
-
-    font-size: 28px;
-
-    box-shadow:
-        0 0 15px var(--card-glow),
-        0 0 25px var(--element-main);
-
-    margin-bottom: 8px;
-
-    position: relative;
-
-    transition:
-        box-shadow .4s ease,
-        transform .4s ease,
-        border-color .4s ease;
+  text-align: center;
 }
 
+.front-identity-item span {
+  display: block;
 
-/* brilho interno */
+  margin-bottom: 4px;
 
-.affinity-emblem::before {
-    content: "";
+  font-size: 8px;
 
-    position: absolute;
+  letter-spacing: 1px;
 
-    inset: 5px;
-
-    border-radius: 50%;
-
-    border: 1px solid rgba(255,255,255,.12);
-
-    pointer-events: none;
+  color: #8f839d;
 }
 
+.front-identity-item strong {
+  display: block;
 
-/* halo externo */
+  font-size: 12px;
 
-.affinity-emblem::after {
-    content: "";
+  color: #eee7f5;
 
-    position: absolute;
+  overflow: hidden;
 
-    inset: -7px;
+  text-overflow: ellipsis;
 
-    border-radius: 50%;
-
-    border: 1px solid transparent;
-
-    opacity: .7;
-
-    pointer-events: none;
-
-    transition:
-        border-color .5s ease,
-        box-shadow .5s ease,
-        transform .5s ease;
+  white-space: nowrap;
 }
 
+.front-identity-divider {
+  color: var(--race-main);
 
-/* ==========================================
-   EVOLUÇÃO DOS BRASÕES
-========================================== */
+  font-size: 16px;
 
-/*
-    O script pode aplicar:
-    .crest-stage-0 até .crest-stage-8
-    ou data-stage="..."
-*/
-
-.affinity-emblem[class*="crest-stage"],
-.affinity-emblem[data-stage] {
-    overflow: visible;
+  opacity: 0.7;
 }
 
-
-/* SEM NENHUM */
-
-.affinity-emblem.crest-stage-0::after,
-.affinity-emblem[data-stage="0"]::after {
-    border-color: rgba(255,255,255,.05);
-}
-
-
-/* INICIAL */
-
-.affinity-emblem.crest-stage-1::after,
-.affinity-emblem[data-stage="1"]::after {
-    inset: -9px;
-
-    border-color: var(--element-main);
-
-    box-shadow:
-        0 0 8px var(--element-main);
-
-    transform: rotate(45deg);
-}
-
-
-/* LEVE */
-
-.affinity-emblem.crest-stage-2::after,
-.affinity-emblem[data-stage="2"]::after {
-    inset: -11px;
-
-    border-color: var(--element-main);
-
-    box-shadow:
-        0 0 10px var(--element-main),
-        0 0 18px var(--card-glow);
-
-    transform: rotate(45deg) scale(1.03);
-}
-
-
-/* PEQUENO */
-
-.affinity-emblem.crest-stage-3::after,
-.affinity-emblem[data-stage="3"]::after {
-    inset: -13px;
-
-    border-color: var(--race-light);
-
-    box-shadow:
-        0 0 10px var(--race-light),
-        0 0 22px var(--element-main);
-
-    transform: rotate(45deg) scale(1.06);
-}
-
-
-/* MÉDIO */
-
-.affinity-emblem.crest-stage-4::after,
-.affinity-emblem[data-stage="4"]::after {
-    inset: -15px;
-
-    border-color: var(--element-light);
-
-    box-shadow:
-        0 0 12px var(--element-light),
-        0 0 25px var(--element-main);
-
-    transform: rotate(45deg) scale(1.09);
-}
-
-
-/* GRANDE */
-
-.affinity-emblem.crest-stage-5::after,
-.affinity-emblem[data-stage="5"]::after {
-    inset: -17px;
-
-    border-color: var(--race-light);
-
-    box-shadow:
-        0 0 14px var(--race-light),
-        0 0 30px var(--element-main),
-        0 0 45px var(--card-glow);
-
-    transform: rotate(45deg) scale(1.12);
-
-    animation: crestPulse 2.5s ease-in-out infinite;
-}
-
-
-/* PESADO */
-
-.affinity-emblem.crest-stage-6::after,
-.affinity-emblem[data-stage="6"]::after {
-    inset: -19px;
-
-    border-color: var(--element-light);
-
-    box-shadow:
-        0 0 15px var(--element-light),
-        0 0 32px var(--element-main),
-        0 0 55px var(--card-glow);
-
-    transform: rotate(45deg) scale(1.15);
-
-    animation:
-        crestPulse 2s ease-in-out infinite,
-        crestRotate 12s linear infinite;
-}
-
-
-/* ARCANO */
-
-.affinity-emblem.crest-stage-7::after,
-.affinity-emblem[data-stage="7"]::after {
-    inset: -22px;
-
-    border-color: var(--race-light);
-
-    box-shadow:
-        0 0 15px var(--race-light),
-        0 0 30px var(--element-main),
-        0 0 60px var(--card-glow);
-
-    transform: rotate(45deg) scale(1.18);
-
-    animation:
-        crestPulse 1.7s ease-in-out infinite,
-        crestRotate 8s linear infinite;
-}
-
-
-/* EXTRA */
-
-.affinity-emblem.crest-stage-8::after,
-.affinity-emblem[data-stage="8"]::after {
-    inset: -25px;
-
-    border-color: var(--element-light);
-
-    box-shadow:
-        0 0 18px var(--element-light),
-        0 0 38px var(--element-main),
-        0 0 70px var(--race-light),
-        0 0 100px var(--card-glow);
-
-    transform: rotate(45deg) scale(1.22);
-
-    animation:
-        crestPulseExtra 1.2s ease-in-out infinite,
-        crestRotate 5s linear infinite;
-}
-
-
-/* animações */
-
-@keyframes crestPulse {
-    0%,100% {
-        opacity: .55;
-    }
-
-    50% {
-        opacity: 1;
-    }
-}
-
-@keyframes crestPulseExtra {
-    0%,100% {
-        opacity: .5;
-        transform: rotate(45deg) scale(1.16);
-    }
-
-    50% {
-        opacity: 1;
-        transform: rotate(225deg) scale(1.28);
-    }
-}
-
-@keyframes crestRotate {
-    from {
-        transform: rotate(45deg);
-    }
-
-    to {
-        transform: rotate(405deg);
-    }
-}
-
-
-/* símbolos decorativos */
-
-.crest-symbol {
-    position: absolute;
-
-    pointer-events: none;
-
-    color: var(--element-light);
-
-    text-shadow:
-        0 0 6px var(--element-main),
-        0 0 12px var(--card-glow);
-
-    z-index: 5;
-
-    user-select: none;
-}
-
-.crest-symbol.top {
-    top: -30px;
-    left: 50%;
-
-    transform: translateX(-50%);
-}
-
-.crest-symbol.bottom {
-    bottom: -30px;
-    left: 50%;
-
-    transform: translateX(-50%);
-}
-
-.crest-symbol.left {
-    left: -30px;
-    top: 50%;
-
-    transform: translateY(-50%);
-}
-
-.crest-symbol.right {
-    right: -30px;
-    top: 50%;
-
-    transform: translateY(-50%);
-}
-
-
-/* níveis de ornamentação */
-
-.crest-stage-1 .crest-symbol,
-[data-stage="1"] .crest-symbol {
-    font-size: 10px;
-}
-
-.crest-stage-2 .crest-symbol,
-[data-stage="2"] .crest-symbol {
-    font-size: 11px;
-}
-
-.crest-stage-3 .crest-symbol,
-[data-stage="3"] .crest-symbol {
-    font-size: 13px;
-}
-
-.crest-stage-4 .crest-symbol,
-[data-stage="4"] .crest-symbol {
-    font-size: 15px;
-}
-
-.crest-stage-5 .crest-symbol,
-[data-stage="5"] .crest-symbol {
-    font-size: 17px;
-}
-
-.crest-stage-6 .crest-symbol,
-[data-stage="6"] .crest-symbol {
-    font-size: 19px;
-
-    animation: symbolFloat 2s ease-in-out infinite;
-}
-
-.crest-stage-7 .crest-symbol,
-[data-stage="7"] .crest-symbol {
-    font-size: 21px;
-
-    animation:
-        symbolFloat 1.8s ease-in-out infinite,
-        symbolGlow 1.5s ease-in-out infinite;
-}
-
-.crest-stage-8 .crest-symbol,
-[data-stage="8"] .crest-symbol {
-    font-size: 23px;
-
-    animation:
-        symbolFloat 1.4s ease-in-out infinite,
-        symbolGlow .9s ease-in-out infinite;
-}
-
-@keyframes symbolFloat {
-    0%,100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-4px);
-    }
-}
-
-@keyframes symbolGlow {
-    0%,100% {
-        opacity: .55;
-    }
-
-    50% {
-        opacity: 1;
-    }
-}
-
-
-/* nome do estágio */
-
-.front-emblem span {
-    font-size: 9px;
-
-    letter-spacing: 2px;
-
-    color: #8f839d;
-}
-
-.badge-stage {
-    margin-top: 5px;
-
-    font-size: 9px;
-
-    letter-spacing: 1px;
-
-    color: var(--race-light);
-
-    transition:
-        color .4s ease,
-        text-shadow .4s ease;
-}
-
-
-/* estágios avançados */
-
-.crest-stage-7 ~ .badge-stage,
-.crest-stage-8 ~ .badge-stage {
-    color: var(--element-light);
-
-    text-shadow:
-        0 0 8px var(--element-main);
-}
-
-
-/* ==========================================
+/* =========================================================
    DICA DE VIRAR
-========================================== */
+   ========================================================= */
 
 .flip-hint {
-    margin-top: 20px;
+  margin: 2px 0 9px;
 
-    text-align: center;
+  text-align: center;
 
-    font-size: 11px;
+  font-size: 9px;
 
-    color: #75687f;
+  color: #75687f;
 
-    letter-spacing: 1px;
+  letter-spacing: 1px;
+
+  flex-shrink: 0;
 }
 
+/* =========================================================
+   ELEMENTOS ANTIGOS DA FRENTE
+   Mantidos para compatibilidade
+   ========================================================= */
 
-/* ==========================================
-   STATUS
-========================================== */
+.front-emblem {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  margin-top: 25px;
+}
+
+.character-info {
+  padding: 20px;
+}
+
+.character-info h2 {
+  margin: 0;
+
+  font-size: 25px;
+}
+
+.title {
+  margin: 5px 0 20px;
+
+  color: #a99db7;
+
+  font-style: italic;
+}
+
+.identity {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 10px;
+
+  margin-bottom: 20px;
+}
+
+.identity div {
+  padding: 10px;
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.identity div:hover {
+  border-color: var(--race-main);
+
+  box-shadow:
+    0 0 10px var(--card-glow);
+}
+
+.identity span {
+  display: block;
+
+  font-size: 10px;
+
+  color: #8f839d;
+
+  margin-bottom: 5px;
+}
+
+.identity strong {
+  font-size: 14px;
+}
+
+/* =========================================================
+   VERSO — CABEÇALHO
+   ========================================================= */
+
+.back-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 15px 0;
+
+  margin-bottom: 10px;
+
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.back-header h2 {
+  margin: 0;
+
+  font-size: 18px;
+}
+
+.back-header span {
+  font-size: 10px;
+
+  color: #81758f;
+}
+
+/* =========================================================
+   SEÇÕES DO VERSO
+   ========================================================= */
+
+.card-back section {
+  margin-bottom: 15px;
+}
+
+.card-back h3 {
+  margin: 0 0 10px;
+
+  font-size: 12px;
+
+  color: var(--race-light);
+
+  letter-spacing: 0.7px;
+}
+
+/* =========================================================
+   RECURSOS
+   ========================================================= */
 
 .stats {
-    margin-top: 10px;
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 7px;
 }
 
-.stats-title {
-    margin: 20px 0 10px;
+.stat-box {
+  padding: 9px 5px;
 
-    font-size: 13px;
+  text-align: center;
 
-    letter-spacing: 2px;
+  border-radius: 10px;
 
-    color: var(--race-light);
+  background: rgba(255, 255, 255, 0.04);
 
-    text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-.stats-grid {
-    display: grid;
+.stat-box span {
+  display: block;
 
-    grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 4px;
 
-    gap: 8px;
+  font-size: 9px;
+
+  color: #8f839d;
 }
 
-.stat {
-    position: relative;
-
-    text-align: center;
-
-    padding: 12px 5px;
-
-    border-radius: 12px;
-
-    background: rgba(255,255,255,.04);
-
-    border: 1px solid rgba(255,255,255,.07);
-
-    transition:
-        border-color .3s ease,
-        box-shadow .3s ease;
+.stat-box strong {
+  font-size: 15px;
 }
 
-.stat:hover {
-    border-color: var(--race-main);
-
-    box-shadow:
-        0 0 10px var(--card-glow);
-}
-
-.stat span {
-    display: block;
-    font-size: 20px;
-}
-
-.stat strong {
-    display: block;
-
-    margin-top: 5px;
-
-    font-size: 18px;
-}
-
-.stat small {
-    color: #8f839d;
-    font-size: 10px;
-}
-
-
-/* ==========================================
-   + ATRIBUTOS
-========================================== */
-
-.attribute-plus {
-    position: absolute;
-
-    top: 6px;
-    right: 6px;
-
-    width: 22px;
-    height: 22px;
-
-    border: 1px solid var(--element-main);
-
-    border-radius: 50%;
-
-    background: #1b1424;
-
-    color: var(--element-light);
-
-    font-size: 14px;
-
-    line-height: 18px;
-
-    cursor: pointer;
-
-    opacity: .7;
-
-    transition:
-        opacity .2s ease,
-        transform .2s ease,
-        box-shadow .2s ease;
-}
-
-.attribute-plus:hover {
-    opacity: 1;
-
-    transform: scale(1.08);
-
-    box-shadow:
-        0 0 10px var(--element-main);
-}
-
-
-/* ==========================================
-   PONTOS DE ATRIBUTO
-========================================== */
+/* =========================================================
+   PONTOS DE ATRIBUTO / RECURSO
+   ========================================================= */
 
 .attribute-points {
-    margin-top: 20px;
+  padding: 12px;
 
-    padding: 14px;
+  border-radius: 12px;
 
-    text-align: center;
+  background: rgba(124, 58, 237, 0.08);
 
-    border-radius: 14px;
+  border: 1px solid rgba(124, 58, 237, 0.25);
 
-    border: 1px solid var(--race-main);
-
-    background: rgba(124,58,237,.08);
-
-    transition:
-        border-color .3s ease,
-        box-shadow .3s ease;
-}
-
-.attribute-points.available {
-    border-color: var(--element-main);
-
-    box-shadow:
-        0 0 15px var(--card-glow);
+  text-align: center;
 }
 
 .attribute-points h3 {
-    margin: 0 0 8px;
-
-    font-size: 12px;
-
-    letter-spacing: 1px;
-
-    color: var(--element-light);
+  margin-bottom: 5px;
 }
 
-.attribute-points strong {
-    display: block;
+.attribute-points > strong {
+  display: block;
 
-    font-size: 25px;
+  font-size: 24px;
 
-    color: #f5f0ff;
+  color: var(--race-light);
 }
 
-.attribute-points span {
-    font-size: 10px;
+.attribute-points > span {
+  display: block;
 
-    color: #8f839d;
+  margin-bottom: 10px;
+
+  font-size: 9px;
+
+  color: #8f839d;
 }
 
-
-/* ==========================================
-   EDITOR
-========================================== */
-
-.character-editor {
-    margin-bottom: 15px;
-
-    padding-bottom: 5px;
-}
-
-.editor-field {
-    display: flex;
-    flex-direction: column;
-
-    gap: 5px;
-
-    margin-bottom: 10px;
-}
-
-.editor-field label {
-    font-size: 9px;
-
-    letter-spacing: 1px;
-
-    color: var(--race-light);
-}
-
-.editor-field input,
-.editor-field select {
-    width: 100%;
-
-    padding: 10px;
-
-    border: 1px solid var(--race-main);
-
-    border-radius: 9px;
-
-    background: #100b18;
-
-    color: #f5f0ff;
-
-    outline: none;
-
-    transition:
-        border-color .3s ease,
-        box-shadow .3s ease;
-}
-
-.editor-field input:focus,
-.editor-field select:focus {
-    border-color: var(--element-main);
-
-    box-shadow:
-        0 0 10px var(--card-glow);
-}
-
-
-/* ==========================================
-   IMAGEM — REMOVER
-========================================== */
-
-.image-remove-button {
-    padding: 9px 12px;
-
-    border: 1px solid #6b4f75;
-
-    border-radius: 9px;
-
-    background: #160f1d;
-
-    color: #c9bdd5;
-
-    cursor: pointer;
-
-    transition:
-        border-color .2s ease,
-        box-shadow .2s ease;
-}
-
-.image-remove-button:hover {
-    border-color: #b56cff;
-
-    box-shadow:
-        0 0 10px var(--card-glow);
-}
-
-
-/* ==========================================
-   XP DO BRASÃO
-========================================== */
-
-.badge-xp-section {
-    margin-top: 20px;
-
-    padding: 14px;
-
-    border-radius: 14px;
-
-    border: 1px solid var(--race-main);
-
-    background: rgba(124,58,237,.06);
-}
-
-.badge-xp-header {
-    display: flex;
-
-    justify-content: space-between;
-    align-items: center;
-
-    gap: 10px;
-
-    margin-bottom: 8px;
-}
-
-.badge-xp-header strong {
-    color: var(--element-light);
-
-    font-size: 12px;
-
-    letter-spacing: 1px;
-}
-
-.badge-xp-header span {
-    color: #b9a9c8;
-
-    font-size: 11px;
-}
-
-.badge-xp-bar {
-    width: 100%;
-    height: 8px;
-
-    background: #211a29;
-
-    border-radius: 10px;
-
-    overflow: hidden;
-}
-
-.badge-xp-progress {
-    width: 0%;
-    height: 100%;
-
-    background:
-        linear-gradient(
-            90deg,
-            var(--race-main),
-            var(--element-main)
-        );
-
-    border-radius: 10px;
-
-    transition: width .4s ease;
-}
-
-.badge-xp-info {
-    display: flex;
-
-    flex-wrap: wrap;
-
-    justify-content: center;
-
-    gap: 5px;
-
-    margin-top: 8px;
-
-    font-size: 9px;
-
-    color: #75687f;
-}
-
-.badge-xp-info strong {
-    color: var(--element-light);
-}
-
-
-/* ==========================================
-   AFINIDADES ELEMENTAIS
-========================================== */
-
-.element-grid {
-    display: grid;
-
-    grid-template-columns: repeat(3, 1fr);
-
-    gap: 8px;
-}
-
-.element {
-    padding: 10px 4px;
-
-    text-align: center;
-
-    border-radius: 12px;
-
-    background: rgba(255,255,255,.04);
-
-    border: 1px solid rgba(255,255,255,.07);
-
-    transition:
-        border-color .3s ease,
-        box-shadow .3s ease;
-}
-
-.element:hover {
-    border-color: var(--element-main);
-
-    box-shadow:
-        0 0 10px var(--element-main);
-}
-
-.element span {
-    display: block;
-
-    font-size: 20px;
-
-    margin-bottom: 4px;
-}
-
-.element small {
-    font-size: 8px;
-
-    color: #8f839d;
-
-    letter-spacing: 1px;
-}
-
-
-/* ==========================================
-   CONQUISTAS
-========================================== */
-
-.badges {
-    margin-top: 20px;
-}
-
-.badges h3 {
-    margin-bottom: 12px;
-
-    font-size: 13px;
-
-    letter-spacing: 2px;
-
-    color: var(--race-light);
-}
-
-.badge-list {
-    display: flex;
-
-    gap: 10px;
-}
-
-.badge {
-    width: 48px;
-    height: 48px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    border: 1px solid var(--race-main);
-
-    background: #1b1424;
-
-    font-weight: bold;
-
-    transition:
-        border-color .3s ease,
-        box-shadow .3s ease;
-}
-
-.badge:not(.locked) {
-    box-shadow:
-        0 0 10px var(--card-glow);
-}
-
-.badge.locked {
-    color: #51475a;
-
-    border-color: #302735;
-
-    box-shadow: none;
-}
-
-
-/* ==========================================
-   MESTRE
-========================================== */
-
-.master-toggle {
-    width: 100%;
-
-    margin-top: 20px;
-
-    padding: 12px;
-
-    border: 1px solid var(--race-main);
-
-    border-radius: 12px;
-
-    background: #1b1424;
-
-    color: var(--element-light);
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    transition:
-        background .2s ease,
-        border-color .2s ease,
-        transform .2s ease,
-        box-shadow .2s ease;
-}
-
-.master-toggle:hover {
-    background: #241633;
-
-    border-color: var(--element-main);
-
-    transform: translateY(-1px);
-
-    box-shadow:
-        0 0 12px var(--card-glow);
-}
-
-.master-controls {
-    display: none;
-
-    margin-top: 15px;
-
-    padding: 15px;
-
-    border-radius: 14px;
-
-    background: rgba(0,0,0,.25);
-
-    border: 1px solid rgba(255,255,255,.08);
-}
-
-.master-controls.active {
-    display: block;
-
-    animation: masterOpen .25s ease;
-}
-
-@keyframes masterOpen {
-    from {
-        opacity: 0;
-        transform: translateY(-8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.master-controls h3 {
-    margin-top: 0;
-
-    color: var(--element-light);
-}
-
-.control {
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-    margin-bottom: 10px;
-}
-
-.control label {
-    flex: 1;
-}
-
-.control button {
-    width: 38px;
-    height: 32px;
-
-    border: 1px solid var(--race-main);
-
-    border-radius: 8px;
-
-    background: #1b1424;
-
-    color: #fff;
-
-    font-size: 18px;
-
-    cursor: pointer;
-
-    transition:
-        border-color .2s ease,
-        box-shadow .2s ease;
-}
-
-.control button:hover {
-    border-color: var(--element-main);
-
-    background: #241633;
-
-    box-shadow:
-        0 0 10px var(--card-glow);
-}
-
-.xp-control {
-    flex-wrap: wrap;
-}
-
-.xp-control input {
-    width: 100%;
-
-    padding: 10px;
-
-    border-radius: 8px;
-
-    border: 1px solid var(--race-main);
-
-    background: #100b18;
-
-    color: #fff;
-
-    outline: none;
-}
-
-.xp-control input:focus {
-    border-color: var(--element-main);
-}
-
-.xp-control button {
-    flex: 1;
-
-    width: auto;
-
-    font-size: 12px;
-}
-
-
-/* ==========================================
-   PONTOS DE RECURSO
-========================================== */
-
-.resource-points {
-    position: relative;
-
-    margin-top: 15px;
-
-    padding-bottom: 16px;
-}
-
-.resource-points strong {
-    color: var(--element-light);
-
-    text-shadow:
-        0 0 8px var(--card-glow);
-}
+/* =========================================================
+   DISTRIBUIÇÃO DE RECURSOS
+   ========================================================= */
 
 .resource-distribution {
-    display: grid;
+  display: grid;
 
-    grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);
 
-    gap: 8px;
-
-    margin-top: 14px;
+  gap: 7px;
 }
 
 .resource-option {
-    display: flex;
+  display: flex;
 
-    align-items: center;
-    justify-content: space-between;
+  align-items: center;
+  justify-content: space-between;
 
-    gap: 5px;
+  gap: 5px;
 
-    min-width: 0;
+  padding: 7px;
 
-    padding: 7px 8px;
+  border-radius: 8px;
 
-    border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
 
-    background: rgba(255,255,255,.04);
-
-    border: 1px solid rgba(255,255,255,.08);
-}
-
-.resource-option span {
-    font-size: 10px;
-
-    color: #c9bdd5;
-
-    white-space: nowrap;
+  font-size: 10px;
 }
 
 .resource-plus {
-    flex-shrink: 0;
+  width: 25px;
+  height: 25px;
 
-    width: 27px;
-    height: 27px;
+  border: 1px solid var(--element-main);
 
-    display: flex;
+  border-radius: 7px;
 
-    align-items: center;
-    justify-content: center;
+  background: rgba(34, 211, 238, 0.08);
 
-    border: 1px solid var(--element-main);
+  color: var(--element-light);
 
-    border-radius: 50%;
+  font-weight: bold;
 
-    background: #1b1424;
-
-    color: var(--element-light);
-
-    font-size: 17px;
-
-    font-weight: bold;
-
-    line-height: 1;
-
-    cursor: pointer;
-
-    opacity: .9;
-
-    transition:
-        opacity .2s ease,
-        transform .2s ease,
-        box-shadow .2s ease;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .resource-plus:hover {
-    opacity: 1;
+  background: rgba(34, 211, 238, 0.18);
 
-    transform: scale(1.08);
-
-    box-shadow:
-        0 0 10px var(--element-main);
+  box-shadow:
+    0 0 8px rgba(34, 211, 238, 0.35);
 }
 
-.resource-plus:active {
-    transform: scale(.94);
+/* =========================================================
+   ATRIBUTOS DE COMBATE
+   ========================================================= */
+
+.combat-stats {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 7px;
 }
 
+.combat-stat {
+  display: flex;
 
-/* ==========================================
-   RESPONSIVIDADE
-========================================== */
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 9px 10px;
+
+  border-radius: 9px;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.combat-stat span {
+  font-size: 10px;
+
+  color: #9d91aa;
+}
+
+.combat-stat strong {
+  font-size: 14px;
+}
+
+/* =========================================================
+   BOTÃO +
+   ========================================================= */
+
+.attribute-plus {
+  width: 24px;
+  height: 24px;
+
+  margin-left: 5px;
+
+  border: 1px solid var(--race-main);
+
+  border-radius: 7px;
+
+  background: rgba(124, 58, 237, 0.1);
+
+  color: var(--race-light);
+
+  font-weight: bold;
+
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.attribute-plus:hover {
+  background: rgba(124, 58, 237, 0.2);
+
+  box-shadow:
+    0 0 8px var(--card-glow);
+}
+
+/* =========================================================
+   CARACTERÍSTICAS
+   ========================================================= */
+
+.characteristics {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 7px;
+}
+
+.characteristic {
+  padding: 10px;
+
+  border-radius: 9px;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  text-align: center;
+}
+
+.characteristic span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  font-size: 9px;
+
+  color: #8f839d;
+}
+
+.characteristic strong {
+  font-size: 16px;
+}
+
+/* =========================================================
+   EDITOR DO PERSONAGEM
+   ========================================================= */
+
+.editor {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.editor label {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+
+  font-size: 9px;
+
+  color: #9d91aa;
+}
+
+.editor input,
+.editor select {
+  width: 100%;
+
+  padding: 9px 10px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  border-radius: 9px;
+
+  outline: none;
+
+  background: #110d17;
+
+  color: #eee7f5;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.editor input:focus,
+.editor select:focus {
+  border-color: var(--race-main);
+
+  box-shadow:
+    0 0 8px var(--card-glow);
+}
+
+/* =========================================================
+   BOTÕES GERAIS
+   ========================================================= */
+
+.card-back button {
+  border-radius: 8px;
+}
+
+.master-button,
+.save-button,
+.reset-button {
+  padding: 9px 12px;
+
+  border: 1px solid var(--race-main);
+
+  background: rgba(124, 58, 237, 0.1);
+
+  color: #eee7f5;
+
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.master-button:hover,
+.save-button:hover,
+.reset-button:hover {
+  background: rgba(124, 58, 237, 0.2);
+
+  box-shadow:
+    0 0 10px var(--card-glow);
+}
+
+/* =========================================================
+   AFINIDADES ELEMENTAIS
+   ========================================================= */
+
+.affinity-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 7px;
+}
+
+.affinity-option {
+  padding: 9px 5px;
+
+  text-align: center;
+
+  border-radius: 9px;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  font-size: 9px;
+}
+
+/* =========================================================
+   BRASÃO / XP DO BRASÃO
+   ========================================================= */
+
+#badge-xp-section {
+  padding: 12px;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124, 58, 237, 0.08),
+      rgba(34, 211, 238, 0.04)
+    );
+
+  border: 1px solid rgba(124, 58, 237, 0.25);
+}
+
+#badge-stage-name {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: var(--race-light);
+
+  font-weight: bold;
+
+  font-size: 13px;
+}
+
+#badge-xp-text {
+  font-size: 10px;
+
+  color: #aaa0bd;
+}
+
+#badge-xp-progress {
+  width: 100%;
+
+  height: 7px;
+
+  margin-top: 7px;
+
+  border-radius: 10px;
+
+  background: #211a29;
+
+  overflow: hidden;
+}
+
+#badge-xp-progress > div {
+  height: 100%;
+
+  width: 0%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--race-main),
+      var(--element-main)
+    );
+
+  transition: width 0.4s ease;
+}
+
+#badge-next-stage,
+#badge-xp-remaining {
+  display: block;
+
+  margin-top: 5px;
+
+  font-size: 9px;
+
+  color: #8f839d;
+}
+
+/* =========================================================
+   MODO MESTRE
+   ========================================================= */
+
+.master-controls {
+  padding: 12px;
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.03);
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.master-controls input {
+  width: 100%;
+
+  padding: 9px;
+
+  margin-bottom: 7px;
+
+  border-radius: 8px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  background: #110d17;
+
+  color: #eee7f5;
+}
+
+.master-controls button {
+  width: 100%;
+
+  padding: 9px;
+
+  border: 1px solid var(--race-main);
+
+  background: rgba(124, 58, 237, 0.1);
+
+  color: #eee7f5;
+}
+
+/* =========================================================
+   RESPONSIVIDADE — CELULARES MENORES
+   ========================================================= */
 
 @media (max-width: 380px) {
 
-    .character-image {
-        height: 280px;
-    }
+  .app {
+    padding: 15px 10px 30px;
+  }
 
-    .character-info {
-        padding: 16px;
-    }
+  .character-card,
+  .card-face {
+    height: 680px;
+  }
 
-    .card-face,
-    .character-card {
-        height: 650px;
-    }
+  .card-front .card-header {
+    grid-template-columns: 1fr 66px 1fr;
 
-    .card-back {
-        padding: 16px;
-    }
+    min-height: 66px;
 
-    .resource-distribution {
-        grid-template-columns: 1fr;
-    }
+    padding-left: 12px;
+    padding-right: 12px;
+  }
 
-    .resource-option {
-        padding: 8px 10px;
-    }
+  .front-top-crest {
+    width: 66px;
+    height: 60px;
+  }
 
-    .affinity-emblem.crest-stage-8::after,
-    .affinity-emblem[data-stage="8"]::after {
-        inset: -19px;
-    }
-}/* ==========================================
-   BRASÃO — TAMANHO COMPACTO
-========================================== */
+  .front-top-crest .affinity-emblem {
+    width: 42px;
+    height: 42px;
 
-.affinity-emblem {
-    width: 55px;
-    height: 55px;
-    font-size: 24px;
+    font-size: 19px;
+  }
+
+  .rarity {
+    font-size: 10px;
+  }
+
+  .level {
+    font-size: 11px;
+  }
+
+  .front-name-area h2 {
+    font-size: 19px;
+  }
+
+  .card-front .character-image {
+    height: 325px;
+
+    width: calc(100% - 28px);
+
+    margin-left: 14px;
+    margin-right: 14px;
+  }
+
+  .card-ornament {
+    width: calc(100% - 32px);
+
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+  .front-xp-section {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+  .front-identity {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
 }
 
-/* Reduz o crescimento dos halos conforme o estágio */
+/* =========================================================
+   CELULARES MUITO ESTREITOS
+   ========================================================= */
 
-.affinity-emblem.crest-stage-1::after,
-.affinity-emblem[data-stage="1"]::after {
-    inset: -6px;
+@media (max-width: 330px) {
+
+  .character-card,
+  .card-face {
+    height: 650px;
+  }
+
+  .card-front .character-image {
+    height: 300px;
+  }
+
+  .front-name-area h2 {
+    font-size: 17px;
+  }
+
+  .front-identity-item strong {
+    font-size: 10px;
+  }
+
+  .front-identity-item span {
+    font-size: 7px;
+  }
+
+  .flip-hint {
+    font-size: 8px;
+  }
 }
 
-.affinity-emblem.crest-stage-2::after,
-.affinity-emblem[data-stage="2"]::after {
-    inset: -7px;
+/* =========================================================
+   SCROLLBAR DO VERSO
+   ========================================================= */
+
+.card-back::-webkit-scrollbar {
+  width: 5px;
 }
 
-.affinity-emblem.crest-stage-3::after,
-.affinity-emblem[data-stage="3"]::after {
-    inset: -8px;
+.card-back::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.affinity-emblem.crest-stage-4::after,
-.affinity-emblem[data-stage="4"]::after {
-    inset: -9px;
+.card-back::-webkit-scrollbar-thumb {
+  background: var(--race-main);
+
+  border-radius: 10px;
 }
 
-.affinity-emblem.crest-stage-5::after,
-.affinity-emblem[data-stage="5"]::after {
-    inset: -10px;
+.card-back {
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    var(--race-main)
+    transparent;
 }
 
-.affinity-emblem.crest-stage-6::after,
-.affinity-emblem[data-stage="6"]::after {
-    inset: -11px;
+/* =========================================================
+   ANIMAÇÃO SUAVE DA CARTA
+   ========================================================= */
+
+@keyframes subtleGlow {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 30px var(--card-glow),
+      inset 0 0 30px rgba(255, 255, 255, 0.02);
+  }
+
+  50% {
+    box-shadow:
+      0 0 36px var(--card-glow),
+      inset 0 0 30px rgba(255, 255, 255, 0.025);
+  }
 }
 
-.affinity-emblem.crest-stage-7::after,
-.affinity-emblem[data-stage="7"]::after {
-    inset: -12px;
-}
-
-.affinity-emblem.crest-stage-8::after,
-.affinity-emblem[data-stage="8"]::after {
-    inset: -14px;
+.character-card:not(.flipped) .card-front {
+  animation: subtleGlow 5s ease-in-out infinite;
 }
