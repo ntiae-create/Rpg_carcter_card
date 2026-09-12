@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,10 +20,11 @@
         </header>
 
         <section class="character-card">
-            
-<button class="master-toggle" onclick="alternarModoMestre()">
-    👑 Modo Mestre
-</button>
+
+            <button class="master-toggle" onclick="alternarModoMestre()">
+                👑 Modo Mestre
+            </button>
+
             <div class="card-header">
                 <span class="rarity">✦ RARO ✦</span>
                 <span class="level">LV. 01</span>
@@ -34,220 +36,292 @@
 
             <div class="character-info">
 
-    <h2>Nome do Personagem</h2>
-    <p class="title">Título / Epíteto</p>
+                <h2>Nome do Personagem</h2>
+                <p class="title">Título / Epíteto</p>
 
-    <div class="character-selection">
 
-        <label for="race-select">Raça</label>
+                <!-- RAÇA -->
 
-        <select id="race-select">
-            <option value="humano">Humano</option>
-            <option value="meioElfo">Meio-elfo</option>
-            <option value="elfo">Elfo</option>
-            <option value="semiBesta">Semi-besta</option>
-            <option value="besta">Besta</option>
-        </select>
+                <div class="character-selection">
 
-    </div>
-<div class="character-selection">
+                    <label for="race-select">Raça</label>
 
-    <label for="class-select">Classe</label>
+                    <select id="race-select">
 
-    <select id="class-select">
-        <option value="saber">Saber</option>
-        <option value="archer">Archer</option>
-        <option value="rider">Rider</option>
-        <option value="caster">Caster</option>
-        <option value="assassin">Assassin</option>
-        <option value="lancer">Lancer</option>
-        <option value="berserker">Berserker</option>
-        <option value="tank">Tank</option>
-    </select>
+                        <option value="humano">Humano</option>
+                        <option value="meioElfo">Meio-elfo</option>
+                        <option value="elfo">Elfo</option>
+                        <option value="semiBesta">Semi-besta</option>
+                        <option value="besta">Besta</option>
 
-</div>
+                    </select>
+
+                </div>
+
+
+                <!-- CLASSE -->
+
+                <div class="character-selection">
+
+                    <label for="class-select">Classe</label>
+
+                    <select id="class-select">
+
+                        <option value="saber">Saber</option>
+                        <option value="archer">Archer</option>
+                        <option value="rider">Rider</option>
+                        <option value="caster">Caster</option>
+                        <option value="assassin">Assassin</option>
+                        <option value="lancer">Lancer</option>
+                        <option value="berserker">Berserker</option>
+                        <option value="tank">Tank</option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- XP -->
+
                 <div class="xp-section">
 
-    <div class="xp-info">
-        <span>XP</span>
-        <span id="xp-text">0 / 100</span>
-    </div>
+                    <div class="xp-info">
 
-    <div class="xp-bar">
-        <div class="xp-progress" id="xp-progress"></div>
-    </div>
+                        <span>XP</span>
 
-</div>
+                        <span id="xp-text">0 XP</span>
+
+                    </div>
+
+                    <div class="xp-bar">
+
+                        <div
+                            class="xp-progress"
+                            id="xp-progress">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STATUS -->
 
                 <div class="stats">
 
-    <h3 class="stats-title">RECURSOS</h3>
 
-    <div class="stats-grid">
+                    <!-- RECURSOS -->
 
-        <div class="stats-grid">
+                    <h3 class="stats-title">
+                        RECURSOS
+                    </h3>
 
-    <div class="stat">
-        <span>❤️</span>
-        <strong id="stat-hp">25 / 25</strong>
-        <small>HP</small>
-    </div>
+                    <div class="stats-grid">
 
-    <div class="stat">
-        <span>🔷</span>
-        <strong id="stat-mp">15 / 15</strong>
-        <small>MP</small>
-    </div>
+                        <div class="stat">
+                            <span>❤️</span>
+                            <strong id="stat-hp">
+                                25 / 25
+                            </strong>
+                            <small>HP</small>
+                        </div>
 
-    <div class="stat">
-        <span>🟢</span>
-        <strong id="stat-est">30 / 30</strong>
-        <small>EST</small>
-    </div>
+                        <div class="stat">
+                            <span>🔷</span>
+                            <strong id="stat-mp">
+                                15 / 15
+                            </strong>
+                            <small>MP</small>
+                        </div>
 
-    <div class="stat">
-        <span>🧠</span>
-        <strong id="stat-sanidade">100 / 100</strong>
-        <small>SANIDADE</small>
-    </div>
-   </div>
-            
-        </div class="master-controls">
+                        <div class="stat">
+                            <span>🟢</span>
+                            <strong id="stat-est">
+                                30 / 30
+                            </strong>
+                            <small>EST</small>
+                        </div>
 
-    <h3>👑 MESTRE</h3>
+                        <div class="stat">
+                            <span>🧠</span>
+                            <strong id="stat-sanidade">
+                                100 / 100
+                            </strong>
+                            <small>SANIDADE</small>
+                        </div>
 
-    <div class="control">
-        <label>HP</label>
-        <button onclick="alterarHP(-1)">−</button>
-        <button onclick="alterarHP(1)">+</button>
-    </div>
-
-    <div class="control">
-        <label>MP</label>
-        <button onclick="alterarMP(-1)">−</button>
-        <button onclick="alterarMP(1)">+</button>
-    </div>
-
-    <div class="control">
-        <label>EST</label>
-        <button onclick="alterarEST(-1)">−</button>
-        <button onclick="alterarEST(1)">+</button>
-    </div>
-
-    <div class="control">
-        <label>Sanidade</label>
-        <button onclick="alterarSanidade(-1)">−</button>
-        <button onclick="alterarSanidade(1)">+</button>
-    </div>
-
-<div class="control xp-control">
-
-    <label for="xp-amount">XP</label>
-
-    <input
-        type="number"
-        id="xp-amount"
-        placeholder="Digite a quantidade"
-        min="0"
-        step="1"
-        inputmode="numeric"
-    >
-
-    <button onclick="adicionarXP()">
-        + ADICIONAR XP
-    </button>
-
-    <button onclick="removerXP()">
-        − REMOVER XP
-    </button>
-
-</div>
+                    </div>
 
 
-    <h3 class="stats-title">COMBATE</h3>
+                    <!-- MESTRE -->
 
-    <div class="stats-grid">
+                    <div class="master-controls">
 
-        <div class="stat">
-            <span>⚔️</span>
-            <strong id="stat-atk">4</strong>
-            <small>ATK</small>
-        </div>
+                        <h3>👑 MESTRE</h3>
 
-        <div class="stat">
-            <span>🔮</span>
-            <strong id="stat-atkMgc">4</strong>
-            <small>ATK MGC</small>
-        </div>
+                        <div class="control">
 
-        <div class="stat">
-            <span>🛡️</span>
-            <strong id="stat-def">8</strong>
-            <small>DEF</small>
-        </div>
+                            <label>HP</label>
 
-        <div class="stat">
-            <span>✨</span>
-            <strong id="stat-res">8</strong>
-            <small>RES</small>
-        </div>
+                            <button onclick="alterarHP(-1)">
+                                −
+                            </button>
 
-    </div>
+                            <button onclick="alterarHP(1)">
+                                +
+                            </button>
+
+                        </div>
 
 
-    <h3 class="stats-title">CARACTERÍSTICAS</h3>
+                        <div class="control">
 
-    <div class="stats-grid">
+                            <label>MP</label>
 
-        <div class="stat">
-            <span>💨</span>
-            <strong id="stat-agi">8</strong>
-            <small>AGI</small>
-        </div>
+                            <button onclick="alterarMP(-1)">
+                                −
+                            </button>
 
-        <div class="stat">
-            <span>🧠</span>
-            <strong id="stat-int">15</strong>
-            <small>INT</small>
-        </div>
+                            <button onclick="alterarMP(1)">
+                                +
+                            </button>
 
-    </div>
+                        </div>
 
-</div> class="stat">
-        <span>⚔️</span>
-        <strong id="stat-atk">4</strong>
-        <small>ATK</small>
-    </div>
 
-    <div class="stat">
-        <span>🛡️</span>
-        <strong id="stat-def">8</strong>
-        <small>DEF</small>
-    </div>
+                        <div class="control">
 
-    <div class="stat">
-        <span>⚡</span>
-        <strong id="stat-agi">8</strong>
-        <small>AGI</small>
-    </div>
+                            <label>EST</label>
 
-    <div class="stat">
-        <span>🧠</span>
-        <strong id="stat-int">15</strong>
-        <small>INT</small>
-    </div>
+                            <button onclick="alterarEST(-1)">
+                                −
+                            </button>
 
-  </div>
+                            <button onclick="alterarEST(1)">
+                                +
+                            </button>
+
+                        </div>
+
+
+                        <div class="control">
+
+                            <label>Sanidade</label>
+
+                            <button onclick="alterarSanidade(-1)">
+                                −
+                            </button>
+
+                            <button onclick="alterarSanidade(1)">
+                                +
+                            </button>
+
+                        </div>
+
+
+                        <div class="control xp-control">
+
+                            <label for="xp-amount">
+                                XP
+                            </label>
+
+                            <input
+                                type="number"
+                                id="xp-amount"
+                                placeholder="Digite a quantidade"
+                                min="0"
+                                step="1"
+                                inputmode="numeric"
+                            >
+
+                            <button onclick="adicionarXP()">
+                                + ADICIONAR XP
+                            </button>
+
+                            <button onclick="removerXP()">
+                                − REMOVER XP
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- COMBATE -->
+
+                    <h3 class="stats-title">
+                        COMBATE
+                    </h3>
+
+                    <div class="stats-grid">
+
+                        <div class="stat">
+                            <span>⚔️</span>
+                            <strong id="stat-atk">4</strong>
+                            <small>ATK</small>
+                        </div>
+
+                        <div class="stat">
+                            <span>🔮</span>
+                            <strong id="stat-atkMgc">4</strong>
+                            <small>ATK MGC</small>
+                        </div>
+
+                        <div class="stat">
+                            <span>🛡️</span>
+                            <strong id="stat-def">8</strong>
+                            <small>DEF</small>
+                        </div>
+
+                        <div class="stat">
+                            <span>✨</span>
+                            <strong id="stat-res">8</strong>
+                            <small>RES</small>
+                        </div>
+
+                    </div>
+
+
+                    <!-- CARACTERÍSTICAS -->
+
+                    <h3 class="stats-title">
+                        CARACTERÍSTICAS
+                    </h3>
+
+                    <div class="stats-grid">
+
+                        <div class="stat">
+                            <span>💨</span>
+                            <strong id="stat-agi">8</strong>
+                            <small>AGI</small>
+                        </div>
+
+                        <div class="stat">
+                            <span>🧠</span>
+                            <strong id="stat-int">15</strong>
+                            <small>INT</small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BRASÕES -->
 
                 <div class="badges">
+
                     <h3>BRASÕES</h3>
 
                     <div class="badge-list">
+
                         <div class="badge locked">?</div>
                         <div class="badge locked">?</div>
                         <div class="badge locked">?</div>
                         <div class="badge locked">?</div>
+
                     </div>
+
                 </div>
 
             </div>
@@ -259,4 +333,5 @@
     <script src="script.js"></script>
 
 </body>
+
 </html>
