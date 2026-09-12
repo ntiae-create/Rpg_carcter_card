@@ -6,17 +6,17 @@ const card = document.querySelector(".character-card");
 
 card.addEventListener("click", function (evento) {
 
-    if (
-        evento.target.closest(
-            ".master-controls, .master-toggle, button, input, select"
-        )
-    ) {
-        return;
-    }
+if (
+    evento.target.closest(
+        ".master-controls, .master-toggle, button, input, select"
+    )
+) {
+    return;
+}
 
-    card.classList.toggle("flipped");
+card.classList.toggle("flipped");
+
 });
-
 
 // =========================================
 // DADOS DAS RAÇAS
@@ -24,81 +24,80 @@ card.addEventListener("click", function (evento) {
 
 const racas = {
 
-    Humano: {
-        hp: 25,
-        mp: 15,
-        est: 30,
-        sanidade: 100,
+Humano: {
+    hp: 25,
+    mp: 15,
+    est: 30,
+    sanidade: 100,
 
-        atk: 4,
-        atkMgc: 4,
-        def: 8,
-        res: 8,
-        agi: 8,
-        int: 15
-    },
+    atk: 4,
+    atkMgc: 4,
+    def: 8,
+    res: 8,
+    agi: 8,
+    int: 15
+},
 
-    "Meio-elfo": {
-        hp: 23,
-        mp: 22,
-        est: 25,
-        sanidade: 100,
+"Meio-elfo": {
+    hp: 23,
+    mp: 22,
+    est: 25,
+    sanidade: 100,
 
-        atk: 3,
-        atkMgc: 7,
-        def: 6,
-        res: 9,
-        agi: 10,
-        int: 15
-    },
+    atk: 3,
+    atkMgc: 7,
+    def: 6,
+    res: 9,
+    agi: 10,
+    int: 15
+},
 
-    Elfo: {
-        hp: 22,
-        mp: 25,
-        est: 25,
-        sanidade: 100,
+Elfo: {
+    hp: 22,
+    mp: 25,
+    est: 25,
+    sanidade: 100,
 
-        atk: 3,
-        atkMgc: 8,
-        def: 5,
-        res: 9,
-        agi: 12,
-        int: 16
-    },
+    atk: 3,
+    atkMgc: 8,
+    def: 5,
+    res: 9,
+    agi: 12,
+    int: 16
+},
 
-    "Semi-besta": {
-        hp: 30,
-        mp: 10,
-        est: 35,
-        sanidade: 90,
+"Semi-besta": {
+    hp: 30,
+    mp: 10,
+    est: 35,
+    sanidade: 90,
 
-        atk: 9,
-        atkMgc: 3,
-        def: 7,
-        res: 6,
-        agi: 10,
-        int: 10
-    },
+    atk: 9,
+    atkMgc: 3,
+    def: 7,
+    res: 6,
+    agi: 10,
+    int: 10
+},
 
-    Besta: {
-        hp: 35,
-        mp: 8,
-        est: 40,
-        sanidade: 80,
+Besta: {
+    hp: 35,
+    mp: 8,
+    est: 40,
+    sanidade: 80,
 
-        atk: 11,
-        atkMgc: 2,
-        def: 6,
-        res: 5,
-        agi: 9,
-        int: 6
-    }
+    atk: 11,
+    atkMgc: 2,
+    def: 6,
+    res: 5,
+    agi: 9,
+    int: 6
+}
 
 };
 
-
 // =========================================
-// ESTADO DO PERSONAGEM
+// ESTADO PADRÃO
 // =========================================
 
 let racaAtual = "Humano";
@@ -111,24 +110,151 @@ let sanidadeAtual = racas[racaAtual].sanidade;
 let xpAtual = 0;
 let nivelAtual = 1;
 
-
-// =========================================
-// PONTOS DE ATRIBUTO
-// =========================================
-
 let pontosAtributo = 0;
 
-const atributos = {
+let atributos = {
 
-    atk: 0,
-    atkMgc: 0,
-    def: 0,
-    res: 0,
-    agi: 0,
-    int: 0
+atk: 0,
+atkMgc: 0,
+def: 0,
+res: 0,
+agi: 0,
+int: 0
 
 };
 
+// =========================================
+// SALVAMENTO
+// =========================================
+
+const CHAVE_SALVAMENTO =
+"rpg_character_card";
+
+function salvarDados() {
+
+const dados = {
+
+    racaAtual,
+
+    hpAtual,
+    mpAtual,
+    estAtual,
+    sanidadeAtual,
+
+    xpAtual,
+    nivelAtual,
+
+    pontosAtributo,
+
+    atributos
+
+};
+
+localStorage.setItem(
+    CHAVE_SALVAMENTO,
+    JSON.stringify(dados)
+);
+
+}
+
+// =========================================
+// CARREGAR DADOS
+// =========================================
+
+function carregarDados() {
+
+const dadosSalvos =
+    localStorage.getItem(CHAVE_SALVAMENTO);
+
+if (!dadosSalvos) {
+    return;
+}
+
+try {
+
+    const dados =
+        JSON.parse(dadosSalvos);
+
+
+    if (
+        dados.racaAtual &&
+        racas[dados.racaAtual]
+    ) {
+
+        racaAtual =
+            dados.racaAtual;
+
+    }
+
+
+    if (typeof dados.hpAtual === "number") {
+        hpAtual = dados.hpAtual;
+    }
+
+    if (typeof dados.mpAtual === "number") {
+        mpAtual = dados.mpAtual;
+    }
+
+    if (typeof dados.estAtual === "number") {
+        estAtual = dados.estAtual;
+    }
+
+    if (typeof dados.sanidadeAtual === "number") {
+        sanidadeAtual =
+            dados.sanidadeAtual;
+    }
+
+
+    if (typeof dados.xpAtual === "number") {
+        xpAtual = dados.xpAtual;
+    }
+
+    if (typeof dados.nivelAtual === "number") {
+        nivelAtual =
+            dados.nivelAtual;
+    }
+
+    if (typeof dados.pontosAtributo === "number") {
+        pontosAtributo =
+            dados.pontosAtributo;
+    }
+
+
+    if (dados.atributos) {
+
+        atributos = {
+
+            atk: Number(dados.atributos.atk) || 0,
+
+            atkMgc:
+                Number(dados.atributos.atkMgc) || 0,
+
+            def:
+                Number(dados.atributos.def) || 0,
+
+            res:
+                Number(dados.atributos.res) || 0,
+
+            agi:
+                Number(dados.atributos.agi) || 0,
+
+            int:
+                Number(dados.atributos.int) || 0
+
+        };
+
+    }
+
+} catch (erro) {
+
+    console.error(
+        "Erro ao carregar personagem:",
+        erro
+    );
+
+}
+
+}
 
 // =========================================
 // ATUALIZAR RECURSOS
@@ -136,19 +262,19 @@ const atributos = {
 
 function atualizarRecursos() {
 
-    document.getElementById("stat-hp").textContent =
-        `${hpAtual} / ${racas[racaAtual].hp}`;
+document.getElementById("stat-hp").textContent =
+    `${hpAtual} / ${racas[racaAtual].hp}`;
 
-    document.getElementById("stat-mp").textContent =
-        `${mpAtual} / ${racas[racaAtual].mp}`;
+document.getElementById("stat-mp").textContent =
+    `${mpAtual} / ${racas[racaAtual].mp}`;
 
-    document.getElementById("stat-est").textContent =
-        `${estAtual} / ${racas[racaAtual].est}`;
+document.getElementById("stat-est").textContent =
+    `${estAtual} / ${racas[racaAtual].est}`;
 
-    document.getElementById("stat-sanidade").textContent =
-        `${sanidadeAtual} / ${racas[racaAtual].sanidade}`;
+document.getElementById("stat-sanidade").textContent =
+    `${sanidadeAtual} / ${racas[racaAtual].sanidade}`;
+
 }
-
 
 // =========================================
 // ATUALIZAR ATRIBUTOS
@@ -156,71 +282,82 @@ function atualizarRecursos() {
 
 function atualizarAtributos() {
 
-    const base = racas[racaAtual];
+const base = racas[racaAtual];
 
-    document.getElementById("stat-atk").textContent =
-        base.atk + atributos.atk;
 
-    document.getElementById("stat-atkMgc").textContent =
-        base.atkMgc + atributos.atkMgc;
+document.getElementById("stat-atk").textContent =
+    base.atk + atributos.atk;
 
-    document.getElementById("stat-def").textContent =
-        base.def + atributos.def;
+document.getElementById("stat-atkMgc").textContent =
+    base.atkMgc + atributos.atkMgc;
 
-    document.getElementById("stat-res").textContent =
-        base.res + atributos.res;
+document.getElementById("stat-def").textContent =
+    base.def + atributos.def;
 
-    document.getElementById("stat-agi").textContent =
-        base.agi + atributos.agi;
+document.getElementById("stat-res").textContent =
+    base.res + atributos.res;
 
-    document.getElementById("stat-int").textContent =
-        base.int + atributos.int;
+document.getElementById("stat-agi").textContent =
+    base.agi + atributos.agi;
 
-    document.getElementById("attribute-points").textContent =
-        pontosAtributo;
+document.getElementById("stat-int").textContent =
+    base.int + atributos.int;
 
-    atualizarBotoesAtributo();
+
+document.getElementById("attribute-points").textContent =
+    pontosAtributo;
+
+
+atualizarBotoesAtributo();
+
 }
 
-
 // =========================================
-// BOTÕES +
+// BOTÕES DE ATRIBUTO
 // =========================================
 
 function atualizarBotoesAtributo() {
 
-    const botoes =
-        document.querySelectorAll(".attribute-plus");
-
-    botoes.forEach(botao => {
-
-        if (pontosAtributo > 0) {
-
-            botao.style.display = "block";
-
-        } else {
-
-            botao.style.display = "none";
-
-        }
-
-    });
+const botoes =
+    document.querySelectorAll(".attribute-plus");
 
 
-    const caixa =
-        document.getElementById("attribute-points-box");
+botoes.forEach(botao => {
 
     if (pontosAtributo > 0) {
 
-        caixa.classList.add("points-available");
+        botao.style.display = "block";
 
     } else {
 
-        caixa.classList.remove("points-available");
+        botao.style.display = "none";
 
     }
+
+});
+
+
+const caixa =
+    document.getElementById(
+        "attribute-points-box"
+    );
+
+
+if (pontosAtributo > 0) {
+
+    caixa.classList.add(
+        "points-available"
+    );
+
+} else {
+
+    caixa.classList.remove(
+        "points-available"
+    );
+
 }
 
+}
 
 // =========================================
 // AUMENTAR ATRIBUTO
@@ -228,21 +365,25 @@ function atualizarBotoesAtributo() {
 
 function aumentarAtributo(atributo) {
 
-    if (pontosAtributo <= 0) {
-        return;
-    }
-
-    if (!(atributo in atributos)) {
-        return;
-    }
-
-    atributos[atributo]++;
-
-    pontosAtributo--;
-
-    atualizarAtributos();
+if (pontosAtributo <= 0) {
+    return;
 }
 
+if (!(atributo in atributos)) {
+    return;
+}
+
+
+atributos[atributo]++;
+
+pontosAtributo--;
+
+
+atualizarAtributos();
+
+salvarDados();
+
+}
 
 // =========================================
 // HP
@@ -250,16 +391,23 @@ function aumentarAtributo(atributo) {
 
 function alterarHP(valor) {
 
-    hpAtual += valor;
+hpAtual += valor;
 
-    hpAtual = Math.max(
-        0,
-        Math.min(hpAtual, racas[racaAtual].hp)
-    );
 
-    atualizarRecursos();
+hpAtual = Math.max(
+    0,
+    Math.min(
+        hpAtual,
+        racas[racaAtual].hp
+    )
+);
+
+
+atualizarRecursos();
+
+salvarDados();
+
 }
-
 
 // =========================================
 // MP
@@ -267,16 +415,23 @@ function alterarHP(valor) {
 
 function alterarMP(valor) {
 
-    mpAtual += valor;
+mpAtual += valor;
 
-    mpAtual = Math.max(
-        0,
-        Math.min(mpAtual, racas[racaAtual].mp)
-    );
 
-    atualizarRecursos();
+mpAtual = Math.max(
+    0,
+    Math.min(
+        mpAtual,
+        racas[racaAtual].mp
+    )
+);
+
+
+atualizarRecursos();
+
+salvarDados();
+
 }
-
 
 // =========================================
 // EST
@@ -284,16 +439,23 @@ function alterarMP(valor) {
 
 function alterarEST(valor) {
 
-    estAtual += valor;
+estAtual += valor;
 
-    estAtual = Math.max(
-        0,
-        Math.min(estAtual, racas[racaAtual].est)
-    );
 
-    atualizarRecursos();
+estAtual = Math.max(
+    0,
+    Math.min(
+        estAtual,
+        racas[racaAtual].est
+    )
+);
+
+
+atualizarRecursos();
+
+salvarDados();
+
 }
-
 
 // =========================================
 // SANIDADE
@@ -301,16 +463,23 @@ function alterarEST(valor) {
 
 function alterarSanidade(valor) {
 
-    sanidadeAtual += valor;
+sanidadeAtual += valor;
 
-    sanidadeAtual = Math.max(
-        0,
-        Math.min(sanidadeAtual, racas[racaAtual].sanidade)
-    );
 
-    atualizarRecursos();
+sanidadeAtual = Math.max(
+    0,
+    Math.min(
+        sanidadeAtual,
+        racas[racaAtual].sanidade
+    )
+);
+
+
+atualizarRecursos();
+
+salvarDados();
+
 }
-
 
 // =========================================
 // XP POR NÍVEL
@@ -318,19 +487,18 @@ function alterarSanidade(valor) {
 
 const xpPorNivel = {
 
-    1: 100,
-    2: 150,
-    3: 225,
-    4: 325,
-    5: 450,
-    6: 600,
-    7: 775,
-    8: 975,
-    9: 1200,
-    10: 1500
+1: 100,
+2: 150,
+3: 225,
+4: 325,
+5: 450,
+6: 600,
+7: 775,
+8: 975,
+9: 1200,
+10: 1500
 
 };
-
 
 // =========================================
 // ATUALIZAR XP
@@ -338,28 +506,32 @@ const xpPorNivel = {
 
 function atualizarXP() {
 
-    const xpNecessario =
-        xpPorNivel[nivelAtual];
+const xpNecessario =
+    xpPorNivel[nivelAtual];
 
-    const porcentagem =
-        xpNecessario
-            ? (xpAtual / xpNecessario) * 100
-            : 100;
 
-    document.getElementById("xp-text").textContent =
-        `${xpAtual} XP`;
+const porcentagem =
+    xpNecessario
+        ? (xpAtual / xpNecessario) * 100
+        : 100;
 
-    document.getElementById("xp-progress").style.width =
-        `${Math.min(porcentagem, 100)}%`;
 
-    document.querySelectorAll(".level").forEach(elemento => {
+document.getElementById("xp-text").textContent =
+    `${xpAtual} XP`;
 
-        elemento.textContent =
-            `LV. ${String(nivelAtual).padStart(2, "0")}`;
 
-    });
+document.getElementById("xp-progress").style.width =
+    `${Math.min(porcentagem, 100)}%`;
+
+
+document.querySelectorAll(".level").forEach(elemento => {
+
+    elemento.textContent =
+        `LV. ${String(nivelAtual).padStart(2, "0")}`;
+
+});
+
 }
-
 
 // =========================================
 // ADICIONAR XP
@@ -367,26 +539,35 @@ function atualizarXP() {
 
 function adicionarXP() {
 
-    const campo =
-        document.getElementById("xp-amount");
+const campo =
+    document.getElementById("xp-amount");
 
-    const quantidade =
-        Number(campo.value);
 
-    if (!quantidade || quantidade <= 0) {
-        return;
-    }
+const quantidade =
+    Number(campo.value);
 
-    xpAtual += quantidade;
 
-    verificarNivel();
-
-    campo.value = "";
-
-    atualizarXP();
-    atualizarAtributos();
+if (!quantidade || quantidade <= 0) {
+    return;
 }
 
+
+xpAtual += quantidade;
+
+
+verificarNivel();
+
+
+campo.value = "";
+
+
+atualizarXP();
+
+atualizarAtributos();
+
+salvarDados();
+
+}
 
 // =========================================
 // REMOVER XP
@@ -394,24 +575,34 @@ function adicionarXP() {
 
 function removerXP() {
 
-    const campo =
-        document.getElementById("xp-amount");
+const campo =
+    document.getElementById("xp-amount");
 
-    const quantidade =
-        Number(campo.value);
 
-    if (!quantidade || quantidade <= 0) {
-        return;
-    }
+const quantidade =
+    Number(campo.value);
 
-    xpAtual =
-        Math.max(0, xpAtual - quantidade);
 
-    atualizarXP();
-
-    campo.value = "";
+if (!quantidade || quantidade <= 0) {
+    return;
 }
 
+
+xpAtual =
+    Math.max(
+        0,
+        xpAtual - quantidade
+    );
+
+
+atualizarXP();
+
+salvarDados();
+
+
+campo.value = "";
+
+}
 
 // =========================================
 // VERIFICAR NÍVEL
@@ -419,24 +610,28 @@ function removerXP() {
 
 function verificarNivel() {
 
-    while (
-        xpPorNivel[nivelAtual] &&
-        xpAtual >= xpPorNivel[nivelAtual]
-    ) {
+while (
+    xpPorNivel[nivelAtual] &&
+    xpAtual >= xpPorNivel[nivelAtual]
+) {
 
-        xpAtual -= xpPorNivel[nivelAtual];
+    xpAtual -=
+        xpPorNivel[nivelAtual];
 
-        nivelAtual++;
 
-        // Cada nível concede +3 pontos
-        pontosAtributo += 3;
+    nivelAtual++;
 
-        console.log(
-            `Nível ${nivelAtual}! +3 pontos de atributo.`
-        );
-    }
+
+    pontosAtributo += 3;
+
+
+    console.log(
+        `Nível ${nivelAtual}! +3 pontos de atributo.`
+    );
+
 }
 
+}
 
 // =========================================
 // MODO MESTRE
@@ -444,28 +639,36 @@ function verificarNivel() {
 
 function alternarModoMestre() {
 
-    const controles =
-        document.querySelector(".master-controls");
+const controles =
+    document.querySelector(
+        ".master-controls"
+    );
 
-    if (!controles) {
-        return;
-    }
 
-    if (controles.style.display === "block") {
-
-        controles.style.display = "none";
-
-    } else {
-
-        controles.style.display = "block";
-
-    }
+if (!controles) {
+    return;
 }
 
+
+if (
+    controles.style.display === "block"
+) {
+
+    controles.style.display = "none";
+
+} else {
+
+    controles.style.display = "block";
+
+}
+
+}
 
 // =========================================
 // INICIALIZAÇÃO
 // =========================================
+
+carregarDados();
 
 atualizarRecursos();
 
