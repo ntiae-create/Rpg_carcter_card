@@ -99,7 +99,24 @@ seletorRaca.addEventListener("change", function () {
     document.getElementById("stat-res").textContent = racaSelecionada.res;
 });
 function alternarModoMestre() {
+let hpAtual = 25;
+let hpMaximo = 25;
 
+function alterarHP(valor) {
+
+    hpAtual += valor;
+
+    if (hpAtual < 0) {
+        hpAtual = 0;
+    }
+
+    if (hpAtual > hpMaximo) {
+        hpAtual = hpMaximo;
+    }
+
+    document.getElementById("stat-hp").textContent =
+        hpAtual + " / " + hpMaximo;
+}
     const painel = document.querySelector(".master-controls");
 
     if (painel.style.display === "block") {
