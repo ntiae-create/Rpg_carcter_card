@@ -81,3 +81,12 @@ const racas = {
     }
 
 };
+const seletorRaca = document.getElementById("race-select");
+
+seletorRaca.addEventListener("change", function () {
+
+    const racaSelecionada = racas[this.value];
+
+    console.log("Raça selecionada:", racaSelecionada);
+
+});
