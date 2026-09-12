@@ -4,7 +4,7 @@
 
 
 // ==========================================
-// FLIP DA CARTA
+// CARTA / FLIP
 // ==========================================
 
 const card = document.querySelector(".character-card");
@@ -26,7 +26,7 @@ if (card) {
 
 
 // ==========================================
-// RAÇAS
+// DADOS DAS RAÇAS
 // ==========================================
 
 const racas = {
@@ -141,6 +141,19 @@ const afinidades = {
 // ==========================================
 // ESTÁGIOS DOS BRASÕES
 // ==========================================
+//
+// 0 XP       = Inicial
+// 3.000 XP   = Leve
+// 6.000 XP   = Pequeno
+// 9.000 XP   = Médio
+// 12.000 XP  = Grande
+// 15.000 XP  = Pesado
+// 20.000 XP  = Arcano
+// 25.000 XP  = Arcano evoluído
+// 50.000 XP  = Extra
+//
+// "Arcano evoluído" é apenas um estágio
+// intermediário para representar os 25.000 XP.
 
 const estagiosBrasao = [
 
@@ -194,9 +207,16 @@ const estagiosBrasao = [
     },
 
     {
+        nome: "ARCANO EVOLUÍDO",
+        xp: 25000,
+        tamanho: 1.7,
+        brilho: 3.5
+    },
+
+    {
         nome: "EXTRA",
         xp: 50000,
-        tamanho: 1.8,
+        tamanho: 1.85,
         brilho: 4
     }
 
@@ -266,7 +286,8 @@ let atributos = {
 // LOCAL STORAGE
 // ==========================================
 
-const STORAGE_KEY = "rpg_character_card";
+const STORAGE_KEY =
+    "rpg_character_card";
 
 
 function salvarDados() {
@@ -274,20 +295,29 @@ function salvarDados() {
     const dados = {
 
         nomeAtual,
+
         racaAtual,
+
         classeAtual,
+
         afinidadeAtual,
 
         hp,
+
         mp,
+
         est,
+
         sanidade,
 
         xp,
+
         nivel,
+
         pontosAtributo,
 
         xpBrasao,
+
         marcosBrasaoRecebidos,
 
         atributos
@@ -310,7 +340,9 @@ function salvarDados() {
 function carregarDados() {
 
     const salvo =
-        localStorage.getItem(STORAGE_KEY);
+        localStorage.getItem(
+            STORAGE_KEY
+        );
 
 
     if (!salvo) {
@@ -327,21 +359,24 @@ function carregarDados() {
         if (
             typeof dados.nomeAtual === "string"
         ) {
-            nomeAtual = dados.nomeAtual;
+            nomeAtual =
+                dados.nomeAtual;
         }
 
 
         if (
             racas[dados.racaAtual]
         ) {
-            racaAtual = dados.racaAtual;
+            racaAtual =
+                dados.racaAtual;
         }
 
 
         if (
             typeof dados.classeAtual === "string"
         ) {
-            classeAtual = dados.classeAtual;
+            classeAtual =
+                dados.classeAtual;
         }
 
 
@@ -353,31 +388,47 @@ function carregarDados() {
         }
 
 
-        if (typeof dados.hp === "number")
+        if (
+            typeof dados.hp === "number"
+        ) {
             hp = dados.hp;
+        }
 
 
-        if (typeof dados.mp === "number")
+        if (
+            typeof dados.mp === "number"
+        ) {
             mp = dados.mp;
+        }
 
 
-        if (typeof dados.est === "number")
+        if (
+            typeof dados.est === "number"
+        ) {
             est = dados.est;
+        }
 
 
         if (
             typeof dados.sanidade === "number"
         ) {
-            sanidade = dados.sanidade;
+            sanidade =
+                dados.sanidade;
         }
 
 
-        if (typeof dados.xp === "number")
+        if (
+            typeof dados.xp === "number"
+        ) {
             xp = dados.xp;
+        }
 
 
-        if (typeof dados.nivel === "number")
+        if (
+            typeof dados.nivel === "number"
+        ) {
             nivel = dados.nivel;
+        }
 
 
         if (
@@ -420,7 +471,7 @@ function carregarDados() {
     } catch (erro) {
 
         console.error(
-            "Erro ao carregar personagem:",
+            "Erro ao carregar dados:",
             erro
         );
 
@@ -430,23 +481,28 @@ function carregarDados() {
 
 
 // ==========================================
-// ELEMENTOS DO HTML
+// ELEMENTOS DA INTERFACE
 // ==========================================
 
 const nameInput =
-    document.getElementById("name-input");
-
+    document.getElementById(
+        "name-input"
+    );
 
 const raceSelect =
-    document.getElementById("race-select");
-
+    document.getElementById(
+        "race-select"
+    );
 
 const classSelect =
-    document.getElementById("class-select");
-
+    document.getElementById(
+        "class-select"
+    );
 
 const affinitySelect =
-    document.getElementById("affinity-select");
+    document.getElementById(
+        "affinity-select"
+    );
 
 
 // ==========================================
@@ -473,7 +529,8 @@ function atualizarNome() {
     if (nameInput) {
 
         nameInput.value =
-            nomeAtual === "Nome do Personagem"
+            nomeAtual ===
+            "Nome do Personagem"
                 ? ""
                 : nomeAtual;
 
@@ -529,28 +586,52 @@ function atualizarRaca() {
     }
 
 
-    atualizarAtributos();
-
-
     const dadosRaca =
         racas[racaAtual];
 
 
-    if (dadosRaca) {
-
-        hp = dadosRaca.hp;
-
-        mp = dadosRaca.mp;
-
-        est = dadosRaca.est;
-
-        sanidade =
-            dadosRaca.sanidade;
-
+    if (!dadosRaca) {
+        return;
     }
 
 
+    // Ao trocar de raça,
+    // os recursos voltam ao máximo.
+
+    hp = dadosRaca.hp;
+
+    mp = dadosRaca.mp;
+
+    est = dadosRaca.est;
+
+    sanidade =
+        dadosRaca.sanidade;
+
+
+    // Atributos base da raça.
+
+    atributos.atk =
+        dadosRaca.atk;
+
+    atributos.atkMgc =
+        dadosRaca.atkMgc;
+
+    atributos.def =
+        dadosRaca.def;
+
+    atributos.res =
+        dadosRaca.res;
+
+    atributos.agi =
+        dadosRaca.agi;
+
+    atributos.int =
+        dadosRaca.int;
+
+
     atualizarRecursos();
+
+    atualizarAtributos();
 
     salvarDados();
 
@@ -784,10 +865,11 @@ function alterarHP(valor) {
     hp += valor;
 
 
-    hp = Math.max(
-        0,
-        Math.min(hp, max)
-    );
+    hp =
+        Math.max(
+            0,
+            Math.min(hp, max)
+        );
 
 
     atualizarRecursos();
@@ -810,10 +892,11 @@ function alterarMP(valor) {
     mp += valor;
 
 
-    mp = Math.max(
-        0,
-        Math.min(mp, max)
-    );
+    mp =
+        Math.max(
+            0,
+            Math.min(mp, max)
+        );
 
 
     atualizarRecursos();
@@ -836,10 +919,11 @@ function alterarEST(valor) {
     est += valor;
 
 
-    est = Math.max(
-        0,
-        Math.min(est, max)
-    );
+    est =
+        Math.max(
+            0,
+            Math.min(est, max)
+        );
 
 
     atualizarRecursos();
@@ -862,10 +946,14 @@ function alterarSanidade(valor) {
     sanidade += valor;
 
 
-    sanidade = Math.max(
-        0,
-        Math.min(sanidade, max)
-    );
+    sanidade =
+        Math.max(
+            0,
+            Math.min(
+                sanidade,
+                max
+            )
+        );
 
 
     atualizarRecursos();
@@ -881,34 +969,51 @@ function alterarSanidade(valor) {
 
 function atualizarAtributos() {
 
-    const ids = {
+    const elementos = {
 
-        atk: "stat-atk",
+        atk:
+            document.getElementById(
+                "stat-atk"
+            ),
 
-        atkMgc: "stat-atkMgc",
+        atkMgc:
+            document.getElementById(
+                "stat-atkMgc"
+            ),
 
-        def: "stat-def",
+        def:
+            document.getElementById(
+                "stat-def"
+            ),
 
-        res: "stat-res",
+        res:
+            document.getElementById(
+                "stat-res"
+            ),
 
-        agi: "stat-agi",
+        agi:
+            document.getElementById(
+                "stat-agi"
+            ),
 
-        int: "stat-int"
+        int:
+            document.getElementById(
+                "stat-int"
+            )
 
     };
 
 
-    for (const atributo in ids) {
+    for (
+        const atributo in elementos
+    ) {
 
-        const elemento =
-            document.getElementById(
-                ids[atributo]
-            );
+        if (
+            elementos[atributo]
+        ) {
 
-
-        if (elemento) {
-
-            elemento.textContent =
+            elementos[atributo]
+                .textContent =
                 atributos[atributo];
 
         }
@@ -947,14 +1052,16 @@ function atualizarBotoesAtributo() {
         );
 
 
-    botoes.forEach(function (botao) {
+    botoes.forEach(
+        function (botao) {
 
-        botao.style.display =
-            pontosAtributo > 0
-                ? "block"
-                : "none";
+            botao.style.display =
+                pontosAtributo > 0
+                    ? "block"
+                    : "none";
 
-    });
+        }
+    );
 
 
     const caixa =
@@ -979,14 +1086,20 @@ function atualizarBotoesAtributo() {
 // AUMENTAR ATRIBUTO
 // ==========================================
 
-function aumentarAtributo(atributo) {
+function aumentarAtributo(
+    atributo
+) {
 
-    if (pontosAtributo <= 0) {
+    if (
+        pontosAtributo <= 0
+    ) {
         return;
     }
 
 
-    if (!(atributo in atributos)) {
+    if (
+        !(atributo in atributos)
+    ) {
         return;
     }
 
@@ -1005,7 +1118,7 @@ function aumentarAtributo(atributo) {
 
 
 // ==========================================
-// XP NECESSÁRIO
+// XP — PROGRESSÃO
 // ==========================================
 
 function xpNecessarioPorNivel(
@@ -1015,41 +1128,31 @@ function xpNecessarioPorNivel(
     if (nivelAtual === 1)
         return 100;
 
-
     if (nivelAtual === 2)
         return 150;
-
 
     if (nivelAtual === 3)
         return 225;
 
-
     if (nivelAtual === 4)
         return 325;
-
 
     if (nivelAtual === 5)
         return 450;
 
-
     if (nivelAtual === 6)
         return 600;
-
 
     if (nivelAtual === 7)
         return 775;
 
-
     if (nivelAtual === 8)
         return 975;
-
 
     if (nivelAtual === 9)
         return 1200;
 
 
-    // A partir do nível 10:
-    //
     // 10 → 11 = 1200
     // 11 → 12 = 1350
     // 12 → 13 = 1500
@@ -1063,12 +1166,16 @@ function xpNecessarioPorNivel(
 
 
 // ==========================================
-// XP TOTAL NECESSÁRIO PARA UM NÍVEL
+// XP TOTAL PARA CHEGAR A UM NÍVEL
 // ==========================================
 
-function xpParaNivel(nivelAlvo) {
+function xpParaNivel(
+    nivelAlvo
+) {
 
-    if (nivelAlvo <= 1) {
+    if (
+        nivelAlvo <= 1
+    ) {
         return 0;
     }
 
@@ -1094,7 +1201,7 @@ function xpParaNivel(nivelAlvo) {
 
 
 // ==========================================
-// ATUALIZAR XP DO PERSONAGEM
+// ATUALIZAR XP
 // ==========================================
 
 function atualizarXP() {
@@ -1104,10 +1211,12 @@ function atualizarXP() {
 
 
     const necessario =
-        xpNecessarioPorNivel(nivel);
+        xpNecessarioPorNivel(
+            nivel
+        );
 
 
-    const xpAtualNoNivel =
+    const xpNoNivel =
         Math.max(
             0,
             xp - inicioNivel
@@ -1119,8 +1228,9 @@ function atualizarXP() {
             0,
             Math.min(
                 100,
-                (xpAtualNoNivel /
-                    necessario) * 100
+                (xpNoNivel /
+                    necessario) *
+                100
             )
         );
 
@@ -1154,19 +1264,23 @@ function atualizarXP() {
 
 
     document
-        .querySelectorAll(".level")
-        .forEach(function (elemento) {
+        .querySelectorAll(
+            ".level"
+        )
+        .forEach(
+            function (elemento) {
 
-            elemento.textContent =
-                `LV. ${String(nivel).padStart(2, "0")}`;
+                elemento.textContent =
+                    `LV. ${String(nivel).padStart(2, "0")}`;
 
-        });
+            }
+        );
 
 }
 
 
 // ==========================================
-// ADICIONAR XP DO PERSONAGEM
+// ADICIONAR XP
 // ==========================================
 
 function adicionarXP() {
@@ -1187,7 +1301,9 @@ function adicionarXP() {
 
 
     if (
-        !Number.isFinite(quantidade) ||
+        !Number.isFinite(
+            quantidade
+        ) ||
         quantidade <= 0
     ) {
         return;
@@ -1199,13 +1315,16 @@ function adicionarXP() {
 
 
     xp +=
-        Math.floor(quantidade);
+        Math.floor(
+            quantidade
+        );
 
-
-    // Sobe todos os níveis necessários.
 
     while (
-        xp >= xpParaNivel(nivel + 1)
+        xp >=
+        xpParaNivel(
+            nivel + 1
+        )
     ) {
 
         nivel++;
@@ -1214,8 +1333,6 @@ function adicionarXP() {
 
     }
 
-
-    // Verifica os marcos de 5 níveis.
 
     atualizarMarcosBrasao(
         nivelAnterior,
@@ -1239,7 +1356,7 @@ function adicionarXP() {
 
 
 // ==========================================
-// REMOVER XP DO PERSONAGEM
+// REMOVER XP
 // ==========================================
 
 function removerXP() {
@@ -1260,7 +1377,9 @@ function removerXP() {
 
 
     if (
-        !Number.isFinite(quantidade) ||
+        !Number.isFinite(
+            quantidade
+        ) ||
         quantidade <= 0
     ) {
         return;
@@ -1268,26 +1387,30 @@ function removerXP() {
 
 
     xp -=
-        Math.floor(quantidade);
+        Math.floor(
+            quantidade
+        );
 
 
-    xp = Math.max(
-        0,
-        xp
-    );
+    xp =
+        Math.max(
+            0,
+            xp
+        );
 
 
-    const nivelAnterior =
+    const nivelAntigo =
         nivel;
 
-
-    // Recalcula o nível.
 
     nivel = 1;
 
 
     while (
-        xp >= xpParaNivel(nivel + 1)
+        xp >=
+        xpParaNivel(
+            nivel + 1
+        )
     ) {
 
         nivel++;
@@ -1295,30 +1418,30 @@ function removerXP() {
     }
 
 
-    // Recalcula pontos de atributo
-    // ganhos por níveis.
+    // Quantidade de pontos recebidos
+    // por níveis que continuam existindo.
 
-    const pontosGanhos =
-        Math.max(
-            0,
-            nivel - 1
-        ) * 3;
+    const pontosTotais =
+        (nivel - 1) * 3;
 
 
-    pontosAtributo =
-        Math.min(
-            pontosAtributo,
-            pontosGanhos
-        );
+    if (
+        pontosAtributo >
+        pontosTotais
+    ) {
+
+        pontosAtributo =
+            pontosTotais;
+
+    }
 
 
-    // Se caiu abaixo de algum marco,
-    // removemos os XP de brasão
-    // correspondentes aos marcos
-    // que deixaram de existir.
+    // Recalcula os marcos de 5 níveis.
 
     const marcosAtuais =
-        Math.floor(nivel / 5);
+        Math.floor(
+            nivel / 5
+        );
 
 
     if (
@@ -1326,7 +1449,7 @@ function removerXP() {
         marcosAtuais
     ) {
 
-        const removidos =
+        const marcosRemovidos =
             marcosBrasaoRecebidos -
             marcosAtuais;
 
@@ -1335,7 +1458,10 @@ function removerXP() {
             Math.max(
                 0,
                 xpBrasao -
-                (removidos * 500)
+                (
+                    marcosRemovidos *
+                    500
+                )
             );
 
 
@@ -1386,13 +1512,12 @@ function atualizarMarcosBrasao(
         marcoAnterior;
 
 
-    if (novosMarcos <= 0) {
+    if (
+        novosMarcos <= 0
+    ) {
         return;
     }
 
-
-    // Cada marco de 5 níveis
-    // concede 500 XP de Brasão.
 
     xpBrasao +=
         novosMarcos * 500;
@@ -1400,67 +1525,6 @@ function atualizarMarcosBrasao(
 
     marcosBrasaoRecebidos +=
         novosMarcos;
-
-}
-
-
-// ==========================================
-// ADICIONAR XP DO BRASÃO
-// ==========================================
-
-function adicionarXPBrasao(
-    quantidade
-) {
-
-    if (
-        !Number.isFinite(quantidade) ||
-        quantidade <= 0
-    ) {
-        return;
-    }
-
-
-    xpBrasao +=
-        Math.floor(quantidade);
-
-
-    atualizarBrasao();
-
-    salvarDados();
-
-}
-
-
-// ==========================================
-// REMOVER XP DO BRASÃO
-// ==========================================
-
-function removerXPBrasao(
-    quantidade
-) {
-
-    if (
-        !Number.isFinite(quantidade) ||
-        quantidade <= 0
-    ) {
-        return;
-    }
-
-
-    xpBrasao -=
-        Math.floor(quantidade);
-
-
-    xpBrasao =
-        Math.max(
-            0,
-            xpBrasao
-        );
-
-
-    atualizarBrasao();
-
-    salvarDados();
 
 }
 
@@ -1481,7 +1545,8 @@ function obterEstagioBrasao() {
     ) {
 
         if (
-            xpBrasao >= candidato.xp
+            xpBrasao >=
+            candidato.xp
         ) {
 
             estagio =
@@ -1550,7 +1615,7 @@ function atualizarBrasao() {
 
 
     // --------------------------------------
-    // BRASÃO DA FRENTE
+    // FRENTE
     // --------------------------------------
 
     if (emblema) {
@@ -1575,10 +1640,6 @@ function atualizarBrasao() {
     }
 
 
-    // --------------------------------------
-    // NOME DO ESTÁGIO NA FRENTE
-    // --------------------------------------
-
     if (stageFront) {
 
         stageFront.textContent =
@@ -1588,7 +1649,7 @@ function atualizarBrasao() {
 
 
     // --------------------------------------
-    // INFORMAÇÕES DO VERSO
+    // VERSO
     // --------------------------------------
 
     if (stageName) {
@@ -1613,17 +1674,17 @@ function atualizarBrasao() {
 
     if (proximo) {
 
-        const xpDoProximo =
-            proximo.xp;
-
-
-        const xpDoAtual =
+        const xpAtual =
             estagio.xp;
 
 
-        const faixa =
-            xpDoProximo -
-            xpDoAtual;
+        const xpProximo =
+            proximo.xp;
+
+
+        const distancia =
+            xpProximo -
+            xpAtual;
 
 
         const progresso =
@@ -1631,9 +1692,11 @@ function atualizarBrasao() {
                 0,
                 Math.min(
                     100,
-                    ((xpBrasao -
-                        xpDoAtual) /
-                        faixa) * 100
+                    (
+                        (xpBrasao -
+                            xpAtual) /
+                        distancia
+                    ) * 100
                 )
             );
 
@@ -1641,7 +1704,7 @@ function atualizarBrasao() {
         if (xpText) {
 
             xpText.textContent =
-                `${xpBrasao.toLocaleString("pt-BR")} / ${xpDoProximo.toLocaleString("pt-BR")} XP`;
+                `${xpBrasao.toLocaleString("pt-BR")} / ${xpProximo.toLocaleString("pt-BR")} XP`;
 
         }
 
@@ -1667,7 +1730,7 @@ function atualizarBrasao() {
             const falta =
                 Math.max(
                     0,
-                    xpDoProximo -
+                    xpProximo -
                     xpBrasao
                 );
 
@@ -1679,7 +1742,7 @@ function atualizarBrasao() {
 
     } else {
 
-        // Brasão EXTRA
+        // EXTRA ALCANÇADO
 
         if (xpText) {
 
@@ -1718,7 +1781,7 @@ function atualizarBrasao() {
 
 
 // ==========================================
-// CONTROLE DE XP DO BRASÃO PELO MESTRE
+// XP DO BRASÃO — MODO MESTRE
 // ==========================================
 
 function adicionarXPDoBrasao() {
@@ -1739,16 +1802,24 @@ function adicionarXPDoBrasao() {
 
 
     if (
-        !Number.isFinite(quantidade) ||
+        !Number.isFinite(
+            quantidade
+        ) ||
         quantidade <= 0
     ) {
         return;
     }
 
 
-    adicionarXPBrasao(
-        quantidade
-    );
+    xpBrasao +=
+        Math.floor(
+            quantidade
+        );
+
+
+    atualizarBrasao();
+
+    salvarDados();
 
 
     input.value = "";
@@ -1774,16 +1845,31 @@ function removerXPDoBrasao() {
 
 
     if (
-        !Number.isFinite(quantidade) ||
+        !Number.isFinite(
+            quantidade
+        ) ||
         quantidade <= 0
     ) {
         return;
     }
 
 
-    removerXPBrasao(
-        quantidade
-    );
+    xpBrasao -=
+        Math.floor(
+            quantidade
+        );
+
+
+    xpBrasao =
+        Math.max(
+            0,
+            xpBrasao
+        );
+
+
+    atualizarBrasao();
+
+    salvarDados();
 
 
     input.value = "";
@@ -1792,8 +1878,11 @@ function removerXPDoBrasao() {
 
 
 // ==========================================
-// MODO MESTRE
+// ⭐ MODO MESTRE
 // ==========================================
+//
+// ESTA ERA A FUNÇÃO QUE ESTAVA FALTANDO.
+//
 
 function alternarModoMestre() {
 
@@ -1804,7 +1893,13 @@ function alternarModoMestre() {
 
 
     if (!controles) {
+
+        console.error(
+            "Não encontrei .master-controls"
+        );
+
         return;
+
     }
 
 
@@ -1822,9 +1917,30 @@ function alternarModoMestre() {
 carregarDados();
 
 
-atualizarNome();
+// Atualiza a interface sem resetar
+// os recursos salvos.
 
-atualizarRaca();
+const dadosRacaInicial =
+    racas[racaAtual];
+
+if (dadosRacaInicial) {
+
+    const raceElement =
+        document.getElementById(
+            "character-race"
+        );
+
+    if (raceElement) {
+
+        raceElement.textContent =
+            racaAtual;
+
+    }
+
+}
+
+
+atualizarNome();
 
 atualizarClasse();
 
@@ -1840,14 +1956,13 @@ atualizarBrasao();
 
 
 // ==========================================
-// GARANTIR MARCOS DE BRASÃO
+// GARANTIA DOS MARCOS
 // ==========================================
-//
-// Isso evita que personagens já existentes
-// percam os 500 XP dos marcos de 5 níveis.
 
 const marcosEsperados =
-    Math.floor(nivel / 5);
+    Math.floor(
+        nivel / 5
+    );
 
 
 if (
