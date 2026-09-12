@@ -49,13 +49,10 @@ color: #aaa0bd;
 / ================================= */
 
 .character-card {
-position: relative;
-
-width: 100%;
-min-height: 720px;
-
-perspective: 1200px;
-
+    position: relative;
+    width: 100%;
+    height: 720px;
+    perspective: 1200px;
 }
 
 /* ================================= /
@@ -63,10 +60,9 @@ perspective: 1200px;
 / ================================= */
 
 .card-face {
-position: absolute;
-
-width: 100%;
-min-height: 720px;
+    position: absolute;
+    width: 100%;
+    height: 720px;
 
 border-radius: 22px;
 
@@ -741,7 +737,7 @@ font-size: 12px;
 
 .card-face,
 .character-card {
-    min-height: 650px;
+    height: 650px;
 }
 
 }
