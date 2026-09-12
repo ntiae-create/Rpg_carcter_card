@@ -331,8 +331,8 @@ body {
 }
 
 .affinity-emblem {
-    width: 65px;
-    height: 65px;
+    width: 55px;
+    height: 55px;
 
     display: flex;
     align-items: center;
@@ -1541,4 +1541,54 @@ body {
     .affinity-emblem[data-stage="8"]::after {
         inset: -19px;
     }
+}/* ==========================================
+   BRASÃO — TAMANHO COMPACTO
+========================================== */
+
+.affinity-emblem {
+    width: 55px;
+    height: 55px;
+    font-size: 24px;
+}
+
+/* Reduz o crescimento dos halos conforme o estágio */
+
+.affinity-emblem.crest-stage-1::after,
+.affinity-emblem[data-stage="1"]::after {
+    inset: -6px;
+}
+
+.affinity-emblem.crest-stage-2::after,
+.affinity-emblem[data-stage="2"]::after {
+    inset: -7px;
+}
+
+.affinity-emblem.crest-stage-3::after,
+.affinity-emblem[data-stage="3"]::after {
+    inset: -8px;
+}
+
+.affinity-emblem.crest-stage-4::after,
+.affinity-emblem[data-stage="4"]::after {
+    inset: -9px;
+}
+
+.affinity-emblem.crest-stage-5::after,
+.affinity-emblem[data-stage="5"]::after {
+    inset: -10px;
+}
+
+.affinity-emblem.crest-stage-6::after,
+.affinity-emblem[data-stage="6"]::after {
+    inset: -11px;
+}
+
+.affinity-emblem.crest-stage-7::after,
+.affinity-emblem[data-stage="7"]::after {
+    inset: -12px;
+}
+
+.affinity-emblem.crest-stage-8::after,
+.affinity-emblem[data-stage="8"]::after {
+    inset: -14px;
 }
