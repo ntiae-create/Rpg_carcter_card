@@ -10,6 +10,7 @@
 const card = document.querySelector(".character-card");
 
 if (card) {
+
     card.addEventListener("click", function (evento) {
 
         if (
@@ -21,7 +22,9 @@ if (card) {
         }
 
         card.classList.toggle("flipped");
+
     });
+
 }
 
 
@@ -100,6 +103,155 @@ const racas = {
 
 
 // ==========================================
+// CORES DAS RAÇAS
+// ==========================================
+
+const coresRacas = {
+
+    "Humano": {
+        main: "#60a5fa",
+        light: "#dbeafe",
+        dark: "#10233d",
+        glow: "rgba(96, 165, 250, 0.25)"
+    },
+
+    "Meio-elfo": {
+        main: "#2dd4bf",
+        light: "#ccfbf1",
+        dark: "#0c2927",
+        glow: "rgba(45, 212, 191, 0.25)"
+    },
+
+    "Elfo": {
+        main: "#34d399",
+        light: "#d1fae5",
+        dark: "#0d2d20",
+        glow: "rgba(52, 211, 153, 0.25)"
+    },
+
+    "Semi-besta": {
+        main: "#f59e0b",
+        light: "#fef3c7",
+        dark: "#3a2308",
+        glow: "rgba(245, 158, 11, 0.25)"
+    },
+
+    "Besta": {
+        main: "#ef4444",
+        light: "#fee2e2",
+        dark: "#3a1010",
+        glow: "rgba(239, 68, 68, 0.25)"
+    }
+
+};
+
+
+// ==========================================
+// CORES DAS AFINIDADES
+// ==========================================
+
+const coresAfinidades = {
+
+    agua: {
+        main: "#22d3ee",
+        light: "#a5f3fc"
+    },
+
+    luz: {
+        main: "#facc15",
+        light: "#fef9c3"
+    },
+
+    terra: {
+        main: "#84cc16",
+        light: "#ecfccb"
+    },
+
+    trevas: {
+        main: "#a855f7",
+        light: "#e9d5ff"
+    },
+
+    vento: {
+        main: "#60a5fa",
+        light: "#dbeafe"
+    },
+
+    fogo: {
+        main: "#f97316",
+        light: "#fed7aa"
+    }
+
+};
+
+
+// ==========================================
+// ATUALIZAR CORES VISUAIS
+// ==========================================
+
+function atualizarCores() {
+
+    if (!card) {
+        return;
+    }
+
+    const corRaca =
+        coresRacas[racaAtual] ||
+        coresRacas["Humano"];
+
+    const corAfinidade =
+        coresAfinidades[afinidadeAtual] ||
+        coresAfinidades["agua"];
+
+
+    // --------------------------------------
+    // CORES DA RAÇA
+    // --------------------------------------
+
+    card.style.setProperty(
+        "--race-main",
+        corRaca.main
+    );
+
+    card.style.setProperty(
+        "--race-light",
+        corRaca.light
+    );
+
+    card.style.setProperty(
+        "--race-dark",
+        corRaca.dark
+    );
+
+    card.style.setProperty(
+        "--card-border",
+        corRaca.main
+    );
+
+    card.style.setProperty(
+        "--card-glow",
+        corRaca.glow
+    );
+
+
+    // --------------------------------------
+    // CORES DA AFINIDADE
+    // --------------------------------------
+
+    card.style.setProperty(
+        "--element-main",
+        corAfinidade.main
+    );
+
+    card.style.setProperty(
+        "--element-light",
+        corAfinidade.light
+    );
+
+}
+
+
+// ==========================================
 // AFINIDADES
 // ==========================================
 
@@ -141,19 +293,6 @@ const afinidades = {
 // ==========================================
 // ESTÁGIOS DOS BRASÕES
 // ==========================================
-//
-// 0 XP       = Inicial
-// 3.000 XP   = Leve
-// 6.000 XP   = Pequeno
-// 9.000 XP   = Médio
-// 12.000 XP  = Grande
-// 15.000 XP  = Pesado
-// 20.000 XP  = Arcano
-// 25.000 XP  = Arcano evoluído
-// 50.000 XP  = Extra
-//
-// "Arcano evoluído" é apenas um estágio
-// intermediário para representar os 25.000 XP.
 
 const estagiosBrasao = [
 
@@ -595,9 +734,6 @@ function atualizarRaca() {
     }
 
 
-    // Ao trocar de raça,
-    // os recursos voltam ao máximo.
-
     hp = dadosRaca.hp;
 
     mp = dadosRaca.mp;
@@ -607,8 +743,6 @@ function atualizarRaca() {
     sanidade =
         dadosRaca.sanidade;
 
-
-    // Atributos base da raça.
 
     atributos.atk =
         dadosRaca.atk;
@@ -628,6 +762,8 @@ function atualizarRaca() {
     atributos.int =
         dadosRaca.int;
 
+
+    atualizarCores();
 
     atualizarRecursos();
 
@@ -754,6 +890,8 @@ function atualizarAfinidade() {
 
     }
 
+
+    atualizarCores();
 
     atualizarBrasao();
 
@@ -1106,9 +1244,7 @@ function aumentarAtributo(
 
     atributos[atributo]++;
 
-
     pontosAtributo--;
-
 
     atualizarAtributos();
 
@@ -1152,12 +1288,6 @@ function xpNecessarioPorNivel(
     if (nivelAtual === 9)
         return 1200;
 
-
-    // 10 → 11 = 1200
-    // 11 → 12 = 1350
-    // 12 → 13 = 1500
-    // 13 → 14 = 1650
-    // ...
 
     return 1200 +
         ((nivelAtual - 10) * 150);
@@ -1349,7 +1479,6 @@ function adicionarXP() {
 
     input.value = "";
 
-
     salvarDados();
 
 }
@@ -1399,10 +1528,6 @@ function removerXP() {
         );
 
 
-    const nivelAntigo =
-        nivel;
-
-
     nivel = 1;
 
 
@@ -1418,9 +1543,6 @@ function removerXP() {
     }
 
 
-    // Quantidade de pontos recebidos
-    // por níveis que continuam existindo.
-
     const pontosTotais =
         (nivel - 1) * 3;
 
@@ -1435,8 +1557,6 @@ function removerXP() {
 
     }
 
-
-    // Recalcula os marcos de 5 níveis.
 
     const marcosAtuais =
         Math.floor(
@@ -1479,7 +1599,6 @@ function removerXP() {
 
 
     input.value = "";
-
 
     salvarDados();
 
@@ -1624,10 +1743,12 @@ function atualizarBrasao() {
             `scale(${estagio.tamanho})`;
 
 
+        // O CSS já recebe a cor da afinidade
+        // através da variável --element-main.
         emblema.style.textShadow =
-            `0 0 ${8 * estagio.brilho}px rgba(168, 85, 247, 0.9),
-             0 0 ${18 * estagio.brilho}px rgba(124, 58, 237, 0.7),
-             0 0 ${30 * estagio.brilho}px rgba(192, 132, 252, 0.45)`;
+            `0 0 ${8 * estagio.brilho}px var(--element-main),
+             0 0 ${18 * estagio.brilho}px var(--element-main),
+             0 0 ${30 * estagio.brilho}px var(--element-light)`;
 
 
         emblema.dataset.brasao =
@@ -1741,8 +1862,6 @@ function atualizarBrasao() {
         }
 
     } else {
-
-        // EXTRA ALCANÇADO
 
         if (xpText) {
 
@@ -1880,9 +1999,6 @@ function removerXPDoBrasao() {
 // ==========================================
 // ⭐ MODO MESTRE
 // ==========================================
-//
-// ESTA ERA A FUNÇÃO QUE ESTAVA FALTANDO.
-//
 
 function alternarModoMestre() {
 
@@ -1917,11 +2033,15 @@ function alternarModoMestre() {
 carregarDados();
 
 
-// Atualiza a interface sem resetar
-// os recursos salvos.
+// Aplica as cores salvas
+// antes de atualizar a interface.
+
+atualizarCores();
+
 
 const dadosRacaInicial =
     racas[racaAtual];
+
 
 if (dadosRacaInicial) {
 
@@ -1929,6 +2049,7 @@ if (dadosRacaInicial) {
         document.getElementById(
             "character-race"
         );
+
 
     if (raceElement) {
 
