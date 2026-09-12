@@ -12,7 +12,6 @@ const racas = {
         res: 8,
         agi: 8,
         int: 15,
-
         passiva: "Raça adaptativa. Recebe bônus progressivo de XP enquanto estiver em grupo."
     },
 
@@ -28,7 +27,6 @@ const racas = {
         res: 9,
         agi: 10,
         int: 15,
-
         passiva: "Harmonia. +5% ATK MGC de Vento. Projéteis mágicos possuem 40% de chance de atordoar por 1 turno."
     },
 
@@ -44,7 +42,6 @@ const racas = {
         res: 9,
         agi: 12,
         int: 16,
-
         passiva: "Orgulho Élfico. +10% ATK MGC de Vento."
     },
 
@@ -60,8 +57,7 @@ const racas = {
         res: 6,
         agi: 10,
         int: 10,
-
-        passiva: "Frenesi. Pode ser ativado pelo jogador por 2 turnos. +5% ATK. Ao ativar, HP cai para 20% do máximo. Ao terminar, -5 AGI."
+        passiva: "Frenesi. Pode ser ativado pelo jogador por 2 turnos. +5% ATK."
     },
 
     besta: {
@@ -76,47 +72,76 @@ const racas = {
         res: 5,
         agi: 9,
         int: 6,
-
-        passiva: "Frenesi. Ativado automaticamente com 20% de HP ou menos. +10% ATK por 3 turnos. Ataca todos próximos e depois fica incapacitada pelo restante da luta."
+        passiva: "Frenesi. Ativado automaticamente com 20% de HP ou menos."
     }
 
 };
+
+
+// ==========================
+// VALORES ATUAIS
+// ==========================
+
+let hpAtual = racas.humano.hp;
+let mpAtual = racas.humano.mp;
+let estAtual = racas.humano.est;
+let sanidadeAtual = racas.humano.sanidade;
+
+
+// ==========================
+// ATUALIZAR RAÇA
+// ==========================
+
 const seletorRaca = document.getElementById("race-select");
 
 seletorRaca.addEventListener("change", function () {
 
     const racaSelecionada = racas[this.value];
 
-    document.getElementById("stat-atk").textContent = racaSelecionada.atk;
-    document.getElementById("stat-def").textContent = racaSelecionada.def;
-    document.getElementById("stat-agi").textContent = racaSelecionada.agi;
-    document.getElementById("stat-int").textContent = racaSelecionada.int;
-    document.getElementById("stat-hp").textContent = racaSelecionada.hp;
-    document.getElementById("stat-mp").textContent = racaSelecionada.mp;
-    document.getElementById("stat-est").textContent = racaSelecionada.est;
-    document.getElementById("stat-sanidade").textContent = racaSelecionada.sanidade;
-    document.getElementById("stat-atkMgc").textContent = racaSelecionada.atkMgc;
-    document.getElementById("stat-res").textContent = racaSelecionada.res;
-});
-function alternarModoMestre() {
-let hpAtual = 25;
-let hpMaximo = 25;
-
-function alterarHP(valor) {
-
-    hpAtual += valor;
-
-    if (hpAtual < 0) {
-        hpAtual = 0;
-    }
-
-    if (hpAtual > hpMaximo) {
-        hpAtual = hpMaximo;
-    }
+    hpAtual = racaSelecionada.hp;
+    mpAtual = racaSelecionada.mp;
+    estAtual = racaSelecionada.est;
+    sanidadeAtual = racaSelecionada.sanidade;
 
     document.getElementById("stat-hp").textContent =
-        hpAtual + " / " + hpMaximo;
-}
+        hpAtual + " / " + racaSelecionada.hp;
+
+    document.getElementById("stat-mp").textContent =
+        mpAtual + " / " + racaSelecionada.mp;
+
+    document.getElementById("stat-est").textContent =
+        estAtual + " / " + racaSelecionada.est;
+
+    document.getElementById("stat-sanidade").textContent =
+        sanidadeAtual + " / " + racaSelecionada.sanidade;
+
+    document.getElementById("stat-atk").textContent =
+        racaSelecionada.atk;
+
+    document.getElementById("stat-atkMgc").textContent =
+        racaSelecionada.atkMgc;
+
+    document.getElementById("stat-def").textContent =
+        racaSelecionada.def;
+
+    document.getElementById("stat-res").textContent =
+        racaSelecionada.res;
+
+    document.getElementById("stat-agi").textContent =
+        racaSelecionada.agi;
+
+    document.getElementById("stat-int").textContent =
+        racaSelecionada.int;
+
+});
+
+
+// ==========================
+// MODO MESTRE
+// ==========================
+
+function alternarModoMestre() {
+
     const painel = document.querySelector(".master-controls");
 
     if (painel.style.display === "block") {
@@ -125,4 +150,96 @@ function alterarHP(valor) {
         painel.style.display = "block";
     }
 
+}
+
+
+// ==========================
+// ALTERAR HP
+// ==========================
+
+function alterarHP(valor) {
+
+    const raca = racas[seletorRaca.value];
+
+    hpAtual += valor;
+
+    if (hpAtual < 0) {
+        hpAtual = 0;
+    }
+
+    if (hpAtual > raca.hp) {
+        hpAtual = raca.hp;
+    }
+
+    document.getElementById("stat-hp").textContent =
+        hpAtual + " / " + raca.hp;
+}
+
+
+// ==========================
+// ALTERAR MP
+// ==========================
+
+function alterarMP(valor) {
+
+    const raca = racas[seletorRaca.value];
+
+    mpAtual += valor;
+
+    if (mpAtual < 0) {
+        mpAtual = 0;
+    }
+
+    if (mpAtual > raca.mp) {
+        mpAtual = raca.mp;
+    }
+
+    document.getElementById("stat-mp").textContent =
+        mpAtual + " / " + raca.mp;
+}
+
+
+// ==========================
+// ALTERAR EST
+// ==========================
+
+function alterarEST(valor) {
+
+    const raca = racas[seletorRaca.value];
+
+    estAtual += valor;
+
+    if (estAtual < 0) {
+        estAtual = 0;
+    }
+
+    if (estAtual > raca.est) {
+        estAtual = raca.est;
+    }
+
+    document.getElementById("stat-est").textContent =
+        estAtual + " / " + raca.est;
+}
+
+
+// ==========================
+// ALTERAR SANIDADE
+// ==========================
+
+function alterarSanidade(valor) {
+
+    const raca = racas[seletorRaca.value];
+
+    sanidadeAtual += valor;
+
+    if (sanidadeAtual < 0) {
+        sanidadeAtual = 0;
+    }
+
+    if (sanidadeAtual > raca.sanidade) {
+        sanidadeAtual = raca.sanidade;
+    }
+
+    document.getElementById("stat-sanidade").textContent =
+        sanidadeAtual + " / " + raca.sanidade;
 }
