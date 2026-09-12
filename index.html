@@ -278,7 +278,7 @@
                 <div class="stats-grid">
 
 
-                    <div class="stat">
+                    <div class="stat attribute-stat">
 
                         <span>⚔️</span>
 
@@ -290,10 +290,18 @@
                             ATK
                         </small>
 
+                        <button
+                            type="button"
+                            class="attribute-plus"
+                            onclick="aumentarAtributo('atk')"
+                        >
+                            +
+                        </button>
+
                     </div>
 
 
-                    <div class="stat">
+                    <div class="stat attribute-stat">
 
                         <span>🔮</span>
 
@@ -305,10 +313,18 @@
                             ATK MGC
                         </small>
 
+                        <button
+                            type="button"
+                            class="attribute-plus"
+                            onclick="aumentarAtributo('atkMgc')"
+                        >
+                            +
+                        </button>
+
                     </div>
 
 
-                    <div class="stat">
+                    <div class="stat attribute-stat">
 
                         <span>🛡️</span>
 
@@ -320,10 +336,18 @@
                             DEF
                         </small>
 
+                        <button
+                            type="button"
+                            class="attribute-plus"
+                            onclick="aumentarAtributo('def')"
+                        >
+                            +
+                        </button>
+
                     </div>
 
 
-                    <div class="stat">
+                    <div class="stat attribute-stat">
 
                         <span>✨</span>
 
@@ -334,6 +358,14 @@
                         <small>
                             RES
                         </small>
+
+                        <button
+                            type="button"
+                            class="attribute-plus"
+                            onclick="aumentarAtributo('res')"
+                        >
+                            +
+                        </button>
 
                     </div>
 
@@ -356,7 +388,7 @@
                 <div class="stats-grid">
 
 
-                    <div class="stat">
+                    <div class="stat attribute-stat">
 
                         <span>💨</span>
 
@@ -368,10 +400,18 @@
                             AGI
                         </small>
 
+                        <button
+                            type="button"
+                            class="attribute-plus"
+                            onclick="aumentarAtributo('agi')"
+                        >
+                            +
+                        </button>
+
                     </div>
 
 
-                    <div class="stat">
+                    <div class="stat attribute-stat">
 
                         <span>🧠</span>
 
@@ -382,6 +422,14 @@
                         <small>
                             INT
                         </small>
+
+                        <button
+                            type="button"
+                            class="attribute-plus"
+                            onclick="aumentarAtributo('int')"
+                        >
+                            +
+                        </button>
 
                     </div>
 
@@ -394,15 +442,20 @@
 
             <!-- PONTOS DE ATRIBUTO -->
 
-            <section class="attribute-points">
+            <section
+                class="attribute-points"
+                id="attribute-points-box"
+            >
 
                 <h3>
                     ✦ PONTOS DE ATRIBUTO
                 </h3>
 
+
                 <strong id="attribute-points">
                     0
                 </strong>
+
 
                 <span>
                     disponíveis
