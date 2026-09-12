@@ -180,6 +180,16 @@ const coresAfinidades = {
     fogo: {
         main: "#f97316",
         light: "#fed7aa"
+    },
+
+    fisico: {
+        main: "#94a3b8",
+        light: "#e2e8f0"
+    },
+
+    magico: {
+        main: "#c084fc",
+        light: "#f3e8ff"
     }
 
 };
@@ -219,6 +229,73 @@ const afinidades = {
     fogo: {
         nome: "FOGO",
         simbolo: "🔥"
+    },
+
+    fisico: {
+        nome: "FÍSICO",
+        simbolo: "⚔️"
+    },
+
+    magico: {
+        nome: "MÁGICO",
+        simbolo: "✨"
+    }
+
+};
+
+
+// ==========================================
+// 8 BRASÕES REAIS
+// ==========================================
+
+const brasoes = {
+
+    agua: {
+        nome: "LOBO",
+        brasao: "🐺",
+        guardiao: "Guardião do Lobo"
+    },
+
+    luz: {
+        nome: "TIGRE",
+        brasao: "🐯",
+        guardiao: "Guardião do Tigre"
+    },
+
+    terra: {
+        nome: "URSO",
+        brasao: "🐻",
+        guardiao: "Guardião do Urso"
+    },
+
+    trevas: {
+        nome: "RAPOSA",
+        brasao: "🦊",
+        guardiao: "Guardião da Raposa"
+    },
+
+    vento: {
+        nome: "ÁGUIA",
+        brasao: "🦅",
+        guardiao: "Guardião da Águia"
+    },
+
+    fogo: {
+        nome: "DRAGÃO",
+        brasao: "🐉",
+        guardiao: "Guardião do Dragão"
+    },
+
+    fisico: {
+        nome: "MAMUTE",
+        brasao: "🦣",
+        guardiao: "Guardião do Mamute"
+    },
+
+    magico: {
+        nome: "CORUJA",
+        brasao: "🦉",
+        guardiao: "Guardião da Coruja"
     }
 
 };
@@ -231,59 +308,59 @@ const afinidades = {
 const estagiosBrasao = [
 
     {
-        nome: "INICIAL",
+        nome: "SEM NENHUM",
         xp: 0,
+        tamanho: 0.85,
+        brilho: 0.4
+    },
+
+    {
+        nome: "INICIAL",
+        xp: 3000,
         tamanho: 1,
         brilho: 1
     },
 
     {
         nome: "LEVE",
-        xp: 3000,
+        xp: 6000,
         tamanho: 1.08,
         brilho: 1.2
     },
 
     {
         nome: "PEQUENO",
-        xp: 6000,
+        xp: 9000,
         tamanho: 1.16,
         brilho: 1.4
     },
 
     {
         nome: "MÉDIO",
-        xp: 9000,
+        xp: 12000,
         tamanho: 1.25,
         brilho: 1.7
     },
 
     {
         nome: "GRANDE",
-        xp: 12000,
+        xp: 15000,
         tamanho: 1.35,
         brilho: 2
     },
 
     {
         nome: "PESADO",
-        xp: 15000,
+        xp: 20000,
         tamanho: 1.45,
         brilho: 2.4
     },
 
     {
         nome: "ARCANO",
-        xp: 20000,
+        xp: 25000,
         tamanho: 1.6,
         brilho: 3
-    },
-
-    {
-        nome: "ARCANO EVOLUÍDO",
-        xp: 25000,
-        tamanho: 1.7,
-        brilho: 3.5
     },
 
     {
@@ -310,7 +387,7 @@ let afinidadeAtual = "agua";
 
 
 // ==========================================
-// IMAGEM DO PERSONAGEM
+// IMAGEM
 // ==========================================
 
 let imagemPersonagem = "";
@@ -326,14 +403,44 @@ let mp = 15;
 
 let est = 30;
 
-let sanidade = 100;
+let sanidade = 101;
 
+
+// ==========================================
+// PROGRESSÃO
+// ==========================================
 
 let xp = 0;
 
 let nivel = 1;
 
-let pontosAtributo = 0;
+const NIVEL_MAXIMO = 30;
+
+
+// ==========================================
+// PONTOS DE ATRIBUTO
+// ==========================================
+
+// Nível 1 já começa com 3 pontos.
+
+let pontosAtributo = 3;
+
+
+// ==========================================
+// PONTOS DE RECURSO
+// ==========================================
+
+// Recebidos nos níveis 3, 6, 9, 12...
+
+let pontosRecurso = 0;
+
+let recursosDistribuidos = {
+
+    hp: 0,
+    mp: 0,
+    est: 0
+
+};
 
 
 // ==========================================
@@ -401,6 +508,10 @@ function salvarDados() {
         nivel,
 
         pontosAtributo,
+
+        pontosRecurso,
+
+        recursosDistribuidos,
 
         xpBrasao,
 
@@ -536,7 +647,14 @@ function carregarDados() {
         if (
             typeof dados.nivel === "number"
         ) {
-            nivel = dados.nivel;
+            nivel =
+                Math.max(
+                    1,
+                    Math.min(
+                        NIVEL_MAXIMO,
+                        dados.nivel
+                    )
+                );
         }
 
 
@@ -544,7 +662,34 @@ function carregarDados() {
             typeof dados.pontosAtributo === "number"
         ) {
             pontosAtributo =
-                dados.pontosAtributo;
+                Math.max(
+                    0,
+                    dados.pontosAtributo
+                );
+        }
+
+
+        if (
+            typeof dados.pontosRecurso === "number"
+        ) {
+            pontosRecurso =
+                Math.max(
+                    0,
+                    dados.pontosRecurso
+                );
+        }
+
+
+        if (dados.recursosDistribuidos) {
+
+            recursosDistribuidos = {
+
+                ...recursosDistribuidos,
+
+                ...dados.recursosDistribuidos
+
+            };
+
         }
 
 
@@ -552,7 +697,10 @@ function carregarDados() {
             typeof dados.xpBrasao === "number"
         ) {
             xpBrasao =
-                dados.xpBrasao;
+                Math.max(
+                    0,
+                    dados.xpBrasao
+                );
         }
 
 
@@ -560,7 +708,10 @@ function carregarDados() {
             typeof dados.marcosBrasaoRecebidos === "number"
         ) {
             marcosBrasaoRecebidos =
-                dados.marcosBrasaoRecebidos;
+                Math.max(
+                    0,
+                    dados.marcosBrasaoRecebidos
+                );
         }
 
 
@@ -1019,14 +1170,21 @@ function atualizarRaca() {
     }
 
 
-    hp = dadosRaca.hp;
+    hp =
+        dadosRaca.hp +
+        recursosDistribuidos.hp;
 
-    mp = dadosRaca.mp;
+    mp =
+        dadosRaca.mp +
+        recursosDistribuidos.mp;
 
-    est = dadosRaca.est;
+    est =
+        dadosRaca.est +
+        recursosDistribuidos.est;
 
     sanidade =
-        dadosRaca.sanidade;
+        dadosRaca.sanidade +
+        nivel;
 
 
     atributos.atk =
@@ -1054,6 +1212,8 @@ function atualizarRaca() {
 
     atualizarAtributos();
 
+    atualizarBrasao();
+
     salvarDados();
 
 }
@@ -1067,6 +1227,16 @@ if (raceSelect) {
 
             racaAtual =
                 this.value;
+
+            recursosDistribuidos = {
+
+                hp: 0,
+                mp: 0,
+                est: 0
+
+            };
+
+            pontosRecurso = 0;
 
             atualizarRaca();
 
@@ -1154,8 +1324,21 @@ function atualizarAfinidade() {
 
     if (emblema) {
 
-        emblema.textContent =
-            dados.simbolo;
+        const brasaoAtual =
+            brasoes[afinidadeAtual];
+
+
+        if (brasaoAtual) {
+
+            emblema.textContent =
+                brasaoAtual.brasao;
+
+        } else {
+
+            emblema.textContent =
+                dados.simbolo;
+
+        }
 
     }
 
@@ -1276,6 +1459,23 @@ function atualizarRecursos() {
     }
 
 
+    const hpMax =
+        dadosRaca.hp +
+        recursosDistribuidos.hp;
+
+    const mpMax =
+        dadosRaca.mp +
+        recursosDistribuidos.mp;
+
+    const estMax =
+        dadosRaca.est +
+        recursosDistribuidos.est;
+
+    const sanidadeMax =
+        dadosRaca.sanidade +
+        nivel;
+
+
     const hpElement =
         document.getElementById(
             "stat-hp"
@@ -1303,7 +1503,7 @@ function atualizarRecursos() {
     if (hpElement) {
 
         hpElement.textContent =
-            `${hp} / ${dadosRaca.hp}`;
+            `${hp} / ${hpMax}`;
 
     }
 
@@ -1311,7 +1511,7 @@ function atualizarRecursos() {
     if (mpElement) {
 
         mpElement.textContent =
-            `${mp} / ${dadosRaca.mp}`;
+            `${mp} / ${mpMax}`;
 
     }
 
@@ -1319,7 +1519,7 @@ function atualizarRecursos() {
     if (estElement) {
 
         estElement.textContent =
-            `${est} / ${dadosRaca.est}`;
+            `${est} / ${estMax}`;
 
     }
 
@@ -1327,9 +1527,12 @@ function atualizarRecursos() {
     if (sanidadeElement) {
 
         sanidadeElement.textContent =
-            `${sanidade} / ${dadosRaca.sanidade}`;
+            `${sanidade} / ${sanidadeMax}`;
 
     }
+
+
+    atualizarBotoesRecurso();
 
 }
 
@@ -1341,7 +1544,8 @@ function atualizarRecursos() {
 function alterarHP(valor) {
 
     const max =
-        racas[racaAtual].hp;
+        racas[racaAtual].hp +
+        recursosDistribuidos.hp;
 
 
     hp += valor;
@@ -1350,7 +1554,10 @@ function alterarHP(valor) {
     hp =
         Math.max(
             0,
-            Math.min(hp, max)
+            Math.min(
+                hp,
+                max
+            )
         );
 
 
@@ -1368,7 +1575,8 @@ function alterarHP(valor) {
 function alterarMP(valor) {
 
     const max =
-        racas[racaAtual].mp;
+        racas[racaAtual].mp +
+        recursosDistribuidos.mp;
 
 
     mp += valor;
@@ -1377,7 +1585,10 @@ function alterarMP(valor) {
     mp =
         Math.max(
             0,
-            Math.min(mp, max)
+            Math.min(
+                mp,
+                max
+            )
         );
 
 
@@ -1395,7 +1606,8 @@ function alterarMP(valor) {
 function alterarEST(valor) {
 
     const max =
-        racas[racaAtual].est;
+        racas[racaAtual].est +
+        recursosDistribuidos.est;
 
 
     est += valor;
@@ -1404,7 +1616,10 @@ function alterarEST(valor) {
     est =
         Math.max(
             0,
-            Math.min(est, max)
+            Math.min(
+                est,
+                max
+            )
         );
 
 
@@ -1422,7 +1637,8 @@ function alterarEST(valor) {
 function alterarSanidade(valor) {
 
     const max =
-        racas[racaAtual].sanidade;
+        racas[racaAtual].sanidade +
+        nivel;
 
 
     sanidade += valor;
@@ -1439,6 +1655,129 @@ function alterarSanidade(valor) {
 
 
     atualizarRecursos();
+
+    salvarDados();
+
+}
+
+
+// ==========================================
+// PONTOS DE RECURSO
+// ==========================================
+
+function atualizarPontosRecurso() {
+
+    const elemento =
+        document.getElementById(
+            "resource-points"
+        );
+
+
+    if (elemento) {
+
+        elemento.textContent =
+            pontosRecurso;
+
+    }
+
+
+    const caixa =
+        document.getElementById(
+            "resource-points-box"
+        );
+
+
+    if (caixa) {
+
+        caixa.classList.toggle(
+            "available",
+            pontosRecurso > 0
+        );
+
+    }
+
+
+    atualizarBotoesRecurso();
+
+}
+
+
+function atualizarBotoesRecurso() {
+
+    const botoes =
+        document.querySelectorAll(
+            ".resource-plus"
+        );
+
+
+    botoes.forEach(
+        function (botao) {
+
+            botao.style.display =
+                pontosRecurso > 0
+                    ? "block"
+                    : "none";
+
+        }
+    );
+
+}
+
+
+function aumentarRecurso(
+    recurso
+) {
+
+    if (
+        pontosRecurso <= 0
+    ) {
+        return;
+    }
+
+
+    if (
+        !(
+            recurso in
+            recursosDistribuidos
+        )
+    ) {
+        return;
+    }
+
+
+    recursosDistribuidos[recurso]++;
+
+    pontosRecurso--;
+
+
+    const dadosRaca =
+        racas[racaAtual];
+
+
+    if (recurso === "hp") {
+
+        hp++;
+
+    }
+
+
+    if (recurso === "mp") {
+
+        mp++;
+
+    }
+
+
+    if (recurso === "est") {
+
+        est++;
+
+    }
+
+
+    atualizarRecursos();
+
+    atualizarPontosRecurso();
 
     salvarDados();
 
@@ -1634,7 +1973,10 @@ function xpNecessarioPorNivel(
 
 
     return 1200 +
-        ((nivelAtual - 10) * 150);
+        (
+            (nivelAtual - 10) *
+            150
+        );
 
 }
 
@@ -1675,6 +2017,67 @@ function xpParaNivel(
 
 
 // ==========================================
+// PROCESSAR SUBIDA DE NÍVEL
+// ==========================================
+
+function processarSubidaNivel(
+    nivelAnterior,
+    nivelNovo
+) {
+
+    const niveisGanhos =
+        nivelNovo -
+        nivelAnterior;
+
+
+    if (
+        niveisGanhos <= 0
+    ) {
+        return;
+    }
+
+
+    // +3 atributos por nível
+    pontosAtributo +=
+        niveisGanhos * 3;
+
+
+    // +1 Sanidade por nível
+    sanidade +=
+        niveisGanhos;
+
+
+    // +5 recursos a cada múltiplo de 3
+    for (
+        let nivelAtual =
+            nivelAnterior + 1;
+
+        nivelAtual <= nivelNovo;
+
+        nivelAtual++
+    ) {
+
+        if (
+            nivelAtual % 3 === 0
+        ) {
+
+            pontosRecurso += 5;
+
+        }
+
+    }
+
+
+    // Marcos de brasão
+    atualizarMarcosBrasao(
+        nivelAnterior,
+        nivelNovo
+    );
+
+}
+
+
+// ==========================================
 // ATUALIZAR XP
 // ==========================================
 
@@ -1684,10 +2087,23 @@ function atualizarXP() {
         xpParaNivel(nivel);
 
 
-    const necessario =
-        xpNecessarioPorNivel(
-            nivel
-        );
+    let necessario;
+
+
+    if (
+        nivel >= NIVEL_MAXIMO
+    ) {
+
+        necessario = 1;
+
+    } else {
+
+        necessario =
+            xpNecessarioPorNivel(
+                nivel
+            );
+
+    }
 
 
     const xpNoNivel =
@@ -1697,16 +2113,30 @@ function atualizarXP() {
         );
 
 
-    const progresso =
-        Math.max(
-            0,
-            Math.min(
-                100,
-                (xpNoNivel /
-                    necessario) *
-                100
-            )
-        );
+    let progresso;
+
+
+    if (
+        nivel >= NIVEL_MAXIMO
+    ) {
+
+        progresso = 100;
+
+    } else {
+
+        progresso =
+            Math.max(
+                0,
+                Math.min(
+                    100,
+                    (
+                        xpNoNivel /
+                        necessario
+                    ) * 100
+                )
+            );
+
+    }
 
 
     const xpText =
@@ -1749,6 +2179,9 @@ function atualizarXP() {
 
             }
         );
+
+
+    atualizarPontosRecurso();
 
 }
 
@@ -1794,7 +2227,9 @@ function adicionarXP() {
         );
 
 
+    // Nível máximo = 30
     while (
+        nivel < NIVEL_MAXIMO &&
         xp >=
         xpParaNivel(
             nivel + 1
@@ -1803,12 +2238,10 @@ function adicionarXP() {
 
         nivel++;
 
-        pontosAtributo += 3;
-
     }
 
 
-    atualizarMarcosBrasao(
+    processarSubidaNivel(
         nivelAnterior,
         nivel
     );
@@ -1817,6 +2250,8 @@ function adicionarXP() {
     atualizarXP();
 
     atualizarAtributos();
+
+    atualizarRecursos();
 
     atualizarBrasao();
 
@@ -1859,6 +2294,10 @@ function removerXP() {
     }
 
 
+    const nivelAnterior =
+        nivel;
+
+
     xp -=
         Math.floor(
             quantidade
@@ -1876,6 +2315,7 @@ function removerXP() {
 
 
     while (
+        nivel < NIVEL_MAXIMO &&
         xp >=
         xpParaNivel(
             nivel + 1
@@ -1887,17 +2327,60 @@ function removerXP() {
     }
 
 
-    const pontosTotais =
-        (nivel - 1) * 3;
+    const niveisPerdidos =
+        nivelAnterior -
+        nivel;
 
 
     if (
-        pontosAtributo >
-        pontosTotais
+        niveisPerdidos > 0
     ) {
 
         pontosAtributo =
-            pontosTotais;
+            Math.max(
+                0,
+                pontosAtributo -
+                (
+                    niveisPerdidos * 3
+                )
+            );
+
+
+        sanidade =
+            Math.max(
+                racas[racaAtual].sanidade + nivel,
+                sanidade -
+                niveisPerdidos
+            );
+
+
+        // Recalcula pontos de recurso obtidos por nível.
+        const recursosEsperados =
+            Math.floor(
+                nivel / 3
+            ) * 5;
+
+
+        const recursosTotaisUsados =
+            recursosDistribuidos.hp +
+            recursosDistribuidos.mp +
+            recursosDistribuidos.est;
+
+
+        const recursosGanhosTotal =
+            recursosEsperados;
+
+
+        const recursosDisponiveis =
+            Math.max(
+                0,
+                recursosGanhosTotal -
+                recursosTotaisUsados
+            );
+
+
+        pontosRecurso =
+            recursosDisponiveis;
 
     }
 
@@ -1938,6 +2421,8 @@ function removerXP() {
     atualizarXP();
 
     atualizarAtributos();
+
+    atualizarRecursos();
 
     atualizarBrasao();
 
@@ -2026,6 +2511,20 @@ function obterEstagioBrasao() {
 
 
 // ==========================================
+// BRASÃO ATUAL
+// ==========================================
+
+function obterBrasaoAtual() {
+
+    return (
+        brasoes[afinidadeAtual] ||
+        brasoes.agua
+    );
+
+}
+
+
+// ==========================================
 // ATUALIZAR BRASÃO
 // ==========================================
 
@@ -2033,6 +2532,10 @@ function atualizarBrasao() {
 
     const estagio =
         obterEstagioBrasao();
+
+
+    const brasaoAtual =
+        obterBrasaoAtual();
 
 
     const emblema =
@@ -2077,7 +2580,15 @@ function atualizarBrasao() {
         );
 
 
+    // --------------------------------------
+    // Brasão visual
+    // --------------------------------------
+
     if (emblema) {
+
+        emblema.textContent =
+            brasaoAtual.brasao;
+
 
         emblema.style.transform =
             `scale(${estagio.tamanho})`;
@@ -2090,14 +2601,18 @@ function atualizarBrasao() {
 
 
         emblema.dataset.brasao =
-            estagio.nome;
+            brasaoAtual.nome;
 
 
         emblema.title =
-            `Brasão ${estagio.nome} — ${xpBrasao.toLocaleString("pt-BR")} XP`;
+            `Brasão do ${brasaoAtual.nome} — ${estagio.nome} — ${xpBrasao.toLocaleString("pt-BR")} XP`;
 
     }
 
+
+    // --------------------------------------
+    // Nome do estágio
+    // --------------------------------------
 
     if (stageFront) {
 
@@ -2114,6 +2629,28 @@ function atualizarBrasao() {
 
     }
 
+
+    // --------------------------------------
+    // Nome do Guardião
+    // --------------------------------------
+
+    const guardiao =
+        document.getElementById(
+            "badge-guardian"
+        );
+
+
+    if (guardiao) {
+
+        guardiao.textContent =
+            brasaoAtual.guardiao;
+
+    }
+
+
+    // --------------------------------------
+    // XP / progresso
+    // --------------------------------------
 
     const indice =
         estagiosBrasao.indexOf(
@@ -2367,11 +2904,64 @@ function alternarModoMestre() {
 carregarDados();
 
 
-// Aplica as cores salvas
-// antes de atualizar a interface.
+// ------------------------------------------
+// Garantias para personagens antigos
+// ------------------------------------------
+
+if (
+    nivel < 1
+) {
+
+    nivel = 1;
+
+}
+
+
+if (
+    nivel > NIVEL_MAXIMO
+) {
+
+    nivel =
+        NIVEL_MAXIMO;
+
+}
+
+
+if (
+    !recursosDistribuidos ||
+    typeof recursosDistribuidos !== "object"
+) {
+
+    recursosDistribuidos = {
+
+        hp: 0,
+        mp: 0,
+        est: 0
+
+    };
+
+}
+
+
+if (
+    typeof pontosRecurso !== "number"
+) {
+
+    pontosRecurso = 0;
+
+}
+
+
+// ------------------------------------------
+// Cores
+// ------------------------------------------
 
 atualizarCores();
 
+
+// ------------------------------------------
+// Nome / raça / classe / afinidade
+// ------------------------------------------
 
 const dadosRacaInicial =
     racas[racaAtual];
@@ -2411,6 +3001,8 @@ atualizarBrasao();
 
 atualizarImagemPersonagem();
 
+atualizarPontosRecurso();
+
 
 // ==========================================
 // GARANTIA DOS MARCOS
@@ -2441,6 +3033,37 @@ if (
 
 
     atualizarBrasao();
+
+    salvarDados();
+
+}
+
+
+// ==========================================
+// GARANTIA DO XP NO NÍVEL 30
+// ==========================================
+
+if (
+    nivel >= NIVEL_MAXIMO
+) {
+
+    const xpMinimo =
+        xpParaNivel(
+            NIVEL_MAXIMO
+        );
+
+
+    if (
+        xp < xpMinimo
+    ) {
+
+        xp =
+            xpMinimo;
+
+    }
+
+
+    atualizarXP();
 
     salvarDados();
 
