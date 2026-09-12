@@ -1,10 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>RPG Character Cards</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <h1>RPG Character Cards</h1>
-    <p>Nosso projeto está começando!</p>
+
+    <main class="app">
+
+        <header class="app-header">
+            <h1>RPG Character Cards</h1>
+            <p>Crie e evolua seus personagens.</p>
+        </header>
+
+        <section class="character-card">
+
+            <div class="card-header">
+                <span class="rarity">✦ RARO ✦</span>
+                <span class="level">LV. 01</span>
+            </div>
+
+            <div class="character-image">
+                <span>ARTE DO PERSONAGEM</span>
+            </div>
+
+            <div class="character-info">
+                <h2>Nome do Personagem</h2>
+                <p class="title">Título / Epíteto</p>
+
+                <div class="xp-section">
+                    <div class="xp-info">
+                        <span>XP</span>
+                        <span>0 / 100</span>
+                    </div>
+
+                    <div class="xp-bar">
+                        <div class="xp-progress"></div>
+                    </div>
+                </div>
+
+                <div class="stats">
+
+                    <div class="stat">
+                        <span>⚔️</span>
+                        <strong>10</strong>
+                        <small>FOR</small>
+                    </div>
+
+                    <div class="stat">
+                        <span>🛡️</span>
+                        <strong>10</strong>
+                        <small>DEF</small>
+                    </div>
+
+                    <div class="stat">
+                        <span>⚡</span>
+                        <strong>10</strong>
+                        <small>AGI</small>
+                    </div>
+
+                    <div class="stat">
+                        <span>🧠</span>
+                        <strong>10</strong>
+                        <small>INT</small>
+                    </div>
+
+                </div>
+
+                <div class="badges">
+                    <h3>BRASÕES</h3>
+
+                    <div class="badge-list">
+                        <div class="badge locked">?</div>
+                        <div class="badge locked">?</div>
+                        <div class="badge locked">?</div>
+                        <div class="badge locked">?</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
 </body>
 </html>
