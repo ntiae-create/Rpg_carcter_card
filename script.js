@@ -6,7 +6,6 @@ const card = document.querySelector(".character-card");
 
 card.addEventListener("click", function (evento) {
 
-    // Impede que controles façam o card girar
     if (
         evento.target.closest(
             ".master-controls, .master-toggle, button, input, select"
@@ -20,7 +19,7 @@ card.addEventListener("click", function (evento) {
 
 
 // =========================================
-// DADOS DO PERSONAGEM
+// DADOS DAS RAÇAS
 // =========================================
 
 const racas = {
@@ -99,7 +98,7 @@ const racas = {
 
 
 // =========================================
-// ESTADO ATUAL
+// ESTADO DO PERSONAGEM
 // =========================================
 
 let racaAtual = "Humano";
@@ -111,6 +110,24 @@ let sanidadeAtual = racas[racaAtual].sanidade;
 
 let xpAtual = 0;
 let nivelAtual = 1;
+
+
+// =========================================
+// PONTOS DE ATRIBUTO
+// =========================================
+
+let pontosAtributo = 0;
+
+const atributos = {
+
+    atk: 0,
+    atkMgc: 0,
+    def: 0,
+    res: 0,
+    agi: 0,
+    int: 0
+
+};
 
 
 // =========================================
@@ -130,6 +147,100 @@ function atualizarRecursos() {
 
     document.getElementById("stat-sanidade").textContent =
         `${sanidadeAtual} / ${racas[racaAtual].sanidade}`;
+}
+
+
+// =========================================
+// ATUALIZAR ATRIBUTOS
+// =========================================
+
+function atualizarAtributos() {
+
+    const base = racas[racaAtual];
+
+    document.getElementById("stat-atk").textContent =
+        base.atk + atributos.atk;
+
+    document.getElementById("stat-atkMgc").textContent =
+        base.atkMgc + atributos.atkMgc;
+
+    document.getElementById("stat-def").textContent =
+        base.def + atributos.def;
+
+    document.getElementById("stat-res").textContent =
+        base.res + atributos.res;
+
+    document.getElementById("stat-agi").textContent =
+        base.agi + atributos.agi;
+
+    document.getElementById("stat-int").textContent =
+        base.int + atributos.int;
+
+    document.getElementById("attribute-points").textContent =
+        pontosAtributo;
+
+    atualizarBotoesAtributo();
+}
+
+
+// =========================================
+// BOTÕES +
+// =========================================
+
+function atualizarBotoesAtributo() {
+
+    const botoes =
+        document.querySelectorAll(".attribute-plus");
+
+    botoes.forEach(botao => {
+
+        if (pontosAtributo > 0) {
+
+            botao.style.display = "block";
+
+        } else {
+
+            botao.style.display = "none";
+
+        }
+
+    });
+
+
+    const caixa =
+        document.getElementById("attribute-points-box");
+
+    if (pontosAtributo > 0) {
+
+        caixa.classList.add("points-available");
+
+    } else {
+
+        caixa.classList.remove("points-available");
+
+    }
+}
+
+
+// =========================================
+// AUMENTAR ATRIBUTO
+// =========================================
+
+function aumentarAtributo(atributo) {
+
+    if (pontosAtributo <= 0) {
+        return;
+    }
+
+    if (!(atributo in atributos)) {
+        return;
+    }
+
+    atributos[atributo]++;
+
+    pontosAtributo--;
+
+    atualizarAtributos();
 }
 
 
@@ -227,7 +338,8 @@ const xpPorNivel = {
 
 function atualizarXP() {
 
-    const xpNecessario = xpPorNivel[nivelAtual];
+    const xpNecessario =
+        xpPorNivel[nivelAtual];
 
     const porcentagem =
         xpNecessario
@@ -255,9 +367,11 @@ function atualizarXP() {
 
 function adicionarXP() {
 
-    const campo = document.getElementById("xp-amount");
+    const campo =
+        document.getElementById("xp-amount");
 
-    const quantidade = Number(campo.value);
+    const quantidade =
+        Number(campo.value);
 
     if (!quantidade || quantidade <= 0) {
         return;
@@ -270,6 +384,7 @@ function adicionarXP() {
     campo.value = "";
 
     atualizarXP();
+    atualizarAtributos();
 }
 
 
@@ -279,18 +394,18 @@ function adicionarXP() {
 
 function removerXP() {
 
-    const campo = document.getElementById("xp-amount");
+    const campo =
+        document.getElementById("xp-amount");
 
-    const quantidade = Number(campo.value);
+    const quantidade =
+        Number(campo.value);
 
     if (!quantidade || quantidade <= 0) {
         return;
     }
 
-    xpAtual = Math.max(
-        0,
-        xpAtual - quantidade
-    );
+    xpAtual =
+        Math.max(0, xpAtual - quantidade);
 
     atualizarXP();
 
@@ -313,8 +428,11 @@ function verificarNivel() {
 
         nivelAtual++;
 
+        // Cada nível concede +3 pontos
+        pontosAtributo += 3;
+
         console.log(
-            `Personagem subiu para o nível ${nivelAtual}!`
+            `Nível ${nivelAtual}! +3 pontos de atributo.`
         );
     }
 }
@@ -350,5 +468,7 @@ function alternarModoMestre() {
 // =========================================
 
 atualizarRecursos();
+
+atualizarAtributos();
 
 atualizarXP();
