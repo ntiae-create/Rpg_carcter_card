@@ -243,18 +243,58 @@ function alterarSanidade(valor) {
     document.getElementById("stat-sanidade").textContent =
         sanidadeAtual + " / " + raca.sanidade;
 }
-let xpAtual = 0;
+  let xpAtual = 0;
+let nivelAtual = 1;
+
+const xpPorNivel = {
+    1: 100,
+    2: 150,
+    3: 225,
+    4: 325,
+    5: 450,
+    6: 600,
+    7: 775,
+    8: 975,
+    9: 1200,
+    10: 1500
+};
+
 
 function atualizarXP() {
 
+    const xpNecessario = xpPorNivel[nivelAtual] || 999999;
+
     document.getElementById("xp-text").textContent =
-        xpAtual + " / 100";
+        xpAtual + " XP";
 
-    const progresso = document.getElementById("xp-progress");
+    document.getElementById("xp-next").textContent =
+        xpNecessario + " XP";
 
-    const porcentagem = Math.min((xpAtual / 100) * 100, 100);
+    const porcentagem =
+        Math.min((xpAtual / xpNecessario) * 100, 100);
 
-    progresso.style.width = porcentagem + "%";
+    document.getElementById("xp-progress").style.width =
+        porcentagem + "%";
+}
+
+
+function atualizarNivel() {
+
+    while (
+        xpPorNivel[nivelAtual] &&
+        xpAtual >= xpPorNivel[nivelAtual]
+    ) {
+
+        xpAtual -= xpPorNivel[nivelAtual];
+
+        nivelAtual++;
+
+    }
+
+    atualizarXP();
+
+    document.querySelector(".level").textContent =
+        "LV. " + String(nivelAtual).padStart(2, "0");
 }
 
 
@@ -269,13 +309,34 @@ function adicionarXP() {
 
     xpAtual += quantidade;
 
-    atualizarXP();
-
     campo.value = "";
+
+    atualizarNivel();
 }
 
 
 function removerXP() {
+
+    const campo = document.getElementById("xp-amount");
+    const quantidade = Number(campo.value);
+
+    if (quantidade <= 0) {
+        return;
+    }
+
+    xpAtual -= quantidade;
+
+    if (xpAtual < 0) {
+        xpAtual = 0;
+    }
+
+    campo.value = "";
+
+    atualizarXP();
+}
+
+
+atualizarXP();
 
     const campo = document.getElementById("xp-amount");
     const quantidade = Number(campo.value);
