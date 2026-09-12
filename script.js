@@ -243,3 +243,54 @@ function alterarSanidade(valor) {
     document.getElementById("stat-sanidade").textContent =
         sanidadeAtual + " / " + raca.sanidade;
 }
+let xpAtual = 0;
+
+function atualizarXP() {
+
+    document.getElementById("xp-text").textContent =
+        xpAtual + " / 100";
+
+    const progresso = document.getElementById("xp-progress");
+
+    const porcentagem = Math.min((xpAtual / 100) * 100, 100);
+
+    progresso.style.width = porcentagem + "%";
+}
+
+
+function adicionarXP() {
+
+    const campo = document.getElementById("xp-amount");
+    const quantidade = Number(campo.value);
+
+    if (quantidade <= 0) {
+        return;
+    }
+
+    xpAtual += quantidade;
+
+    atualizarXP();
+
+    campo.value = "";
+}
+
+
+function removerXP() {
+
+    const campo = document.getElementById("xp-amount");
+    const quantidade = Number(campo.value);
+
+    if (quantidade <= 0) {
+        return;
+    }
+
+    xpAtual -= quantidade;
+
+    if (xpAtual < 0) {
+        xpAtual = 0;
+    }
+
+    atualizarXP();
+
+    campo.value = "";
+}
