@@ -255,7 +255,6 @@ const brasoes = {
         brasao: "🐺",
         guardiao: "Guardião do Lobo",
 
-        // Identidade visual
         ornamentos: {
             leve: "⌁",
             pequeno: "◈",
@@ -1407,7 +1406,7 @@ function atualizarAfinidade() {
 
         if (brasaoAtual) {
 
-            // A função atualizarBrasao()
+            // atualizarBrasao()
             // cuida da aparência completa.
 
         } else {
@@ -2110,17 +2109,14 @@ function processarSubidaNivel(
     }
 
 
-    // +3 atributos por nível
     pontosAtributo +=
         niveisGanhos * 3;
 
 
-    // +1 Sanidade por nível
     sanidade +=
         niveisGanhos;
 
 
-    // +5 recursos a cada múltiplo de 3
     for (
         let nivelAtual =
             nivelAnterior + 1;
@@ -2787,10 +2783,6 @@ function atualizarBrasao() {
         );
 
 
-    // ======================================
-    // VISUAL
-    // ======================================
-
     const visual =
         obterVisualBrasao(
             brasaoAtual,
@@ -2851,10 +2843,6 @@ function atualizarBrasao() {
     }
 
 
-    // ======================================
-    // NOME DO ESTÁGIO
-    // ======================================
-
     if (stageFront) {
 
         stageFront.textContent =
@@ -2871,10 +2859,6 @@ function atualizarBrasao() {
     }
 
 
-    // ======================================
-    // GUARDIÃO
-    // ======================================
-
     const guardiao =
         document.getElementById(
             "badge-guardian"
@@ -2888,10 +2872,6 @@ function atualizarBrasao() {
 
     }
 
-
-    // ======================================
-    // XP / PROGRESSO
-    // ======================================
 
     const indice =
         estagiosBrasao.indexOf(
@@ -3133,6 +3113,196 @@ function alternarModoMestre() {
 
     controles.classList.toggle(
         "active"
+    );
+
+}
+
+
+// ==========================================
+// RESETAR PERSONAGEM
+// ==========================================
+
+function resetarPersonagem() {
+
+    const confirmar =
+        confirm(
+            "⚠️ RESETAR PERSONAGEM?\n\n" +
+            "Todo o progresso atual será apagado:\n" +
+            "• Nome\n" +
+            "• Raça e classe\n" +
+            "• Afinidade\n" +
+            "• XP e nível\n" +
+            "• Atributos distribuídos\n" +
+            "• Recursos distribuídos\n" +
+            "• XP do Brasão\n" +
+            "• Imagem personalizada\n\n" +
+            "Essa ação não pode ser desfeita."
+        );
+
+
+    if (!confirmar) {
+        return;
+    }
+
+
+    // ======================================
+    // APAGAR SALVAMENTO
+    // ======================================
+
+    localStorage.removeItem(
+        STORAGE_KEY
+    );
+
+
+    // ======================================
+    // ESTADO INICIAL
+    // ======================================
+
+    nomeAtual =
+        "Nome do Personagem";
+
+    racaAtual =
+        "Humano";
+
+    classeAtual =
+        "Saber";
+
+    afinidadeAtual =
+        "agua";
+
+
+    imagemPersonagem =
+        "";
+
+
+    // ======================================
+    // RECURSOS
+    // ======================================
+
+    hp = 25;
+
+    mp = 15;
+
+    est = 30;
+
+    sanidade = 101;
+
+
+    // ======================================
+    // PROGRESSÃO
+    // ======================================
+
+    xp = 0;
+
+    nivel = 1;
+
+
+    // ======================================
+    // PONTOS
+    // ======================================
+
+    pontosAtributo = 3;
+
+    pontosRecurso = 0;
+
+
+    recursosDistribuidos = {
+
+        hp: 0,
+        mp: 0,
+        est: 0
+
+    };
+
+
+    // ======================================
+    // BRASÃO
+    // ======================================
+
+    xpBrasao = 0;
+
+    marcosBrasaoRecebidos = 0;
+
+
+    // ======================================
+    // ATRIBUTOS
+    // ======================================
+
+    atributos = {
+
+        atk: 4,
+
+        atkMgc: 4,
+
+        def: 8,
+
+        res: 8,
+
+        agi: 8,
+
+        int: 15
+
+    };
+
+
+    // ======================================
+    // ATUALIZAR INTERFACE
+    // ======================================
+
+    atualizarCores();
+
+    atualizarNome();
+
+    atualizarClasse();
+
+    atualizarAfinidade();
+
+    atualizarRecursos();
+
+    atualizarAtributos();
+
+    atualizarXP();
+
+    atualizarBrasao();
+
+    atualizarImagemPersonagem();
+
+    atualizarPontosRecurso();
+
+
+    // ======================================
+    // LIMPAR INPUT DA IMAGEM
+    // ======================================
+
+    if (imageInput) {
+
+        imageInput.value = "";
+
+    }
+
+
+    // ======================================
+    // GARANTIR FRENTE DA CARTA
+    // ======================================
+
+    if (card) {
+
+        card.classList.remove(
+            "flipped"
+        );
+
+    }
+
+
+    // ======================================
+    // SALVAR ESTADO INICIAL
+    // ======================================
+
+    salvarDados();
+
+
+    alert(
+        "✓ Personagem resetado com sucesso!"
     );
 
 }
