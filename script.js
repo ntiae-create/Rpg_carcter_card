@@ -186,72 +186,6 @@ const coresAfinidades = {
 
 
 // ==========================================
-// ATUALIZAR CORES VISUAIS
-// ==========================================
-
-function atualizarCores() {
-
-    if (!card) {
-        return;
-    }
-
-    const corRaca =
-        coresRacas[racaAtual] ||
-        coresRacas["Humano"];
-
-    const corAfinidade =
-        coresAfinidades[afinidadeAtual] ||
-        coresAfinidades["agua"];
-
-
-    // --------------------------------------
-    // CORES DA RAÇA
-    // --------------------------------------
-
-    card.style.setProperty(
-        "--race-main",
-        corRaca.main
-    );
-
-    card.style.setProperty(
-        "--race-light",
-        corRaca.light
-    );
-
-    card.style.setProperty(
-        "--race-dark",
-        corRaca.dark
-    );
-
-    card.style.setProperty(
-        "--card-border",
-        corRaca.main
-    );
-
-    card.style.setProperty(
-        "--card-glow",
-        corRaca.glow
-    );
-
-
-    // --------------------------------------
-    // CORES DA AFINIDADE
-    // --------------------------------------
-
-    card.style.setProperty(
-        "--element-main",
-        corAfinidade.main
-    );
-
-    card.style.setProperty(
-        "--element-light",
-        corAfinidade.light
-    );
-
-}
-
-
-// ==========================================
 // AFINIDADES
 // ==========================================
 
@@ -375,6 +309,17 @@ let classeAtual = "Saber";
 let afinidadeAtual = "agua";
 
 
+// ==========================================
+// IMAGEM DO PERSONAGEM
+// ==========================================
+
+let imagemPersonagem = "";
+
+
+// ==========================================
+// RECURSOS
+// ==========================================
+
 let hp = 25;
 
 let mp = 15;
@@ -441,6 +386,8 @@ function salvarDados() {
 
         afinidadeAtual,
 
+        imagemPersonagem,
+
         hp,
 
         mp,
@@ -464,10 +411,25 @@ function salvarDados() {
     };
 
 
-    localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(dados)
-    );
+    try {
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(dados)
+        );
+
+    } catch (erro) {
+
+        console.error(
+            "Não foi possível salvar os dados:",
+            erro
+        );
+
+        alert(
+            "Não foi possível salvar a imagem. Tente usar uma imagem menor."
+        );
+
+    }
 
 }
 
@@ -524,6 +486,14 @@ function carregarDados() {
         ) {
             afinidadeAtual =
                 dados.afinidadeAtual;
+        }
+
+
+        if (
+            typeof dados.imagemPersonagem === "string"
+        ) {
+            imagemPersonagem =
+                dados.imagemPersonagem;
         }
 
 
@@ -642,6 +612,321 @@ const affinitySelect =
     document.getElementById(
         "affinity-select"
     );
+
+
+// ==========================================
+// ELEMENTOS DA IMAGEM
+// ==========================================
+
+const imageInput =
+    document.getElementById(
+        "character-image-input"
+    );
+
+const characterImage =
+    document.getElementById(
+        "character-image"
+    );
+
+const imagePlaceholder =
+    document.getElementById(
+        "image-placeholder"
+    );
+
+const removeImageButton =
+    document.getElementById(
+        "remove-character-image"
+    );
+
+
+// ==========================================
+// ATUALIZAR IMAGEM
+// ==========================================
+
+function atualizarImagemPersonagem() {
+
+    if (!characterImage) {
+        return;
+    }
+
+
+    if (imagemPersonagem) {
+
+        characterImage.src =
+            imagemPersonagem;
+
+        characterImage.style.display =
+            "block";
+
+
+        if (imagePlaceholder) {
+
+            imagePlaceholder.style.display =
+                "none";
+
+        }
+
+    } else {
+
+        characterImage.removeAttribute(
+            "src"
+        );
+
+        characterImage.style.display =
+            "none";
+
+
+        if (imagePlaceholder) {
+
+            imagePlaceholder.style.display =
+                "flex";
+
+        }
+
+    }
+
+}
+
+
+// ==========================================
+// COMPRIMIR IMAGEM
+// ==========================================
+
+function prepararImagem(file) {
+
+    return new Promise(
+        function (resolve, reject) {
+
+            if (!file.type.startsWith("image/")) {
+
+                reject(
+                    new Error(
+                        "O arquivo selecionado não é uma imagem."
+                    )
+                );
+
+                return;
+
+            }
+
+
+            const leitor =
+                new FileReader();
+
+
+            leitor.onload =
+                function () {
+
+                    const imagem =
+                        new Image();
+
+
+                    imagem.onload =
+                        function () {
+
+                            const limiteLargura =
+                                900;
+
+                            const limiteAltura =
+                                1200;
+
+
+                            let largura =
+                                imagem.width;
+
+                            let altura =
+                                imagem.height;
+
+
+                            const escala =
+                                Math.min(
+                                    1,
+                                    limiteLargura / largura,
+                                    limiteAltura / altura
+                                );
+
+
+                            largura =
+                                Math.round(
+                                    largura * escala
+                                );
+
+                            altura =
+                                Math.round(
+                                    altura * escala
+                                );
+
+
+                            const canvas =
+                                document.createElement(
+                                    "canvas"
+                                );
+
+
+                            canvas.width =
+                                largura;
+
+                            canvas.height =
+                                altura;
+
+
+                            const contexto =
+                                canvas.getContext(
+                                    "2d"
+                                );
+
+
+                            contexto.drawImage(
+                                imagem,
+                                0,
+                                0,
+                                largura,
+                                altura
+                            );
+
+
+                            let resultado;
+
+
+                            try {
+
+                                resultado =
+                                    canvas.toDataURL(
+                                        "image/webp",
+                                        0.82
+                                    );
+
+                            } catch (erro) {
+
+                                resultado =
+                                    canvas.toDataURL(
+                                        "image/jpeg",
+                                        0.82
+                                    );
+
+                            }
+
+
+                            resolve(
+                                resultado
+                            );
+
+                        };
+
+
+                    imagem.onerror =
+                        function () {
+
+                            reject(
+                                new Error(
+                                    "Não foi possível carregar a imagem."
+                                )
+                            );
+
+                        };
+
+
+                    imagem.src =
+                        leitor.result;
+
+                };
+
+
+            leitor.onerror =
+                function () {
+
+                    reject(
+                        new Error(
+                            "Não foi possível ler o arquivo."
+                        )
+                    );
+
+                };
+
+
+            leitor.readAsDataURL(file);
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// ESCOLHER IMAGEM
+// ==========================================
+
+if (imageInput) {
+
+    imageInput.addEventListener(
+        "change",
+        async function () {
+
+            const arquivo =
+                this.files[0];
+
+
+            if (!arquivo) {
+                return;
+            }
+
+
+            try {
+
+                imagemPersonagem =
+                    await prepararImagem(
+                        arquivo
+                    );
+
+
+                atualizarImagemPersonagem();
+
+                salvarDados();
+
+
+            } catch (erro) {
+
+                console.error(
+                    erro
+                );
+
+                alert(
+                    "Não foi possível carregar essa imagem."
+                );
+
+            }
+
+
+            this.value = "";
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// REMOVER IMAGEM
+// ==========================================
+
+if (removeImageButton) {
+
+    removeImageButton.addEventListener(
+        "click",
+        function () {
+
+            imagemPersonagem =
+                "";
+
+
+            atualizarImagemPersonagem();
+
+            salvarDados();
+
+        }
+    );
+
+}
 
 
 // ==========================================
@@ -912,6 +1197,65 @@ if (affinitySelect) {
             salvarDados();
 
         }
+    );
+
+}
+
+
+// ==========================================
+// CORES VISUAIS
+// ==========================================
+
+function atualizarCores() {
+
+    if (!card) {
+        return;
+    }
+
+
+    const corRaca =
+        coresRacas[racaAtual] ||
+        coresRacas["Humano"];
+
+
+    const corAfinidade =
+        coresAfinidades[afinidadeAtual] ||
+        coresAfinidades["agua"];
+
+
+    card.style.setProperty(
+        "--race-main",
+        corRaca.main
+    );
+
+    card.style.setProperty(
+        "--race-light",
+        corRaca.light
+    );
+
+    card.style.setProperty(
+        "--race-dark",
+        corRaca.dark
+    );
+
+    card.style.setProperty(
+        "--card-border",
+        corRaca.main
+    );
+
+    card.style.setProperty(
+        "--card-glow",
+        corRaca.glow
+    );
+
+    card.style.setProperty(
+        "--element-main",
+        corAfinidade.main
+    );
+
+    card.style.setProperty(
+        "--element-light",
+        corAfinidade.light
     );
 
 }
@@ -1733,18 +2077,12 @@ function atualizarBrasao() {
         );
 
 
-    // --------------------------------------
-    // FRENTE
-    // --------------------------------------
-
     if (emblema) {
 
         emblema.style.transform =
             `scale(${estagio.tamanho})`;
 
 
-        // O CSS já recebe a cor da afinidade
-        // através da variável --element-main.
         emblema.style.textShadow =
             `0 0 ${8 * estagio.brilho}px var(--element-main),
              0 0 ${18 * estagio.brilho}px var(--element-main),
@@ -1768,10 +2106,6 @@ function atualizarBrasao() {
 
     }
 
-
-    // --------------------------------------
-    // VERSO
-    // --------------------------------------
 
     if (stageName) {
 
@@ -2074,6 +2408,8 @@ atualizarAtributos();
 atualizarXP();
 
 atualizarBrasao();
+
+atualizarImagemPersonagem();
 
 
 // ==========================================
