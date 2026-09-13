@@ -562,37 +562,21 @@ function salvarDados() {
     const dados = {
 
         nomeAtual,
-
         racaAtual,
-
         classeAtual,
-
         afinidadeAtual,
-
         imagemPersonagem,
-
         hp,
-
         mp,
-
         est,
-
         sanidade,
-
         xp,
-
         nivel,
-
         pontosAtributo,
-
         pontosRecurso,
-
         recursosDistribuidos,
-
         xpBrasao,
-
         marcosBrasaoRecebidos,
-
         atributos
 
     };
@@ -1147,12 +1131,6 @@ if (removeImageButton) {
 
 
             atualizarImagemPersonagem();
-
-            if (imageInput) {
-
-                imageInput.value = "";
-
-            }
 
             salvarDados();
 
@@ -3151,18 +3129,10 @@ function resetarPersonagem() {
     }
 
 
-    // ======================================
-    // APAGAR SALVAMENTO
-    // ======================================
-
     localStorage.removeItem(
         STORAGE_KEY
     );
 
-
-    // ======================================
-    // ESTADO INICIAL
-    // ======================================
 
     nomeAtual =
         "Nome do Personagem";
@@ -3181,10 +3151,6 @@ function resetarPersonagem() {
         "";
 
 
-    // ======================================
-    // RECURSOS
-    // ======================================
-
     hp = 25;
 
     mp = 15;
@@ -3194,18 +3160,10 @@ function resetarPersonagem() {
     sanidade = 101;
 
 
-    // ======================================
-    // PROGRESSÃO
-    // ======================================
-
     xp = 0;
 
     nivel = 1;
 
-
-    // ======================================
-    // PONTOS
-    // ======================================
 
     pontosAtributo = 3;
 
@@ -3221,18 +3179,10 @@ function resetarPersonagem() {
     };
 
 
-    // ======================================
-    // BRASÃO
-    // ======================================
-
     xpBrasao = 0;
 
     marcosBrasaoRecebidos = 0;
 
-
-    // ======================================
-    // ATRIBUTOS
-    // ======================================
 
     atributos = {
 
@@ -3250,10 +3200,6 @@ function resetarPersonagem() {
 
     };
 
-
-    // ======================================
-    // ATUALIZAR INTERFACE
-    // ======================================
 
     atualizarCores();
 
@@ -3276,20 +3222,12 @@ function resetarPersonagem() {
     atualizarPontosRecurso();
 
 
-    // ======================================
-    // LIMPAR INPUT DA IMAGEM
-    // ======================================
-
     if (imageInput) {
 
         imageInput.value = "";
 
     }
 
-
-    // ======================================
-    // GARANTIR FRENTE DA CARTA
-    // ======================================
 
     if (card) {
 
@@ -3299,29 +3237,6 @@ function resetarPersonagem() {
 
     }
 
-
-    // ======================================
-    // FECHAR MODO MESTRE
-    // ======================================
-
-    const controlesMestre =
-        document.querySelector(
-            ".master-controls"
-        );
-
-
-    if (controlesMestre) {
-
-        controlesMestre.classList.remove(
-            "active"
-        );
-
-    }
-
-
-    // ======================================
-    // SALVAR ESTADO INICIAL
-    // ======================================
 
     salvarDados();
 
@@ -3339,10 +3254,6 @@ function resetarPersonagem() {
 
 carregarDados();
 
-
-// ==========================================
-// GARANTIAS
-// ==========================================
 
 if (
     nivel < 1
@@ -3406,16 +3317,8 @@ if (
 }
 
 
-// ==========================================
-// CORES
-// ==========================================
-
 atualizarCores();
 
-
-// ==========================================
-// NOME / RAÇA / CLASSE / AFINIDADE
-// ==========================================
 
 const dadosRacaInicial =
     racas[racaAtual];
@@ -3458,10 +3361,6 @@ atualizarImagemPersonagem();
 atualizarPontosRecurso();
 
 
-// ==========================================
-// GARANTIA DOS MARCOS
-// ==========================================
-
 const marcosEsperados =
     Math.floor(
         nivel / 5
@@ -3492,10 +3391,6 @@ if (
 
 }
 
-
-// ==========================================
-// GARANTIA DO XP NO NÍVEL 30
-// ==========================================
 
 if (
     nivel >= NIVEL_MAXIMO
