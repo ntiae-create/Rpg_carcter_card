@@ -75,19 +75,13 @@ button {
 .character-card {
     position: relative;
 
-    width: min(
-        94vw,
-        720px
-    );
+    width: min(94vw, 720px);
 
     margin: 20px auto;
 
     perspective: 1600px;
 
-    --card-width: min(
-        94vw,
-        720px
-    );
+    --card-width: min(94vw, 720px);
 }
 
 
@@ -123,10 +117,8 @@ button {
         );
 
     box-shadow:
-        0 0 25px
-            var(--card-glow),
-        inset 0 0 30px
-            rgba(0, 0, 0, 0.35);
+        0 0 25px var(--card-glow),
+        inset 0 0 30px rgba(0, 0, 0, 0.35);
 
     transition:
         border-color 0.4s ease,
@@ -157,20 +149,17 @@ button {
 
     inset: 0;
 
-    transform:
-        rotateY(180deg);
+    transform: rotateY(180deg);
 
     overflow-y: auto;
 }
 
 .character-card.flipped .card-front {
-    transform:
-        rotateY(-180deg);
+    transform: rotateY(-180deg);
 }
 
 .character-card.flipped .card-back {
-    transform:
-        rotateY(0deg);
+    transform: rotateY(0deg);
 }
 
 
@@ -259,6 +248,7 @@ button {
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     white-space: nowrap;
@@ -303,11 +293,7 @@ button {
 
     color: #ffffff;
 
-    font-size: clamp(
-        20px,
-        5vw,
-        30px
-    );
+    font-size: clamp(20px, 5vw, 30px);
 
     font-weight: 700;
 
@@ -609,7 +595,7 @@ button {
 
 
 /* =========================================================
-   BRASÕES — ESTÁGIOS
+   BRASÕES — BASE
    ========================================================= */
 
 .affinity-emblem {
@@ -814,8 +800,7 @@ button {
                 var(--element-main)
             );
 
-        transform:
-            scale(1);
+        transform: scale(1);
     }
 
     50% {
@@ -825,8 +810,7 @@ button {
                 var(--element-light)
             );
 
-        transform:
-            scale(1.04);
+        transform: scale(1.04);
     }
 }
 
@@ -840,8 +824,7 @@ button {
                 var(--element-main)
             );
 
-        transform:
-            scale(1);
+        transform: scale(1);
     }
 
     50% {
@@ -851,8 +834,7 @@ button {
                 var(--element-light)
             );
 
-        transform:
-            scale(1.07);
+        transform: scale(1.07);
     }
 }
 
@@ -874,11 +856,6 @@ button {
         );
 }
 
-
-/* =========================================================
-   TÍTULOS DO VERSO
-   ========================================================= */
-
 .card-back h3,
 .card-back h4 {
     margin-top: 0;
@@ -886,6 +863,42 @@ button {
     color: var(--element-light);
 
     letter-spacing: 0.8px;
+}
+
+
+/* =========================================================
+   CABEÇALHO DO VERSO
+   ========================================================= */
+
+.app-header,
+.back-header {
+    margin-bottom: 14px;
+
+    text-align: center;
+}
+
+.app-header h1,
+.back-header h2 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 17px;
+
+    letter-spacing: 1px;
+
+    text-shadow:
+        0 0 10px
+        rgba(34, 211, 238, 0.15);
+}
+
+.app-header p,
+.back-header p {
+    margin: 5px 0 0;
+
+    color: var(--text-muted);
+
+    font-size: 8px;
 }
 
 
@@ -964,8 +977,64 @@ button {
 
 
 /* =========================================================
-   RECURSOS / ESTATÍSTICAS
+   CONTROLES DE IMAGEM
    ========================================================= */
+
+.image-upload,
+.image-button,
+.remove-image-button {
+    width: 100%;
+
+    padding: 8px 10px;
+
+    margin-top: 7px;
+
+    border-radius: 8px;
+
+    border: 1px solid
+        rgba(255, 255, 255, 0.08);
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    color: var(--text-soft);
+
+    font-size: 9px;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+.image-upload:hover,
+.image-button:hover,
+.remove-image-button:hover {
+    background:
+        rgba(34, 211, 238, 0.07);
+
+    border-color:
+        rgba(34, 211, 238, 0.3);
+}
+
+
+/* =========================================================
+   RECURSOS
+   ========================================================= */
+
+.stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 8px;
+
+    margin-bottom: 15px;
+}
 
 .stats-grid {
     display: grid;
@@ -981,7 +1050,10 @@ button {
     margin-bottom: 15px;
 }
 
-.stat-box {
+.stat-box,
+.stat {
+    min-width: 0;
+
     padding: 10px;
 
     border-radius: 10px;
@@ -994,7 +1066,8 @@ button {
 }
 
 .stat-box span,
-.stat-label {
+.stat-label,
+.stat span {
     display: block;
 
     color: var(--text-muted);
@@ -1005,7 +1078,8 @@ button {
 }
 
 .stat-box strong,
-.stat-value {
+.stat-value,
+.stat strong {
     display: block;
 
     margin-top: 4px;
@@ -1013,6 +1087,53 @@ button {
     color: var(--element-light);
 
     font-size: 13px;
+}
+
+
+/* =========================================================
+   PONTOS DE RECURSOS
+   ========================================================= */
+
+.resource-points {
+    margin-bottom: 15px;
+}
+
+.resource-distribution {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0, 1fr)
+        );
+
+    gap: 7px;
+
+    margin-top: 8px;
+}
+
+.resource-option {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 6px;
+
+    padding: 7px 8px;
+
+    border-radius: 8px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    border: 1px solid
+        rgba(255, 255, 255, 0.06);
+
+    color: var(--text-soft);
+
+    font-size: 8px;
 }
 
 
@@ -1056,6 +1177,159 @@ button {
 
 
 /* =========================================================
+   ESTATÍSTICAS DE COMBATE
+   ========================================================= */
+
+.combat-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 8px;
+
+    margin-bottom: 15px;
+}
+
+.combat-stat {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 8px;
+
+    min-width: 0;
+
+    padding: 9px 10px;
+
+    border-radius: 9px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    border: 1px solid
+        rgba(255, 255, 255, 0.06);
+}
+
+.combat-stat span {
+    color: var(--text-soft);
+
+    font-size: 8px;
+
+    letter-spacing: 0.5px;
+}
+
+.combat-stat strong {
+    color: var(--element-light);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   CARACTERÍSTICAS
+   ========================================================= */
+
+.characteristics {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 7px;
+
+    margin-bottom: 15px;
+}
+
+.characteristic {
+    padding: 9px;
+
+    border-radius: 9px;
+
+    background:
+        rgba(255, 255, 255, 0.02);
+
+    border: 1px solid
+        rgba(255, 255, 255, 0.05);
+}
+
+.characteristic span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--text-muted);
+
+    font-size: 7px;
+
+    letter-spacing: 0.7px;
+}
+
+.characteristic strong {
+    color: var(--text-soft);
+
+    font-size: 9px;
+
+    line-height: 1.35;
+}
+
+
+/* =========================================================
+   PONTOS DE ATRIBUTO
+   ========================================================= */
+
+.attribute-points {
+    margin-bottom: 15px;
+}
+
+.attribute-distribution {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 7px;
+
+    margin-top: 8px;
+}
+
+.attribute-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 7px;
+
+    padding: 8px;
+
+    border-radius: 8px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    border: 1px solid
+        rgba(255, 255, 255, 0.06);
+
+    color: var(--text-soft);
+
+    font-size: 8px;
+}
+
+
+/* =========================================================
    PONTOS DISPONÍVEIS
    ========================================================= */
 
@@ -1095,9 +1369,20 @@ button {
         );
 
     gap: 7px;
+
+    margin-bottom: 15px;
 }
 
-.affinity-item {
+.affinity-item,
+.affinity-option {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 7px;
+
     padding: 8px;
 
     border-radius: 8px;
@@ -1113,9 +1398,14 @@ button {
     font-size: 8px;
 }
 
+.affinity-option input {
+    accent-color:
+        var(--purple);
+}
+
 
 /* =========================================================
-   BRASÃO — PAINEL DO VERSO
+   BRASÕES — PAINEL DO VERSO
    ========================================================= */
 
 .badge-section,
@@ -1131,6 +1421,50 @@ button {
 
     border: 1px solid
         rgba(255, 255, 255, 0.06);
+}
+
+.badge-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 7px;
+
+    margin-top: 8px;
+}
+
+.badge-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    min-width: 0;
+
+    padding: 8px;
+
+    border-radius: 8px;
+
+    background:
+        rgba(255, 255, 255, 0.02);
+
+    border: 1px solid
+        rgba(255, 255, 255, 0.05);
+}
+
+.badge-item .affinity-emblem {
+    flex-shrink: 0;
+}
+
+.badge-item span {
+    color: var(--text-soft);
+
+    font-size: 8px;
 }
 
 #badge-stage-name {
@@ -1164,6 +1498,127 @@ button {
 
 
 /* =========================================================
+   BARRA DE XP DO BRASÃO
+   ========================================================= */
+
+#badge-xp-progress {
+    width: 100%;
+
+    height: 6px;
+
+    margin-top: 7px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255, 255, 255, 0.06);
+
+    border: 1px solid
+        rgba(255, 255, 255, 0.05);
+}
+
+#badge-xp-progress > div {
+    width: 0%;
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--purple),
+            var(--element-main)
+        );
+
+    box-shadow:
+        0 0 9px
+        rgba(124, 58, 237, 0.65);
+
+    transition:
+        width 0.35s ease;
+}
+
+
+/* =========================================================
+   CONTROLES DE XP
+   ========================================================= */
+
+.xp-controls {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 7px;
+
+    margin-top: 8px;
+}
+
+.xp-controls button {
+    padding: 8px;
+
+    border-radius: 8px;
+
+    border: 1px solid
+        rgba(124, 58, 237, 0.35);
+
+    background:
+        rgba(124, 58, 237, 0.08);
+
+    color: #c4b5fd;
+
+    font-size: 8px;
+
+    font-weight: bold;
+}
+
+.xp-controls button:hover {
+    background:
+        rgba(124, 58, 237, 0.18);
+}
+
+
+/* =========================================================
+   BOTÃO SALVAR
+   ========================================================= */
+
+.save-button {
+    width: 100%;
+
+    padding: 10px;
+
+    margin-top: 8px;
+
+    border-radius: 9px;
+
+    border: 1px solid
+        rgba(34, 211, 238, 0.35);
+
+    background:
+        rgba(34, 211, 238, 0.08);
+
+    color: var(--element-light);
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.6px;
+}
+
+.save-button:hover {
+    background:
+        rgba(34, 211, 238, 0.15);
+}
+
+
+/* =========================================================
    CONTROLES DO MESTRE
    ========================================================= */
 
@@ -1187,16 +1642,63 @@ button {
     font-weight: bold;
 
     letter-spacing: 0.8px;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.master-toggle:hover {
+    background:
+        rgba(124, 58, 237, 0.16);
+
+    border-color:
+        rgba(124, 58, 237, 0.55);
 }
 
 .master-controls {
     display: none;
 
     margin-top: 10px;
+
+    padding: 11px;
+
+    border-radius: 11px;
+
+    border: 1px solid
+        rgba(124, 58, 237, 0.2);
+
+    background:
+        rgba(124, 58, 237, 0.035);
 }
 
 .master-controls.active {
     display: block;
+}
+
+.master-button {
+    width: 100%;
+
+    padding: 9px;
+
+    border-radius: 8px;
+
+    border: 1px solid
+        rgba(124, 58, 237, 0.4);
+
+    background:
+        rgba(124, 58, 237, 0.1);
+
+    color: #c4b5fd;
+
+    font-size: 9px;
+
+    font-weight: bold;
+}
+
+.master-button:hover {
+    background:
+        rgba(124, 58, 237, 0.2);
 }
 
 
@@ -1405,6 +1907,26 @@ button {
         min-height: 330px;
     }
 
+    .resource-distribution {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+    .combat-stats {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .characteristics {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .attribute-distribution {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
 }
 
 @media (max-width: 400px) {
@@ -1431,6 +1953,26 @@ button {
 
     .front-identity-item strong {
         font-size: 8px;
+    }
+
+    .resource-distribution {
+        grid-template-columns:
+            1fr;
+    }
+
+    .combat-stats {
+        grid-template-columns:
+            1fr;
+    }
+
+    .attribute-distribution {
+        grid-template-columns:
+            1fr;
+    }
+
+    .badge-grid {
+        grid-template-columns:
+            1fr;
     }
 
 }
