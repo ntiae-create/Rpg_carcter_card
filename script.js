@@ -847,7 +847,7 @@ const affinitySelect =
 
 const imageInput =
     document.getElementById(
-        "character-image-input"
+        "image-upload"
     );
 
 const characterImage =
@@ -862,7 +862,7 @@ const imagePlaceholder =
 
 const removeImageButton =
     document.getElementById(
-        "remove-character-image"
+        "remove-image-button"
     );
 
 
@@ -1147,6 +1147,12 @@ if (removeImageButton) {
 
 
             atualizarImagemPersonagem();
+
+            if (imageInput) {
+
+                imageInput.value = "";
+
+            }
 
             salvarDados();
 
@@ -3289,6 +3295,25 @@ function resetarPersonagem() {
 
         card.classList.remove(
             "flipped"
+        );
+
+    }
+
+
+    // ======================================
+    // FECHAR MODO MESTRE
+    // ======================================
+
+    const controlesMestre =
+        document.querySelector(
+            ".master-controls"
+        );
+
+
+    if (controlesMestre) {
+
+        controlesMestre.classList.remove(
+            "active"
         );
 
     }
