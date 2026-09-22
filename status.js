@@ -1,12 +1,15 @@
 /* =========================================================
-   RPG CHARACTER CARD
+   RPG BOSS CARD
    MÓDULO: STATUS
 ========================================================= */
+
+"use strict";
+
 
 const StatusModule = (() => {
 
     /* =====================================================
-       CONFIGURAÇÃO DOS ELEMENTOS
+       ELEMENTOS
     ===================================================== */
 
     const ELEMENTS = {
@@ -55,473 +58,37 @@ const StatusModule = (() => {
 
 
     /* =====================================================
-       ELEMENTO TEMPORARIAMENTE SELECIONADO
+       PEGAR BOSS
     ===================================================== */
 
-    let elementoSelecionado = null;
-
-
-    /* =====================================================
-       INICIALIZAR SELEÇÃO
-    ===================================================== */
-
-    function inicializarSelecao() {
-
-        elementoSelecionado =
-            character.affinity || null;
-
-    }
-
-
-    /* =====================================================
-       ATRIBUTOS
-    ===================================================== */
-
-    function configurarAtributos() {
-
-        const buttons =
-            document.querySelectorAll(
-                ".attribute-plus"
-            );
-
-
-        buttons.forEach(button => {
-
-            /*
-               Evita registrar o mesmo evento
-               mais de uma vez.
-            */
-
-            if (
-                button.dataset.statusConfigured ===
-                "true"
-            ) {
-
-                return;
-
-            }
-
-
-            button.dataset.statusConfigured =
-                "true";
-
-
-            button.addEventListener(
-                "click",
-                event => {
-
-                    event.stopPropagation();
-
-
-                    const attribute =
-                        button.dataset.attribute;
-
-
-                    if (
-                        character.attributePoints <= 0
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    if (
-                        character.attributes[
-                            attribute
-                        ] === undefined
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    character.attributes[
-                        attribute
-                    ]++;
-
-
-                    character.attributePoints--;
-
-
-                    atualizarInterface();
-
-                    salvarPersonagem();
-
-                }
-            );
-
-        });
-
-    }
-
-
-    /* =====================================================
-       CONFIGURAR ELEMENTOS
-    ===================================================== */
-
-    function configurarElementos() {
-
-        const options =
-            document.querySelectorAll(
-                ".element-option"
-            );
-
-
-        const confirm =
-            get("confirm-element");
-
-
-        options.forEach(option => {
-
-            /*
-               Evita duplicar eventos.
-            */
-
-            if (
-                option.dataset.statusConfigured ===
-                "true"
-            ) {
-
-                return;
-
-            }
-
-
-            option.dataset.statusConfigured =
-                "true";
-
-
-            option.addEventListener(
-                "click",
-                event => {
-
-                    event.stopPropagation();
-
-
-                    /*
-                       A afinidade é permanente.
-                    */
-
-                    if (character.affinity) {
-
-                        return;
-
-                    }
-
-
-                    elementoSelecionado =
-                        option.dataset.element;
-
-
-                    options.forEach(item => {
-
-                        item.classList.remove(
-                            "selected"
-                        );
-
-                    });
-
-
-                    option.classList.add(
-                        "selected"
-                    );
-
-
-                    if (confirm) {
-
-                        confirm.disabled =
-                            false;
-
-                    }
-
-                }
-            );
-
-        });
-
+    function obterBoss() {
 
         if (
-            confirm &&
-            confirm.dataset.statusConfigured !==
-            "true"
+            typeof window.BossSystem ===
+            "undefined"
         ) {
-
-            confirm.dataset.statusConfigured =
-                "true";
-
-
-            confirm.addEventListener(
-                "click",
-                event => {
-
-                    event.stopPropagation();
-
-
-                    if (
-                        !elementoSelecionado
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    /*
-                       Não permite trocar
-                       uma afinidade já confirmada.
-                    */
-
-                    if (character.affinity) {
-
-                        return;
-
-                    }
-
-
-                    character.affinity =
-                        elementoSelecionado;
-
-
-                    salvarPersonagem();
-
-                    atualizarInterface();
-
-                    aplicarEfeitoElemental();
-
-
-                    confirm.textContent =
-                        "AFINIDADE CONFIRMADA";
-
-                    confirm.disabled =
-                        true;
-
-                }
-            );
-
+            return null;
         }
+
+        return window.BossSystem.boss || null;
 
     }
 
 
     /* =====================================================
-       EFEITO ELEMENTAL
+       ATUALIZAR TEXTO
     ===================================================== */
 
-    function aplicarEfeitoElemental() {
+    function definirTexto(id, valor) {
 
-        /*
-           =================================================
-           CARD PRINCIPAL
-           =================================================
-        */
+        const elemento =
+            document.getElementById(id);
 
-        const card =
-            document.querySelector(
-                ".character-card"
-            );
-
-
-        /*
-           =================================================
-           REMOVE EFEITOS ANTIGOS DO CARD PRINCIPAL
-           =================================================
-        */
-
-        if (card) {
-
-            Object.keys(ELEMENTS).forEach(
-                element => {
-
-                    card.classList.remove(
-                        `element-${element}`
-                    );
-
-                }
-            );
-
-        }
-
-
-        /*
-           =================================================
-           REMOVE AFINIDADES ANTIGAS DOS 4 CARDS
-           =================================================
-        */
-
-        const dimensions =
-            document.querySelectorAll(
-                ".dimension"
-            );
-
-
-        dimensions.forEach(dimension => {
-
-            Object.keys(ELEMENTS).forEach(
-                element => {
-
-                    dimension.classList.remove(
-                        `affinity-${element}`
-                    );
-
-                }
-
-            );
-
-        });
-
-
-        /*
-           =================================================
-           SEM AFINIDADE
-           =================================================
-        */
-
-        if (!character.affinity) {
-
+        if (!elemento) {
             return;
-
         }
 
-
-        /*
-           =================================================
-           AFINIDADE VÁLIDA
-           =================================================
-        */
-
-        if (
-            !ELEMENTS[
-                character.affinity
-            ]
-        ) {
-
-            return;
-
-        }
-
-
-        /*
-           =================================================
-           EFEITO ORIGINAL
-           =================================================
-        */
-
-        if (card) {
-
-            card.classList.add(
-                `element-${character.affinity}`
-            );
-
-        }
-
-
-        /*
-           =================================================
-           NOVO SISTEMA:
-           AFINIDADE DOS 4 CARDS
-           =================================================
-        */
-
-        dimensions.forEach(dimension => {
-
-            dimension.classList.add(
-                `affinity-${character.affinity}`
-            );
-
-        });
-
-    }
-
-
-    /* =====================================================
-       ESTADO VISUAL DOS ELEMENTOS
-    ===================================================== */
-
-    function configurarEstadoElementos() {
-
-        const options =
-            document.querySelectorAll(
-                ".element-option"
-            );
-
-
-        const confirm =
-            get("confirm-element");
-
-
-        options.forEach(option => {
-
-            option.classList.remove(
-                "selected"
-            );
-
-
-            if (
-                character.affinity &&
-                option.dataset.element ===
-                character.affinity
-            ) {
-
-                option.classList.add(
-                    "selected"
-                );
-
-            }
-
-        });
-
-
-        /*
-           Mantém a seleção temporária
-           visualmente marcada.
-        */
-
-        if (
-            !character.affinity &&
-            elementoSelecionado
-        ) {
-
-            options.forEach(option => {
-
-                if (
-                    option.dataset.element ===
-                    elementoSelecionado
-                ) {
-
-                    option.classList.add(
-                        "selected"
-                    );
-
-                }
-
-            });
-
-        }
-
-
-        if (confirm) {
-
-            if (character.affinity) {
-
-                confirm.disabled =
-                    true;
-
-                confirm.textContent =
-                    "AFINIDADE CONFIRMADA";
-
-            } else {
-
-                confirm.disabled =
-                    !elementoSelecionado;
-
-                confirm.textContent =
-                    "CONFIRMAR AFINIDADE";
-
-            }
-
-        }
+        elemento.textContent = valor;
 
     }
 
@@ -532,142 +99,135 @@ const StatusModule = (() => {
 
     function atualizarStatus() {
 
-        if (!character) {
+        const boss = obterBoss();
 
+        if (!boss) {
             return;
-
         }
 
 
-        /*
-           Recursos
-        */
+        /* =================================================
+           RECURSOS
+        ================================================= */
 
         definirTexto(
             "stat-hp",
-            character.resources.hp
+            boss.hp
         );
 
         definirTexto(
             "stat-mp",
-            character.resources.mp
+            boss.mp
         );
 
         definirTexto(
             "stat-est",
-            character.resources.est
-        );
-
-        definirTexto(
-            "stat-sanidade",
-            character.resources.sanidade
+            boss.est
         );
 
 
-        /*
-           Atributos
-        */
+        /* =================================================
+           ATRIBUTOS
+        ================================================= */
 
         definirTexto(
             "stat-atk",
-            character.attributes.atk
+            boss.atk
         );
 
         definirTexto(
             "stat-atkMgc",
-            character.attributes.atkMgc
+            boss.atkMgc
         );
 
         definirTexto(
             "stat-def",
-            character.attributes.def
+            boss.def
         );
 
         definirTexto(
             "stat-res",
-            character.attributes.res
+            boss.res
         );
 
         definirTexto(
             "stat-agi",
-            character.attributes.agi
+            boss.agi
         );
 
         definirTexto(
             "stat-int",
-            character.attributes.int
+            boss.int
         );
 
 
-        /*
-           Pontos disponíveis
-        */
+        /* =================================================
+           NÍVEL
+        ================================================= */
 
         definirTexto(
-            "attribute-points",
-            character.attributePoints
+            "stat-level",
+            boss.nivel
         );
 
 
-        /*
-           Afinidade mostrada no Card 1.
-        */
+        /* =================================================
+           AFINIDADE
+        ================================================= */
 
         const affinity =
-            get("character-affinity");
+            ELEMENTS[
+                boss.afinidade
+            ];
 
-        const affinitySymbol =
-            get(
-                "character-affinity-symbol"
+
+        if (affinity) {
+
+            definirTexto(
+                "character-affinity",
+                affinity.name
             );
 
-
-        if (
-            character.affinity &&
-            ELEMENTS[
-                character.affinity
-            ]
-        ) {
-
-            const element =
-                ELEMENTS[
-                    character.affinity
-                ];
-
-
-            if (affinity) {
-
-                affinity.textContent =
-                    element.name;
-
-            }
-
-
-            if (affinitySymbol) {
-
-                affinitySymbol.textContent =
-                    element.symbol;
-
-            }
+            definirTexto(
+                "character-affinity-symbol",
+                affinity.symbol
+            );
 
         } else {
 
-            if (affinity) {
+            definirTexto(
+                "character-affinity",
+                "Nenhuma"
+            );
 
-                affinity.textContent =
-                    "Nenhuma";
-
-            }
-
-
-            if (affinitySymbol) {
-
-                affinitySymbol.textContent =
-                    "?";
-
-            }
+            definirTexto(
+                "character-affinity-symbol",
+                "?"
+            );
 
         }
+
+    }
+
+
+    /* =====================================================
+       ATUALIZAÇÃO AUTOMÁTICA
+    ===================================================== */
+
+    function iniciarAtualizacao() {
+
+        atualizarStatus();
+
+
+        /*
+           Atualiza periodicamente para acompanhar
+           dano, cura, habilidades, MP e EST.
+        */
+
+        setInterval(
+            atualizarStatus,
+            100
+        );
 
     }
 
@@ -678,17 +238,29 @@ const StatusModule = (() => {
 
     function iniciar() {
 
-        inicializarSelecao();
+        /*
+           O BossSystem pode carregar depois do módulo.
+           Por isso fazemos uma pequena espera.
+        */
 
-        configurarAtributos();
+        if (
+            typeof window.BossSystem ===
+            "undefined"
+        ) {
 
-        configurarElementos();
+            setTimeout(
+                iniciar,
+                50
+            );
 
-        configurarEstadoElementos();
+            return;
+
+        }
+
 
         atualizarStatus();
 
-        aplicarEfeitoElemental();
+        iniciarAtualizacao();
 
     }
 
@@ -703,22 +275,30 @@ const StatusModule = (() => {
 
         iniciar,
 
-        configurarAtributos,
-
-        configurarElementos,
-
-        configurarEstadoElementos,
-
-        atualizarStatus,
-
-        aplicarEfeitoElemental,
-
-        getElementoSelecionado: () => {
-
-            return elementoSelecionado;
-
-        }
+        atualizarStatus
 
     };
 
 })();
+
+
+/* =========================================================
+   DISPONIBILIZAR GLOBALMENTE
+========================================================= */
+
+window.StatusModule =
+    StatusModule;
+
+
+/* =========================================================
+   INICIAR
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        StatusModule.iniciar();
+
+    }
+);
