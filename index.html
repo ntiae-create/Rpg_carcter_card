@@ -1,4 +1,9 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
 
 <meta
     name="viewport"
@@ -47,22 +52,69 @@
         border: 1px solid rgba(56, 189, 248, .45);
     }
 
+    /* =====================================================
+       IMAGEM DO BOSS
+    ===================================================== */
+
     .boss-image-area {
         width: 100%;
         min-height: 320px;
+
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
+
         overflow: hidden;
         border-radius: 18px;
     }
 
     .boss-image {
         display: block;
+
         width: 100%;
         max-height: 500px;
+
         object-fit: contain;
+        border-radius: 18px;
     }
+
+    .boss-image-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        margin-top: 14px;
+        padding: 10px 18px;
+
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,.15);
+
+        background: rgba(255,255,255,.08);
+        color: inherit;
+
+        font-size: 13px;
+        font-weight: 800;
+
+        cursor: pointer;
+
+        transition:
+            background .2s ease,
+            transform .2s ease;
+    }
+
+    .boss-image-button:hover {
+        background: rgba(255,255,255,.15);
+        transform: translateY(-2px);
+    }
+
+    .boss-image-button:active {
+        transform: scale(.97);
+    }
+
+    /* =====================================================
+       RECURSOS
+    ===================================================== */
 
     .boss-resources {
         display: flex;
@@ -109,6 +161,10 @@
         background: #f59e0b;
     }
 
+    /* =====================================================
+       ATRIBUTOS
+    ===================================================== */
+
     .boss-stats {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -138,6 +194,10 @@
         margin-top: 4px;
         font-size: 18px;
     }
+
+    /* =====================================================
+       SEÇÕES
+    ===================================================== */
 
     .boss-section {
         margin-top: 24px;
@@ -175,6 +235,10 @@
         font-weight: 800;
         background: rgba(255,255,255,.07);
     }
+
+    /* =====================================================
+       HABILIDADES
+    ===================================================== */
 
     .skill-header {
         display: flex;
@@ -219,6 +283,10 @@
         gap: 8px;
     }
 
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
     @media (max-width: 480px) {
 
         .boss-stats {
@@ -237,7 +305,13 @@
 
 </style>
 
-</head><body><div class="app"><!-- =====================================================
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- =====================================================
      CABEÇALHO
 ====================================================== -->
 
@@ -269,7 +343,6 @@
 
     </button>
 
-
     <button
         class="dimension-button"
         data-dimension="status"
@@ -279,7 +352,6 @@
 
     </button>
 
-
     <button
         class="dimension-button"
         data-dimension="combat"
@@ -288,7 +360,6 @@
         ⚔️ Combate
 
     </button>
-
 
     <button
         class="dimension-button"
@@ -340,7 +411,6 @@
 
                 </div>
 
-
                 <div
                     id="boss-affinity"
                     class="boss-affinity">
@@ -352,19 +422,36 @@
             </div>
 
 
-            <!-- IMAGEM -->
+            <!-- =================================================
+                 IMAGEM
+            ================================================== -->
 
             <div class="boss-image-area">
 
                 <img
+                    id="boss-image"
                     src="assets/bosses/hasvrejk-filhote.png"
                     alt="Hasvrejk Filhote"
                     class="boss-image">
 
+                <label class="boss-image-button">
+
+                    🖼️ Escolher imagem
+
+                    <input
+                        type="file"
+                        id="boss-image-input"
+                        accept="image/*"
+                        hidden>
+
+                </label>
+
             </div>
 
 
-            <!-- RECURSOS -->
+            <!-- =================================================
+                 RECURSOS
+            ================================================== -->
 
             <div class="boss-resources">
 
@@ -455,7 +542,9 @@
             </div>
 
 
-            <!-- ATRIBUTOS -->
+            <!-- =================================================
+                 ATRIBUTOS
+            ================================================== -->
 
             <div class="boss-stats">
 
@@ -492,7 +581,9 @@
             </div>
 
 
-            <!-- PASSIVA -->
+            <!-- =================================================
+                 PASSIVA
+            ================================================== -->
 
             <section class="boss-section">
 
@@ -521,14 +612,15 @@
             </section>
 
 
-            <!-- HABILIDADES -->
+            <!-- =================================================
+                 HABILIDADES
+            ================================================== -->
 
             <section class="boss-section">
 
                 <h2>
                     ⚔️ HABILIDADES
                 </h2>
-
 
                 <div class="boss-skill">
 
@@ -544,12 +636,10 @@
 
                     </div>
 
-
                     <p>
                         Cria uma pequena área
                         de vento cortante.
                     </p>
-
 
                     <div class="skill-cost">
 
@@ -562,7 +652,6 @@
                         </span>
 
                     </div>
-
 
                     <button
                         type="button"
@@ -577,14 +666,15 @@
             </section>
 
 
-            <!-- CONTROLES DE TESTE -->
+            <!-- =================================================
+                 CONTROLES
+            ================================================== -->
 
             <section class="boss-section">
 
                 <h2>
                     ⚙️ TESTE DO BOSS
                 </h2>
-
 
                 <div class="boss-test-buttons">
 
@@ -596,7 +686,6 @@
 
                     </button>
 
-
                     <button
                         type="button"
                         onclick="BossSystem.receberDano(25, 'corpo-a-corpo')">
@@ -604,7 +693,6 @@
                         ⚔️ ATAQUE CORPO A CORPO
 
                     </button>
-
 
                     <button
                         type="button"
@@ -614,7 +702,6 @@
 
                     </button>
 
-
                     <button
                         type="button"
                         onclick="BossSystem.desativarVoo()">
@@ -623,7 +710,6 @@
 
                     </button>
 
-
                     <button
                         type="button"
                         onclick="BossSystem.curar(25)">
@@ -631,7 +717,6 @@
                         💚 CURAR 25 HP
 
                     </button>
-
 
                     <button
                         type="button"
@@ -664,58 +749,30 @@
                 📊 STATUS
             </h2>
 
-
             <div class="stats">
 
                 <h3 class="stats-title">
                     RECURSOS
                 </h3>
 
-
                 <div class="stats-grid">
 
                     <div class="stat">
-
                         <span>❤️</span>
-
-                        <strong id="boss-status-hp">
-                            150
-                        </strong>
-
-                        <small>
-                            HP
-                        </small>
-
+                        <strong id="boss-status-hp">150</strong>
+                        <small>HP</small>
                     </div>
 
-
                     <div class="stat">
-
                         <span>🔮</span>
-
-                        <strong id="boss-status-mp">
-                            120
-                        </strong>
-
-                        <small>
-                            MP
-                        </small>
-
+                        <strong id="boss-status-mp">120</strong>
+                        <small>MP</small>
                     </div>
 
-
                     <div class="stat">
-
                         <span>⚡</span>
-
-                        <strong id="boss-status-est">
-                            200
-                        </strong>
-
-                        <small>
-                            EST
-                        </small>
-
+                        <strong id="boss-status-est">200</strong>
+                        <small>EST</small>
                     </div>
 
                 </div>
@@ -728,7 +785,6 @@
                 <h3 class="stats-title">
                     ATRIBUTOS
                 </h3>
-
 
                 <div class="stats-grid">
 
@@ -795,7 +851,6 @@
                 Ações e habilidades do Boss.
             </p>
 
-
             <div class="combat-resources">
 
                 <div>
@@ -809,7 +864,6 @@
                     </strong>
 
                 </div>
-
 
                 <div>
 
@@ -840,12 +894,10 @@
 
                 </div>
 
-
                 <p>
                     Cria uma pequena área
                     de vento cortante.
                 </p>
-
 
                 <button
                     class="combat-use-button"
@@ -865,7 +917,6 @@
                     PASSIVA
                 </h3>
 
-
                 <div class="passive-card">
 
                     <div class="ability-header">
@@ -880,11 +931,9 @@
 
                     </div>
 
-
                     <h3>
                         👑 Rei dos Ares
                     </h3>
-
 
                     <p>
                         Enquanto estiver no ar,
@@ -921,7 +970,6 @@
                     ITENS DO BOSS
                 </h3>
 
-
                 <div class="inventory-empty">
 
                     <span>
@@ -942,117 +990,279 @@
 
 </main>
 
-</div><!-- =========================================================
+</div>
+
+
+<!-- =========================================================
      SCRIPT DO BOSS
-========================================================= --><script src="boss.js"></script><script>
+========================================================= -->
 
-    /*
-     * Atualiza também os valores
-     * da aba STATUS e COMBATE.
-     */
+<script src="boss.js"></script>
 
-    const bossOriginalAtualizar =
-        BossSystem.atualizarCard.bind(BossSystem);
+<script>
 
-    BossSystem.atualizarCard = function () {
-
-        bossOriginalAtualizar();
-
-        const boss = this.boss;
-
-        const hp =
-            document.getElementById("boss-status-hp");
-
-        const mp =
-            document.getElementById("boss-status-mp");
-
-        const est =
-            document.getElementById("boss-status-est");
-
-        const combatMP =
-            document.getElementById("combat-mp");
-
-        const combatEST =
-            document.getElementById("combat-est");
+"use strict";
 
 
-        if (hp)
-            hp.textContent = boss.hp;
+/* =========================================================
+   ATUALIZAÇÃO DO STATUS E COMBATE
+========================================================= */
 
-        if (mp)
-            mp.textContent = boss.mp;
+const bossOriginalAtualizar =
+    BossSystem.atualizarCard.bind(BossSystem);
 
-        if (est)
-            est.textContent = boss.est;
+BossSystem.atualizarCard = function () {
 
-        if (combatMP)
-            combatMP.textContent = boss.mp;
+    bossOriginalAtualizar();
 
-        if (combatEST)
-            combatEST.textContent = boss.est;
+    const boss = this.boss;
 
-    };
+    const hp =
+        document.getElementById("boss-status-hp");
 
+    const mp =
+        document.getElementById("boss-status-mp");
 
-    /*
-     * Primeira atualização.
-     */
+    const est =
+        document.getElementById("boss-status-est");
 
-    BossSystem.atualizarCard();
+    const combatMP =
+        document.getElementById("combat-mp");
 
-
-    /*
-     * Navegação entre dimensões.
-     */
-
-    document
-        .querySelectorAll(".dimension-button")
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    const dimension =
-                        button.dataset.dimension;
+    const combatEST =
+        document.getElementById("combat-est");
 
 
-                    document
-                        .querySelectorAll(".dimension-button")
-                        .forEach(btn => {
+    if (hp)
+        hp.textContent = boss.hp;
 
-                            btn.classList.remove("active");
+    if (mp)
+        mp.textContent = boss.mp;
 
-                        });
+    if (est)
+        est.textContent = boss.est;
 
+    if (combatMP)
+        combatMP.textContent = boss.mp;
 
-                    button.classList.add("active");
+    if (combatEST)
+        combatEST.textContent = boss.est;
 
-
-                    document
-                        .querySelectorAll("[data-dimension-content]")
-                        .forEach(section => {
-
-                            section.classList.remove("active");
-
-                        });
+};
 
 
-                    const target =
-                        document.querySelector(
-                            `[data-dimension-content="${dimension}"]`
-                        );
+/* =========================================================
+   PRIMEIRA ATUALIZAÇÃO
+========================================================= */
+
+BossSystem.atualizarCard();
 
 
-                    if (target) {
+/* =========================================================
+   NAVEGAÇÃO
+========================================================= */
 
-                        target.classList.add("active");
+document
+    .querySelectorAll(".dimension-button")
+    .forEach(button => {
 
-                    }
+        button.addEventListener(
+            "click",
+            () => {
+
+                const dimension =
+                    button.dataset.dimension;
+
+
+                document
+                    .querySelectorAll(".dimension-button")
+                    .forEach(btn => {
+
+                        btn.classList.remove("active");
+
+                    });
+
+
+                button.classList.add("active");
+
+
+                document
+                    .querySelectorAll("[data-dimension-content]")
+                    .forEach(section => {
+
+                        section.classList.remove("active");
+
+                    });
+
+
+                const target =
+                    document.querySelector(
+                        `[data-dimension-content="${dimension}"]`
+                    );
+
+
+                if (target) {
+
+                    target.classList.add("active");
 
                 }
-            );
 
-        });
+            }
+        );
 
-</script></body></html>
+    });
+
+
+/* =========================================================
+   IMAGEM DO BOSS
+========================================================= */
+
+const BOSS_IMAGE_STORAGE =
+    "rpg_boss_card_image";
+
+
+const bossImage =
+    document.getElementById("boss-image");
+
+
+const bossImageInput =
+    document.getElementById("boss-image-input");
+
+
+/*
+ * Carrega a imagem salva.
+ */
+
+try {
+
+    const imagemSalva =
+        localStorage.getItem(
+            BOSS_IMAGE_STORAGE
+        );
+
+    if (imagemSalva && bossImage) {
+
+        bossImage.src =
+            imagemSalva;
+
+    }
+
+} catch (erro) {
+
+    console.warn(
+        "[Boss] Não foi possível carregar a imagem salva.",
+        erro
+    );
+
+}
+
+
+/*
+ * Seleção de imagem pelo celular.
+ */
+
+if (bossImageInput) {
+
+    bossImageInput.addEventListener(
+        "change",
+        event => {
+
+            const arquivo =
+                event.target.files?.[0];
+
+            if (!arquivo) return;
+
+
+            /*
+             * Verifica o tipo.
+             */
+
+            if (!arquivo.type.startsWith("image/")) {
+
+                alert(
+                    "Selecione uma imagem válida."
+                );
+
+                event.target.value = "";
+
+                return;
+            }
+
+
+            /*
+             * Lê a imagem.
+             */
+
+            const leitor =
+                new FileReader();
+
+
+            leitor.onload = () => {
+
+                const imagemBase64 =
+                    leitor.result;
+
+
+                /*
+                 * Mostra imediatamente.
+                 */
+
+                if (bossImage) {
+
+                    bossImage.src =
+                        imagemBase64;
+
+                }
+
+
+                /*
+                 * Salva no navegador.
+                 */
+
+                try {
+
+                    localStorage.setItem(
+                        BOSS_IMAGE_STORAGE,
+                        imagemBase64
+                    );
+
+                    console.log(
+                        "[Boss] Imagem salva com sucesso."
+                    );
+
+                } catch (erro) {
+
+                    console.error(
+                        "[Boss] Erro ao salvar imagem:",
+                        erro
+                    );
+
+                    alert(
+                        "Não foi possível salvar essa imagem. Tente uma imagem menor."
+                    );
+
+                }
+
+            };
+
+
+            leitor.onerror = () => {
+
+                alert(
+                    "Não foi possível carregar essa imagem."
+                );
+
+            };
+
+
+            leitor.readAsDataURL(arquivo);
+
+        }
+    );
+
+}
+
+</script>
+
+</body>
+</html>
