@@ -17,291 +17,288 @@
 
 <style>
 
-    /* =====================================================
-       BOSS CARD
-    ===================================================== */
+.boss-card {
+    width: 100%;
+    max-width: 620px;
+    margin: 0 auto;
+}
 
-    .boss-card {
-        width: 100%;
-        max-width: 620px;
-        margin: 0 auto;
-    }
+.boss-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 15px;
+}
 
-    .boss-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 15px;
-        margin-bottom: 15px;
-    }
+.boss-header h1 {
+    margin: 0;
+}
 
-    .boss-header h1 {
-        margin: 0;
-    }
+.boss-level {
+    opacity: .75;
+    font-size: 14px;
+}
 
-    .boss-level {
-        opacity: .75;
-        font-size: 14px;
-    }
+.boss-affinity {
+    padding: 7px 12px;
+    border-radius: 999px;
+    font-weight: 800;
+    background: rgba(56, 189, 248, .15);
+    border: 1px solid rgba(56, 189, 248, .45);
+}
 
-    .boss-affinity {
-        padding: 7px 12px;
-        border-radius: 999px;
-        font-weight: 800;
-        background: rgba(56, 189, 248, .15);
-        border: 1px solid rgba(56, 189, 248, .45);
-    }
+.boss-image-area {
+    width: 100%;
+    min-height: 320px;
 
-    /* =====================================================
-       IMAGEM DO BOSS
-    ===================================================== */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
-    .boss-image-area {
-        width: 100%;
-        min-height: 320px;
+    overflow: hidden;
+    border-radius: 18px;
+}
 
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+.boss-image {
+    display: block;
+    width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    border-radius: 18px;
+}
 
-        overflow: hidden;
-        border-radius: 18px;
-    }
+.boss-image-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-    .boss-image {
-        display: block;
+    margin-top: 14px;
+    padding: 10px 18px;
 
-        width: 100%;
-        max-height: 500px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.15);
 
-        object-fit: contain;
-        border-radius: 18px;
-    }
+    background: rgba(255,255,255,.08);
+    color: inherit;
 
-    .boss-image-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
 
-        margin-top: 14px;
-        padding: 10px 18px;
+    cursor: pointer;
 
-        border-radius: 10px;
-        border: 1px solid rgba(255,255,255,.15);
+    transition:
+        background .2s ease,
+        transform .2s ease;
+}
 
-        background: rgba(255,255,255,.08);
-        color: inherit;
+.boss-image-button:hover {
+    background: rgba(255,255,255,.15);
+    transform: translateY(-2px);
+}
 
-        font-size: 13px;
-        font-weight: 800;
+.boss-image-button:active {
+    transform: scale(.97);
+}
 
-        cursor: pointer;
+.boss-resources {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
 
-        transition:
-            background .2s ease,
-            transform .2s ease;
-    }
+.boss-resource {
+    width: 100%;
+}
 
-    .boss-image-button:hover {
-        background: rgba(255,255,255,.15);
-        transform: translateY(-2px);
-    }
+.resource-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-weight: 800;
+}
 
-    .boss-image-button:active {
-        transform: scale(.97);
-    }
+.resource-bar {
+    width: 100%;
+    height: 13px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255,255,255,.08);
+}
 
-    /* =====================================================
-       RECURSOS
-    ===================================================== */
+.resource-fill {
+    width: 100%;
+    height: 100%;
+    transition: width .25s ease;
+}
 
-    .boss-resources {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        margin-top: 20px;
-    }
+.resource-fill.hp {
+    background: #ef4444;
+}
 
-    .boss-resource {
-        width: 100%;
-    }
+.resource-fill.mp {
+    background: #8b5cf6;
+}
 
-    .resource-header {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 5px;
-        font-size: 13px;
-        font-weight: 800;
-    }
+.resource-fill.est {
+    background: #f59e0b;
+}
 
-    .resource-bar {
-        width: 100%;
-        height: 13px;
-        overflow: hidden;
-        border-radius: 999px;
-        background: rgba(255,255,255,.08);
-    }
+.boss-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
 
-    .resource-fill {
-        width: 100%;
-        height: 100%;
-        transition: width .25s ease;
-    }
+.boss-stats > div {
+    padding: 12px;
+    text-align: center;
+    border-radius: 12px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+}
 
-    .resource-fill.hp {
-        background: #ef4444;
-    }
+.boss-stats span,
+.boss-stats strong {
+    display: block;
+}
 
-    .resource-fill.mp {
-        background: #8b5cf6;
-    }
+.boss-stats span {
+    font-size: 11px;
+    opacity: .65;
+}
 
-    .resource-fill.est {
-        background: #f59e0b;
-    }
+.boss-stats strong {
+    margin-top: 4px;
+    font-size: 18px;
+}
 
-    /* =====================================================
-       ATRIBUTOS
-    ===================================================== */
+.boss-section {
+    margin-top: 24px;
+}
+
+.boss-section h2 {
+    margin-bottom: 12px;
+}
+
+.boss-passive,
+.boss-skill {
+    padding: 16px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.09);
+}
+
+.boss-passive h3,
+.boss-skill h3 {
+    margin: 0 0 8px;
+}
+
+.boss-passive p,
+.boss-skill p {
+    margin: 0 0 12px;
+    line-height: 1.5;
+    opacity: .85;
+}
+
+#boss-passive-state {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    background: rgba(255,255,255,.07);
+}
+
+.skill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.skill-header span {
+    font-size: 11px;
+    font-weight: 800;
+    opacity: .7;
+}
+
+.skill-cost {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.boss-skill button,
+.boss-test-buttons button {
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-weight: 800;
+    color: inherit;
+    background: rgba(255,255,255,.08);
+}
+
+.boss-skill button:hover,
+.boss-test-buttons button:hover {
+    background: rgba(255,255,255,.14);
+}
+
+.boss-test-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.boss-test-buttons input {
+    width: 100%;
+    min-width: 0;
+
+    box-sizing: border-box;
+
+    padding: 10px 14px;
+
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.12);
+
+    background: rgba(255,255,255,.06);
+    color: inherit;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.boss-test-buttons input::placeholder {
+    color: rgba(255,255,255,.5);
+}
+
+.boss-test-buttons input:focus {
+    outline: none;
+    border-color: rgba(255,255,255,.35);
+}
+
+@media (max-width: 480px) {
 
     .boss-stats {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        margin-top: 20px;
-    }
-
-    .boss-stats > div {
-        padding: 12px;
-        text-align: center;
-        border-radius: 12px;
-        background: rgba(255,255,255,.04);
-        border: 1px solid rgba(255,255,255,.08);
-    }
-
-    .boss-stats span,
-    .boss-stats strong {
-        display: block;
-    }
-
-    .boss-stats span {
-        font-size: 11px;
-        opacity: .65;
-    }
-
-    .boss-stats strong {
-        margin-top: 4px;
-        font-size: 18px;
-    }
-
-    /* =====================================================
-       SEÇÕES
-    ===================================================== */
-
-    .boss-section {
-        margin-top: 24px;
-    }
-
-    .boss-section h2 {
-        margin-bottom: 12px;
-    }
-
-    .boss-passive,
-    .boss-skill {
-        padding: 16px;
-        border-radius: 14px;
-        background: rgba(255,255,255,.04);
-        border: 1px solid rgba(255,255,255,.09);
-    }
-
-    .boss-passive h3,
-    .boss-skill h3 {
-        margin: 0 0 8px;
-    }
-
-    .boss-passive p,
-    .boss-skill p {
-        margin: 0 0 12px;
-        line-height: 1.5;
-        opacity: .85;
-    }
-
-    #boss-passive-state {
-        display: inline-block;
-        padding: 5px 9px;
-        border-radius: 8px;
-        font-size: 11px;
-        font-weight: 800;
-        background: rgba(255,255,255,.07);
-    }
-
-    /* =====================================================
-       HABILIDADES
-    ===================================================== */
-
-    .skill-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .skill-header span {
-        font-size: 11px;
-        font-weight: 800;
-        opacity: .7;
-    }
-
-    .skill-cost {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 12px;
-        font-size: 13px;
-        font-weight: 700;
-    }
-
-    .boss-skill button,
-    .boss-test-buttons button {
-        border: 0;
-        border-radius: 10px;
-        padding: 10px 14px;
-        cursor: pointer;
-        font-weight: 800;
-        color: inherit;
-        background: rgba(255,255,255,.08);
-    }
-
-    .boss-skill button:hover,
-    .boss-test-buttons button:hover {
-        background: rgba(255,255,255,.14);
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .boss-test-buttons {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
+        grid-template-columns: 1fr;
     }
 
-    /* =====================================================
-       MOBILE
-    ===================================================== */
-
-    @media (max-width: 480px) {
-
-        .boss-stats {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .boss-test-buttons {
-            grid-template-columns: 1fr;
-        }
-
-        .boss-image-area {
-            min-height: 250px;
-        }
-
+    .boss-image-area {
+        min-height: 250px;
     }
+
+}
 
 </style>
 
@@ -310,10 +307,6 @@
 <body>
 
 <div class="app">
-
-<!-- =====================================================
-     CABEÇALHO
-====================================================== -->
 
 <header class="app-header">
 
@@ -327,10 +320,6 @@
 
 </header>
 
-
-<!-- =====================================================
-     NAVEGAÇÃO
-====================================================== -->
 
 <nav class="dimension-nav">
 
@@ -373,629 +362,577 @@
 </nav>
 
 
-<!-- =====================================================
-     CARD PRINCIPAL
-====================================================== -->
-
 <main class="character-card">
 
 
-    <!-- =================================================
-         BOSS
-    ================================================== -->
+<section
+    class="dimension character-dimension active"
+    data-dimension-content="boss">
 
-    <section
-        class="dimension character-dimension active"
-        data-dimension-content="boss">
+<div class="card-face card-front">
 
-        <div class="card-face card-front">
 
+<div class="boss-header">
 
-            <!-- CABEÇALHO -->
+    <div>
 
-            <div class="boss-header">
+        <h1 id="boss-name">
+            Hasvrejk Filhote
+        </h1>
 
-                <div>
+        <span
+            id="boss-level"
+            class="boss-level">
 
-                    <h1 id="boss-name">
-                        Hasvrejk Filhote
-                    </h1>
+            Nível 13
 
-                    <span
-                        id="boss-level"
-                        class="boss-level">
+        </span>
 
-                        Nível 13
+    </div>
 
-                    </span>
+    <div
+        id="boss-affinity"
+        class="boss-affinity">
 
-                </div>
+        VENTO
 
-                <div
-                    id="boss-affinity"
-                    class="boss-affinity">
+    </div>
 
-                    VENTO
+</div>
 
-                </div>
 
-            </div>
+<div class="boss-image-area">
 
+    <img
+        id="boss-image"
+        src="assets/bosses/hasvrejk-filhote.png"
+        alt="Hasvrejk Filhote"
+        class="boss-image">
 
-            <!-- =================================================
-                 IMAGEM
-            ================================================== -->
+    <label class="boss-image-button">
 
-            <div class="boss-image-area">
+        🖼️ Escolher imagem
 
-                <img
-                    id="boss-image"
-                    src="assets/bosses/hasvrejk-filhote.png"
-                    alt="Hasvrejk Filhote"
-                    class="boss-image">
+        <input
+            type="file"
+            id="boss-image-input"
+            accept="image/*"
+            hidden>
 
-                <label class="boss-image-button">
+    </label>
 
-                    🖼️ Escolher imagem
+</div>
 
-                    <input
-                        type="file"
-                        id="boss-image-input"
-                        accept="image/*"
-                        hidden>
 
-                </label>
+<div class="boss-resources">
 
-            </div>
+<div class="boss-resource">
 
+    <div class="resource-header">
 
-            <!-- =================================================
-                 RECURSOS
-            ================================================== -->
+        <span>❤️ HP</span>
 
-            <div class="boss-resources">
+        <span id="boss-hp-value">
+            150 / 150
+        </span>
 
+    </div>
 
-                <!-- HP -->
+    <div class="resource-bar">
 
-                <div class="boss-resource">
+        <div
+            id="boss-hp"
+            class="resource-fill hp">
+        </div>
 
-                    <div class="resource-header">
+    </div>
 
-                        <span>
-                            ❤️ HP
-                        </span>
+</div>
 
-                        <span id="boss-hp-value">
-                            150 / 150
-                        </span>
 
-                    </div>
+<div class="boss-resource">
 
-                    <div class="resource-bar">
+    <div class="resource-header">
 
-                        <div
-                            id="boss-hp"
-                            class="resource-fill hp">
-                        </div>
+        <span>🔮 MP</span>
 
-                    </div>
+        <span id="boss-mp-value">
+            120 / 120
+        </span>
 
-                </div>
+    </div>
 
+    <div class="resource-bar">
 
-                <!-- MP -->
+        <div
+            id="boss-mp"
+            class="resource-fill mp">
+        </div>
 
-                <div class="boss-resource">
+    </div>
 
-                    <div class="resource-header">
+</div>
 
-                        <span>
-                            🔮 MP
-                        </span>
 
-                        <span id="boss-mp-value">
-                            120 / 120
-                        </span>
+<div class="boss-resource">
 
-                    </div>
+    <div class="resource-header">
 
-                    <div class="resource-bar">
+        <span>⚡ EST</span>
 
-                        <div
-                            id="boss-mp"
-                            class="resource-fill mp">
-                        </div>
+        <span id="boss-est-value">
+            200 / 200
+        </span>
 
-                    </div>
+    </div>
 
-                </div>
+    <div class="resource-bar">
 
+        <div
+            id="boss-est"
+            class="resource-fill est">
+        </div>
 
-                <!-- ESTAMINA -->
+    </div>
 
-                <div class="boss-resource">
+</div>
 
-                    <div class="resource-header">
+</div>
 
-                        <span>
-                            ⚡ EST
-                        </span>
 
-                        <span id="boss-est-value">
-                            200 / 200
-                        </span>
+<div class="boss-stats">
 
-                    </div>
+    <div>
+        <span>ATK</span>
+        <strong id="boss-atk">10</strong>
+    </div>
 
-                    <div class="resource-bar">
+    <div>
+        <span>ATK MGC</span>
+        <strong id="boss-atk-mgc">8</strong>
+    </div>
 
-                        <div
-                            id="boss-est"
-                            class="resource-fill est">
-                        </div>
+    <div>
+        <span>DEF</span>
+        <strong id="boss-def">12</strong>
+    </div>
 
-                    </div>
+    <div>
+        <span>RES</span>
+        <strong id="boss-res">42</strong>
+    </div>
 
-                </div>
+    <div>
+        <span>AGI</span>
+        <strong id="boss-agi">9</strong>
+    </div>
 
-            </div>
+    <div>
+        <span>INT</span>
+        <strong id="boss-int">10</strong>
+    </div>
 
+</div>
 
-            <!-- =================================================
-                 ATRIBUTOS
-            ================================================== -->
 
-            <div class="boss-stats">
+<section class="boss-section">
 
-                <div>
-                    <span>ATK</span>
-                    <strong id="boss-atk">10</strong>
-                </div>
+    <h2>👑 PASSIVA</h2>
 
-                <div>
-                    <span>ATK MGC</span>
-                    <strong id="boss-atk-mgc">8</strong>
-                </div>
+    <div class="boss-passive">
 
-                <div>
-                    <span>DEF</span>
-                    <strong id="boss-def">12</strong>
-                </div>
+        <h3>Rei dos Ares</h3>
 
-                <div>
-                    <span>RES</span>
-                    <strong id="boss-res">42</strong>
-                </div>
+        <p>
+            Enquanto estiver no ar,
+            torna-se imune a ataques
+            corpo a corpo.
+        </p>
 
-                <div>
-                    <span>AGI</span>
-                    <strong id="boss-agi">9</strong>
-                </div>
+        <span id="boss-passive-state">
+            INATIVA — NO SOLO
+        </span>
 
-                <div>
-                    <span>INT</span>
-                    <strong id="boss-int">10</strong>
-                </div>
+    </div>
 
-            </div>
+</section>
 
 
-            <!-- =================================================
-                 PASSIVA
-            ================================================== -->
+<section class="boss-section">
 
-            <section class="boss-section">
+    <h2>⚔️ HABILIDADES</h2>
 
-                <h2>
-                    👑 PASSIVA
-                </h2>
+    <div class="boss-skill">
 
-                <div class="boss-passive">
+        <div class="skill-header">
 
-                    <h3>
-                        Rei dos Ares
-                    </h3>
+            <h3>
+                🌪️ Rajada de Vento
+            </h3>
 
-                    <p>
-                        Enquanto estiver no ar,
-                        torna-se imune a ataques
-                        corpo a corpo.
-                    </p>
-
-                    <span id="boss-passive-state">
-                        INATIVA — NO SOLO
-                    </span>
-
-                </div>
-
-            </section>
-
-
-            <!-- =================================================
-                 HABILIDADES
-            ================================================== -->
-
-            <section class="boss-section">
-
-                <h2>
-                    ⚔️ HABILIDADES
-                </h2>
-
-                <div class="boss-skill">
-
-                    <div class="skill-header">
-
-                        <h3>
-                            🌪️ Rajada de Vento
-                        </h3>
-
-                        <span>
-                            VENTO
-                        </span>
-
-                    </div>
-
-                    <p>
-                        Cria uma pequena área
-                        de vento cortante.
-                    </p>
-
-                    <div class="skill-cost">
-
-                        <span>
-                            🔮 15 MP
-                        </span>
-
-                        <span>
-                            ⚡ 20 EST
-                        </span>
-
-                    </div>
-
-                    <button
-                        type="button"
-                        onclick="BossSystem.usarHabilidade('rajada_vento')">
-
-                        🌪️ USAR HABILIDADE
-
-                    </button>
-
-                </div>
-
-            </section>
-
-
-            <!-- =================================================
-                 CONTROLES
-            ================================================== -->
-
-            <section class="boss-section">
-
-                <h2>
-                    ⚙️ TESTE DO BOSS
-                </h2>
-
-                <div class="boss-test-buttons">
-
-                    <button
-                        type="button"
-                        onclick="BossSystem.receberDano(25)">
-
-                        ❤️ RECEBER 25 DANO
-
-                    </button>
-
-                    <button
-                        type="button"
-                        onclick="BossSystem.receberDano(25, 'corpo-a-corpo')">
-
-                        ⚔️ ATAQUE CORPO A CORPO
-
-                    </button>
-
-                    <button
-                        type="button"
-                        onclick="BossSystem.ativarVoo()">
-
-                        💨 COLOCAR NO AR
-
-                    </button>
-
-                    <button
-                        type="button"
-                        onclick="BossSystem.desativarVoo()">
-
-                        🪶 VOLTAR AO SOLO
-
-                    </button>
-
-                    <button
-                        type="button"
-                        onclick="BossSystem.curar(25)">
-
-                        💚 CURAR 25 HP
-
-                    </button>
-
-                    <button
-                        type="button"
-                        onclick="BossSystem.resetar()">
-
-                        ↻ RESETAR BOSS
-
-                    </button>
-
-                </div>
-
-            </section>
+            <span>
+                VENTO
+            </span>
 
         </div>
 
-    </section>
+        <p>
+            Cria uma pequena área
+            de vento cortante.
+        </p>
+
+        <div class="skill-cost">
+
+            <span>🔮 15 MP</span>
+
+            <span>⚡ 20 EST</span>
+
+        </div>
+
+        <button
+            type="button"
+            onclick="BossSystem.usarHabilidade('rajada_vento')">
+
+            🌪️ USAR HABILIDADE
+
+        </button>
+
+    </div>
+
+</section>
 
 
-    <!-- =================================================
-         STATUS
-    ================================================== -->
+<!-- =================================================
+     CONTROLE DO BOSS
+================================================== -->
 
-    <section
-        class="dimension status-dimension"
-        data-dimension-content="status">
+<section class="boss-section">
 
-        <div class="status-section">
+    <h2>
+        ⚙️ CONTROLE DO BOSS
+    </h2>
 
-            <h2>
-                📊 STATUS
-            </h2>
 
-            <div class="stats">
+    <div class="boss-test-buttons">
 
-                <h3 class="stats-title">
-                    RECURSOS
-                </h3>
 
-                <div class="stats-grid">
+        <!-- DANO -->
 
-                    <div class="stat">
-                        <span>❤️</span>
-                        <strong id="boss-status-hp">150</strong>
-                        <small>HP</small>
-                    </div>
+        <input
+            type="number"
+            id="boss-damage-input"
+            min="0"
+            step="1"
+            placeholder="Quantidade de dano">
 
-                    <div class="stat">
-                        <span>🔮</span>
-                        <strong id="boss-status-mp">120</strong>
-                        <small>MP</small>
-                    </div>
 
-                    <div class="stat">
-                        <span>⚡</span>
-                        <strong id="boss-status-est">200</strong>
-                        <small>EST</small>
-                    </div>
+        <button
+            type="button"
+            onclick="BossSystem.aplicarDanoManual()">
 
-                </div>
+            ❤️ APLICAR DANO
 
+        </button>
+
+
+        <!-- DANO CORPO A CORPO -->
+
+        <button
+            type="button"
+            onclick="BossSystem.aplicarDanoCorpoACorpo()">
+
+            ⚔️ DANO CORPO A CORPO
+
+        </button>
+
+
+        <!-- CURA -->
+
+        <input
+            type="number"
+            id="boss-heal-input"
+            min="0"
+            step="1"
+            placeholder="Quantidade de cura">
+
+
+        <button
+            type="button"
+            onclick="BossSystem.aplicarCuraManual()">
+
+            💚 APLICAR CURA
+
+        </button>
+
+
+        <!-- VOO -->
+
+        <button
+            type="button"
+            onclick="BossSystem.ativarVoo()">
+
+            💨 COLOCAR NO AR
+
+        </button>
+
+
+        <button
+            type="button"
+            onclick="BossSystem.desativarVoo()">
+
+            🪶 VOLTAR AO SOLO
+
+        </button>
+
+
+        <!-- RESET -->
+
+        <button
+            type="button"
+            onclick="BossSystem.resetar()">
+
+            ↻ RESETAR BOSS
+
+        </button>
+
+    </div>
+
+</section>
+
+</div>
+
+</section>
+
+
+<!-- =================================================
+     STATUS
+================================================== -->
+
+<section
+    class="dimension status-dimension"
+    data-dimension-content="status">
+
+<div class="status-section">
+
+    <h2>📊 STATUS</h2>
+
+    <div class="stats">
+
+        <h3 class="stats-title">
+            RECURSOS
+        </h3>
+
+        <div class="stats-grid">
+
+            <div class="stat">
+                <span>❤️</span>
+                <strong id="boss-status-hp">150</strong>
+                <small>HP</small>
             </div>
 
+            <div class="stat">
+                <span>🔮</span>
+                <strong id="boss-status-mp">120</strong>
+                <small>MP</small>
+            </div>
 
-            <div class="stats">
-
-                <h3 class="stats-title">
-                    ATRIBUTOS
-                </h3>
-
-                <div class="stats-grid">
-
-                    <div class="stat">
-                        <span>⚔️</span>
-                        <strong>10</strong>
-                        <small>ATK</small>
-                    </div>
-
-                    <div class="stat">
-                        <span>✨</span>
-                        <strong>8</strong>
-                        <small>ATK MGC</small>
-                    </div>
-
-                    <div class="stat">
-                        <span>🛡️</span>
-                        <strong>12</strong>
-                        <small>DEF</small>
-                    </div>
-
-                    <div class="stat">
-                        <span>🔰</span>
-                        <strong>42</strong>
-                        <small>RES</small>
-                    </div>
-
-                    <div class="stat">
-                        <span>💨</span>
-                        <strong>9</strong>
-                        <small>AGI</small>
-                    </div>
-
-                    <div class="stat">
-                        <span>🧠</span>
-                        <strong>10</strong>
-                        <small>INT</small>
-                    </div>
-
-                </div>
-
+            <div class="stat">
+                <span>⚡</span>
+                <strong id="boss-status-est">200</strong>
+                <small>EST</small>
             </div>
 
         </div>
 
-    </section>
+    </div>
 
 
-    <!-- =================================================
-         COMBATE
-    ================================================== -->
+    <div class="stats">
 
-    <section
-        class="dimension combat-dimension"
-        data-dimension-content="combat">
+        <h3 class="stats-title">
+            ATRIBUTOS
+        </h3>
 
-        <div class="combat-section">
+        <div class="stats-grid">
 
-            <h2>
-                ⚔️ COMBATE
-            </h2>
+            <div class="stat">
+                <span>⚔️</span>
+                <strong>10</strong>
+                <small>ATK</small>
+            </div>
 
-            <p class="combat-subtitle">
-                Ações e habilidades do Boss.
+            <div class="stat">
+                <span>✨</span>
+                <strong>8</strong>
+                <small>ATK MGC</small>
+            </div>
+
+            <div class="stat">
+                <span>🛡️</span>
+                <strong>12</strong>
+                <small>DEF</small>
+            </div>
+
+            <div class="stat">
+                <span>🔰</span>
+                <strong>42</strong>
+                <small>RES</small>
+            </div>
+
+            <div class="stat">
+                <span>💨</span>
+                <strong>9</strong>
+                <small>AGI</small>
+            </div>
+
+            <div class="stat">
+                <span>🧠</span>
+                <strong>10</strong>
+                <small>INT</small>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =================================================
+     COMBATE
+================================================== -->
+
+<section
+    class="dimension combat-dimension"
+    data-dimension-content="combat">
+
+<div class="combat-section">
+
+    <h2>⚔️ COMBATE</h2>
+
+    <p class="combat-subtitle">
+        Ações e habilidades do Boss.
+    </p>
+
+    <div class="combat-resources">
+
+        <div>
+            <span>🔮 MP</span>
+            <strong id="combat-mp">120</strong>
+        </div>
+
+        <div>
+            <span>⚡ EST</span>
+            <strong id="combat-est">200</strong>
+        </div>
+
+    </div>
+
+
+    <div class="combat-card">
+
+        <div class="combat-card-header">
+
+            <h3>
+                🌪️ RAJADA DE VENTO
+            </h3>
+
+            <span>
+                −15 MP / −20 EST
+            </span>
+
+        </div>
+
+        <p>
+            Cria uma pequena área
+            de vento cortante.
+        </p>
+
+        <button
+            class="combat-use-button"
+            type="button"
+            onclick="BossSystem.usarHabilidade('rajada_vento')">
+
+            USAR HABILIDADE
+
+        </button>
+
+    </div>
+
+
+    <div class="passive-section">
+
+        <h3 class="stats-title">
+            PASSIVA
+        </h3>
+
+        <div class="passive-card">
+
+            <div class="ability-header">
+
+                <span>PASSIVA</span>
+
+                <span>AUTOMÁTICA</span>
+
+            </div>
+
+            <h3>
+                👑 Rei dos Ares
+            </h3>
+
+            <p>
+                Enquanto estiver no ar,
+                torna-se imune a ataques
+                corpo a corpo.
             </p>
 
-            <div class="combat-resources">
+        </div>
 
-                <div>
+    </div>
 
-                    <span>
-                        🔮 MP
-                    </span>
+</div>
 
-                    <strong id="combat-mp">
-                        120
-                    </strong>
-
-                </div>
-
-                <div>
-
-                    <span>
-                        ⚡ EST
-                    </span>
-
-                    <strong id="combat-est">
-                        200
-                    </strong>
-
-                </div>
-
-            </div>
+</section>
 
 
-            <div class="combat-card">
+<!-- =================================================
+     INVENTÁRIO
+================================================== -->
 
-                <div class="combat-card-header">
+<section
+    class="dimension inventory-dimension"
+    data-dimension-content="inventory">
 
-                    <h3>
-                        🌪️ RAJADA DE VENTO
-                    </h3>
+<div class="inventory-section">
 
-                    <span>
-                        −15 MP / −20 EST
-                    </span>
+    <h2>🎒 INVENTÁRIO</h2>
 
-                </div>
+    <div class="inventory-list-section">
 
-                <p>
-                    Cria uma pequena área
-                    de vento cortante.
-                </p>
+        <h3>ITENS DO BOSS</h3>
 
-                <button
-                    class="combat-use-button"
-                    type="button"
-                    onclick="BossSystem.usarHabilidade('rajada_vento')">
+        <div class="inventory-empty">
 
-                    USAR HABILIDADE
+            <span>🎒</span>
 
-                </button>
-
-            </div>
-
-
-            <div class="passive-section">
-
-                <h3 class="stats-title">
-                    PASSIVA
-                </h3>
-
-                <div class="passive-card">
-
-                    <div class="ability-header">
-
-                        <span>
-                            PASSIVA
-                        </span>
-
-                        <span>
-                            AUTOMÁTICA
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        👑 Rei dos Ares
-                    </h3>
-
-                    <p>
-                        Enquanto estiver no ar,
-                        torna-se imune a ataques
-                        corpo a corpo.
-                    </p>
-
-                </div>
-
-            </div>
+            <p>
+                Nenhum item.
+            </p>
 
         </div>
 
-    </section>
+    </div>
 
+</div>
 
-    <!-- =================================================
-         INVENTÁRIO
-    ================================================== -->
-
-    <section
-        class="dimension inventory-dimension"
-        data-dimension-content="inventory">
-
-        <div class="inventory-section">
-
-            <h2>
-                🎒 INVENTÁRIO
-            </h2>
-
-            <div class="inventory-list-section">
-
-                <h3>
-                    ITENS DO BOSS
-                </h3>
-
-                <div class="inventory-empty">
-
-                    <span>
-                        🎒
-                    </span>
-
-                    <p>
-                        Nenhum item.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
+</section>
 
 </main>
 
 </div>
 
-
-<!-- =========================================================
-     SCRIPT DO BOSS
-========================================================= -->
 
 <script src="boss.js"></script>
 
@@ -1011,6 +948,7 @@
 const bossOriginalAtualizar =
     BossSystem.atualizarCard.bind(BossSystem);
 
+
 BossSystem.atualizarCard = function () {
 
     bossOriginalAtualizar();
@@ -1018,19 +956,29 @@ BossSystem.atualizarCard = function () {
     const boss = this.boss;
 
     const hp =
-        document.getElementById("boss-status-hp");
+        document.getElementById(
+            "boss-status-hp"
+        );
 
     const mp =
-        document.getElementById("boss-status-mp");
+        document.getElementById(
+            "boss-status-mp"
+        );
 
     const est =
-        document.getElementById("boss-status-est");
+        document.getElementById(
+            "boss-status-est"
+        );
 
     const combatMP =
-        document.getElementById("combat-mp");
+        document.getElementById(
+            "combat-mp"
+        );
 
     const combatEST =
-        document.getElementById("combat-est");
+        document.getElementById(
+            "combat-est"
+        );
 
 
     if (hp)
@@ -1078,7 +1026,9 @@ document
                     .querySelectorAll(".dimension-button")
                     .forEach(btn => {
 
-                        btn.classList.remove("active");
+                        btn.classList.remove(
+                            "active"
+                        );
 
                     });
 
@@ -1087,10 +1037,14 @@ document
 
 
                 document
-                    .querySelectorAll("[data-dimension-content]")
+                    .querySelectorAll(
+                        "[data-dimension-content]"
+                    )
                     .forEach(section => {
 
-                        section.classList.remove("active");
+                        section.classList.remove(
+                            "active"
+                        );
 
                     });
 
@@ -1103,7 +1057,9 @@ document
 
                 if (target) {
 
-                    target.classList.add("active");
+                    target.classList.add(
+                        "active"
+                    );
 
                 }
 
@@ -1111,156 +1067,6 @@ document
         );
 
     });
-
-
-/* =========================================================
-   IMAGEM DO BOSS
-========================================================= */
-
-const BOSS_IMAGE_STORAGE =
-    "rpg_boss_card_image";
-
-
-const bossImage =
-    document.getElementById("boss-image");
-
-
-const bossImageInput =
-    document.getElementById("boss-image-input");
-
-
-/*
- * Carrega a imagem salva.
- */
-
-try {
-
-    const imagemSalva =
-        localStorage.getItem(
-            BOSS_IMAGE_STORAGE
-        );
-
-    if (imagemSalva && bossImage) {
-
-        bossImage.src =
-            imagemSalva;
-
-    }
-
-} catch (erro) {
-
-    console.warn(
-        "[Boss] Não foi possível carregar a imagem salva.",
-        erro
-    );
-
-}
-
-
-/*
- * Seleção de imagem pelo celular.
- */
-
-if (bossImageInput) {
-
-    bossImageInput.addEventListener(
-        "change",
-        event => {
-
-            const arquivo =
-                event.target.files?.[0];
-
-            if (!arquivo) return;
-
-
-            /*
-             * Verifica o tipo.
-             */
-
-            if (!arquivo.type.startsWith("image/")) {
-
-                alert(
-                    "Selecione uma imagem válida."
-                );
-
-                event.target.value = "";
-
-                return;
-            }
-
-
-            /*
-             * Lê a imagem.
-             */
-
-            const leitor =
-                new FileReader();
-
-
-            leitor.onload = () => {
-
-                const imagemBase64 =
-                    leitor.result;
-
-
-                /*
-                 * Mostra imediatamente.
-                 */
-
-                if (bossImage) {
-
-                    bossImage.src =
-                        imagemBase64;
-
-                }
-
-
-                /*
-                 * Salva no navegador.
-                 */
-
-                try {
-
-                    localStorage.setItem(
-                        BOSS_IMAGE_STORAGE,
-                        imagemBase64
-                    );
-
-                    console.log(
-                        "[Boss] Imagem salva com sucesso."
-                    );
-
-                } catch (erro) {
-
-                    console.error(
-                        "[Boss] Erro ao salvar imagem:",
-                        erro
-                    );
-
-                    alert(
-                        "Não foi possível salvar essa imagem. Tente uma imagem menor."
-                    );
-
-                }
-
-            };
-
-
-            leitor.onerror = () => {
-
-                alert(
-                    "Não foi possível carregar essa imagem."
-                );
-
-            };
-
-
-            leitor.readAsDataURL(arquivo);
-
-        }
-    );
-
-}
 
 </script>
 
