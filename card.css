@@ -1,11 +1,7 @@
 /* =========================================================
-   RPG CHARACTER CARD
+   RPG BOSS CARD
    CARD.CSS
-   IDENTIDADE VISUAL DOS CARDS POR AFINIDADE
-
-   A cor principal continua responsável pela aura.
-   As cores secundárias entram principalmente em bordas,
-   reflexos e pequenos detalhes.
+   IDENTIDADE VISUAL DOS BOSS
 ========================================================= */
 
 
@@ -17,6 +13,7 @@
     position: relative;
     overflow: hidden;
     isolation: isolate;
+
     border-radius: 22px;
 
     --secondary-a: #6f3aa8;
@@ -30,17 +27,19 @@
 }
 
 
-/*
-   Fundo elemental.
-   Continua atrás de todo o conteúdo.
-*/
+/* =========================================================
+   FUNDO ELEMENTAL
+========================================================= */
 
 .dimension::before {
     content: "";
+
     position: absolute;
     inset: 0;
+
     z-index: -2;
     pointer-events: none;
+
     opacity: 0;
 
     transition:
@@ -49,23 +48,26 @@
 }
 
 
-/*
-   Aura elemental.
-   A cor principal continua dominando esta camada.
-*/
+/* =========================================================
+   AURA ELEMENTAL
+========================================================= */
 
 .dimension::after {
     content: "";
+
     position: absolute;
 
     width: 150%;
     height: 150%;
+
     left: -25%;
     top: -25%;
 
     z-index: -1;
     pointer-events: none;
+
     opacity: 0;
+
     border-radius: 50%;
 
     transition: opacity 0.6s ease;
@@ -76,32 +78,35 @@
 
 
 /* =========================================================
-   DETALHES INTERNOS
-
-   A cor secundária aparece discretamente em títulos,
-   separadores e pequenos destaques.
+   TEXTOS TEMÁTICOS
 ========================================================= */
 
 .dimension .stats-title,
 .dimension .badges h3,
 .dimension .attribute-points h3,
 .dimension .badge-xp-header strong {
+
     color: var(--secondary-b, #c084fc);
-    transition: color 0.5s ease;
+
+    transition:
+        color 0.5s ease;
 }
+
 
 .dimension .attribute-points,
 .dimension .badge-xp-section {
-    border-color: color-mix(
-        in srgb,
-        var(--secondary-a) 55%,
-        transparent
-    );
+
+    border-color:
+        color-mix(
+            in srgb,
+            var(--secondary-a) 55%,
+            transparent
+        );
 }
 
 
 /* =========================================================
-   AFINIDADE NÃO DEFINIDA
+   AFINIDADE PADRÃO
 ========================================================= */
 
 .dimension:not(
@@ -114,17 +119,18 @@
     .affinity-fisico,
     .affinity-magico
 ) {
-    border-color: rgba(111, 58, 168, 0.7);
+
+    border-color:
+        rgba(111, 58, 168, 0.7);
 }
 
 
 /* =========================================================
-   💧 ÁGUA
-   Principal: azul
-   Secundária: azul profundo + violeta
+   ÁGUA
 ========================================================= */
 
 .dimension.affinity-agua {
+
     --secondary-a: #2563eb;
     --secondary-b: #8b5cf6;
     --secondary-soft: rgba(139, 92, 246, 0.10);
@@ -138,7 +144,9 @@
         inset 0 0 35px rgba(56, 189, 248, 0.08);
 }
 
+
 .dimension.affinity-agua::before {
+
     opacity: 1;
 
     background:
@@ -147,6 +155,7 @@
             rgba(56, 189, 248, 0.18),
             transparent 45%
         ),
+
         radial-gradient(
             circle at 80% 80%,
             rgba(139, 92, 246, 0.12),
@@ -154,7 +163,9 @@
         );
 }
 
+
 .dimension.affinity-agua::after {
+
     opacity: 1;
 
     background:
@@ -167,12 +178,11 @@
 
 
 /* =========================================================
-   ☀️ LUZ
-   Principal: branco luminoso
-   Secundária: prata
+   LUZ
 ========================================================= */
 
 .dimension.affinity-luz {
+
     --secondary-a: #cbd5e1;
     --secondary-b: #f8fafc;
     --secondary-soft: rgba(226, 232, 240, 0.10);
@@ -186,7 +196,9 @@
         inset 0 0 38px rgba(253, 224, 71, 0.08);
 }
 
+
 .dimension.affinity-luz::before {
+
     opacity: 1;
 
     background:
@@ -195,6 +207,7 @@
             rgba(255, 255, 255, 0.20),
             transparent 50%
         ),
+
         radial-gradient(
             circle at 50% 100%,
             rgba(203, 213, 225, 0.12),
@@ -202,7 +215,9 @@
         );
 }
 
+
 .dimension.affinity-luz::after {
+
     opacity: 1;
 
     background:
@@ -215,12 +230,11 @@
 
 
 /* =========================================================
-   🪨 TERRA
-   Principal: terra/verde profundo
-   Secundária: marrom + carvão
+   TERRA
 ========================================================= */
 
 .dimension.affinity-terra {
+
     --secondary-a: #78350f;
     --secondary-b: #292524;
     --secondary-soft: rgba(120, 53, 15, 0.10);
@@ -234,7 +248,9 @@
         inset 0 0 38px rgba(180, 83, 9, 0.08);
 }
 
+
 .dimension.affinity-terra::before {
+
     opacity: 1;
 
     background:
@@ -243,6 +259,7 @@
             rgba(180, 83, 9, 0.20),
             transparent 50%
         ),
+
         radial-gradient(
             circle at 80% 20%,
             rgba(41, 37, 36, 0.22),
@@ -250,7 +267,9 @@
         );
 }
 
+
 .dimension.affinity-terra::after {
+
     opacity: 1;
 
     background:
@@ -263,12 +282,11 @@
 
 
 /* =========================================================
-   🌑 TREVAS
-   Principal: roxo sombrio
-   Secundária: obsidiana + dourado antigo
+   TREVAS
 ========================================================= */
 
 .dimension.affinity-trevas {
+
     --secondary-a: #17130b;
     --secondary-b: #d4a72c;
     --secondary-soft: rgba(212, 167, 44, 0.07);
@@ -282,7 +300,9 @@
         inset 0 0 42px rgba(23, 19, 11, 0.30);
 }
 
+
 .dimension.affinity-trevas::before {
+
     opacity: 1;
 
     background:
@@ -291,11 +311,13 @@
             rgba(124, 58, 237, 0.20),
             transparent 45%
         ),
+
         radial-gradient(
             circle at 80% 70%,
             rgba(212, 167, 44, 0.08),
             transparent 45%
         ),
+
         radial-gradient(
             circle at 50% 50%,
             rgba(0, 0, 0, 0.20),
@@ -303,7 +325,9 @@
         );
 }
 
+
 .dimension.affinity-trevas::after {
+
     opacity: 1;
 
     background:
@@ -316,12 +340,11 @@
 
 
 /* =========================================================
-   🌪️ VENTO
-   Principal: ciano
-   Secundária: verde esmeralda + azul
+   VENTO
 ========================================================= */
 
 .dimension.affinity-vento {
+
     --secondary-a: #10b981;
     --secondary-b: #2563eb;
     --secondary-soft: rgba(16, 185, 129, 0.09);
@@ -335,7 +358,9 @@
         inset 0 0 38px rgba(45, 212, 191, 0.08);
 }
 
+
 .dimension.affinity-vento::before {
+
     opacity: 1;
 
     background:
@@ -347,7 +372,9 @@
         );
 }
 
+
 .dimension.affinity-vento::after {
+
     opacity: 1;
 
     background:
@@ -364,12 +391,11 @@
 
 
 /* =========================================================
-   🔥 FOGO
-   Principal: vermelho/laranja
-   Secundária: âmbar + azul elétrico
+   FOGO
 ========================================================= */
 
 .dimension.affinity-fogo {
+
     --secondary-a: #f59e0b;
     --secondary-b: #38bdf8;
     --secondary-soft: rgba(56, 189, 248, 0.07);
@@ -383,7 +409,9 @@
         inset 0 0 42px rgba(239, 68, 68, 0.10);
 }
 
+
 .dimension.affinity-fogo::before {
+
     opacity: 1;
 
     background:
@@ -392,11 +420,13 @@
             rgba(249, 115, 22, 0.24),
             transparent 55%
         ),
+
         radial-gradient(
             circle at 30% 70%,
             rgba(239, 68, 68, 0.16),
             transparent 45%
         ),
+
         linear-gradient(
             180deg,
             transparent 75%,
@@ -404,7 +434,9 @@
         );
 }
 
+
 .dimension.affinity-fogo::after {
+
     opacity: 1;
 
     background:
@@ -420,12 +452,11 @@
 
 
 /* =========================================================
-   💪 FÍSICO
-   Principal: energia clara
-   Secundária: iridescência/arco-íris metálico
+   FÍSICO
 ========================================================= */
 
 .dimension.affinity-fisico {
+
     --secondary-a: #e5e7eb;
     --secondary-b: #a78bfa;
     --secondary-soft: rgba(229, 231, 235, 0.08);
@@ -439,7 +470,9 @@
         inset 0 0 38px rgba(156, 163, 175, 0.08);
 }
 
+
 .dimension.affinity-fisico::before {
+
     opacity: 1;
 
     background:
@@ -453,7 +486,9 @@
         );
 }
 
+
 .dimension.affinity-fisico::after {
+
     opacity: 1;
 
     background:
@@ -466,12 +501,11 @@
 
 
 /* =========================================================
-   ✨ MÁGICO
-   Principal: violeta/azul
-   Secundária: aurora arcana
+   MÁGICO
 ========================================================= */
 
 .dimension.affinity-magico {
+
     --secondary-a: #67e8f9;
     --secondary-b: #f0abfc;
     --secondary-soft: rgba(103, 232, 249, 0.08);
@@ -486,7 +520,9 @@
         inset 0 0 42px rgba(168, 85, 247, 0.10);
 }
 
+
 .dimension.affinity-magico::before {
+
     opacity: 1;
 
     background:
@@ -504,7 +540,9 @@
         auroraCardEffect 7s ease-in-out infinite;
 }
 
+
 .dimension.affinity-magico::after {
+
     opacity: 1;
 
     background:
@@ -513,6 +551,7 @@
             rgba(192, 132, 252, 0.15),
             transparent 45%
         ),
+
         radial-gradient(
             circle at 70% 70%,
             rgba(103, 232, 249, 0.10),
@@ -522,179 +561,556 @@
 
 
 /* =========================================================
-   PASSIVA DE CLASSE
+   =========================================================
+   BOSS CARD
+   =========================================================
 ========================================================= */
 
-.class-passive-section {
-    margin-top: 22px;
-}
+.boss-card {
 
-
-/*
-   Card especial da passiva de classe.
-
-   Ele usa as variáveis de afinidade já existentes,
-   portanto acompanha automaticamente o tema elemental
-   do personagem.
-*/
-
-.class-passive-card {
     position: relative;
 
-    padding: 16px;
+    width: 100%;
+    max-width: 650px;
 
-    border-radius: 16px;
+    margin: 0 auto;
 
-    border: 1px solid color-mix(
-        in srgb,
-        var(--secondary-a) 70%,
-        transparent
-    );
+    padding: 20px;
+
+    border-radius: 22px;
 
     background:
         linear-gradient(
             145deg,
-            rgba(255, 255, 255, 0.055),
-            var(--secondary-soft),
-            rgba(0, 0, 0, 0.20)
+            rgba(18, 30, 36, 0.96),
+            rgba(5, 15, 22, 0.98)
         );
+
+    border:
+        1px solid rgba(52, 211, 153, 0.55);
 
     box-shadow:
-        0 0 18px color-mix(
-            in srgb,
-            var(--secondary-a) 18%,
-            transparent
-        ),
-        inset 0 0 20px color-mix(
-            in srgb,
-            var(--secondary-b) 7%,
-            transparent
-        );
+        0 0 25px rgba(45, 212, 191, 0.18),
+        0 0 60px rgba(16, 185, 129, 0.10),
+        inset 0 0 35px rgba(45, 212, 191, 0.04);
 
     overflow: hidden;
-
-    transition:
-        border-color 0.5s ease,
-        box-shadow 0.5s ease,
-        transform 0.3s ease;
 }
 
 
-/*
-   Reflexo superior da passiva.
-*/
+/* brilho interno */
 
-.class-passive-card::before {
+.boss-card::before {
+
     content: "";
 
     position: absolute;
 
-    top: 0;
-    left: 0;
-    right: 0;
+    inset: 0;
 
-    height: 1px;
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            115deg,
+            transparent 0%,
+            rgba(103, 232, 249, 0.035) 40%,
+            transparent 70%
+        );
+
+    animation:
+        bossCardShimmer 6s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   CABEÇALHO
+========================================================= */
+
+.boss-header {
+
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 18px;
+
+    padding-bottom: 14px;
+
+    border-bottom:
+        1px solid rgba(52, 211, 153, 0.25);
+}
+
+
+.boss-title-area {
+
+    min-width: 0;
+}
+
+
+.boss-header h2 {
+
+    margin: 0;
+
+    color: #ecfeff;
+
+    font-size: 24px;
+
+    line-height: 1.1;
+
+    letter-spacing: 0.5px;
+
+    text-shadow:
+        0 0 12px rgba(103, 232, 249, 0.30);
+}
+
+
+.boss-level {
+
+    display: block;
+
+    margin-top: 5px;
+
+    color: #67e8f9;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+.boss-affinity {
+
+    flex-shrink: 0;
+
+    padding: 7px 10px;
+
+    border-radius: 8px;
+
+    border:
+        1px solid rgba(52, 211, 153, 0.45);
+
+    background:
+        rgba(16, 185, 129, 0.08);
+
+    color: #6ee7b7;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   IMAGEM
+========================================================= */
+
+.boss-image-area {
+
+    position: relative;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    min-height: 280px;
+
+    margin-bottom: 20px;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(45, 212, 191, 0.10),
+            transparent 60%
+        ),
+
+        linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.05),
+            rgba(0, 0, 0, 0.35)
+        );
+
+    border:
+        1px solid rgba(103, 232, 249, 0.12);
+}
+
+
+.boss-image-area::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
 
     background:
         linear-gradient(
             90deg,
             transparent,
-            var(--secondary-b),
+            rgba(103, 232, 249, 0.06),
             transparent
         );
 
-    opacity: 0.75;
-
-    transition:
-        background 0.5s ease,
-        opacity 0.5s ease;
+    animation:
+        bossImageWind 4s ease-in-out infinite;
 }
 
 
-/*
-   Pequena aura interna.
-*/
+.boss-image {
 
-.class-passive-card::after {
-    content: "";
+    position: relative;
 
-    position: absolute;
+    z-index: 1;
 
-    width: 180px;
-    height: 180px;
+    display: block;
 
-    right: -100px;
-    bottom: -110px;
+    width: 100%;
+    max-width: 460px;
 
-    border-radius: 50%;
+    max-height: 420px;
 
-    background:
-        radial-gradient(
-            circle,
-            color-mix(
-                in srgb,
-                var(--secondary-b) 15%,
-                transparent
-            ),
-            transparent 70%
+    object-fit: contain;
+
+    object-position: center;
+
+    filter:
+        drop-shadow(
+            0 0 18px
+            rgba(45, 212, 191, 0.18)
         );
-
-    pointer-events: none;
-
-    animation:
-        classPassivePulse 4s ease-in-out infinite;
 }
 
 
 /* =========================================================
-   CABEÇALHO DA PASSIVA DE CLASSE
+   RECURSOS
 ========================================================= */
 
-.class-passive-card .ability-header {
+.boss-resources {
+
     position: relative;
-    z-index: 1;
+
+    z-index: 2;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+
+.boss-resource {
+
+    padding: 11px;
+
+    border-radius: 12px;
+
+    background:
+        rgba(0, 0, 0, 0.25);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.06);
+}
+
+
+.resource-header {
 
     display: flex;
 
     justify-content: space-between;
-    align-items: center;
 
-    gap: 10px;
+    gap: 8px;
 
-    margin-bottom: 14px;
-
-    padding-bottom: 10px;
-
-    border-bottom: 1px solid color-mix(
-        in srgb,
-        var(--secondary-a) 35%,
-        transparent
-    );
+    margin-bottom: 7px;
 }
 
-.class-passive-card .ability-header span:first-child {
-    color: var(--secondary-b);
+
+.resource-header span:first-child {
+
+    color: #a7f3d0;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+}
+
+
+.resource-header span:last-child {
+
+    color: #f5f0ff;
+
+    font-size: 9px;
+
+    font-weight: bold;
+}
+
+
+.resource-bar {
+
+    width: 100%;
+
+    height: 7px;
+
+    overflow: hidden;
+
+    border-radius: 99px;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+}
+
+
+.resource-fill {
+
+    height: 100%;
+
+    width: 100%;
+
+    border-radius: inherit;
+
+    transition:
+        width 0.35s ease;
+}
+
+
+/* HP */
+
+#boss-hp {
+
+    background:
+        linear-gradient(
+            90deg,
+            #dc2626,
+            #f87171
+        );
+
+    box-shadow:
+        0 0 8px rgba(248, 113, 113, 0.35);
+}
+
+
+/* MP */
+
+#boss-mp {
+
+    background:
+        linear-gradient(
+            90deg,
+            #2563eb,
+            #60a5fa
+        );
+
+    box-shadow:
+        0 0 8px rgba(96, 165, 250, 0.35);
+}
+
+
+/* EST */
+
+#boss-est {
+
+    background:
+        linear-gradient(
+            90deg,
+            #059669,
+            #34d399
+        );
+
+    box-shadow:
+        0 0 8px rgba(52, 211, 153, 0.35);
+}
+
+
+/* =========================================================
+   STATUS / ATRIBUTOS
+========================================================= */
+
+.boss-stats {
+
+    position: relative;
+    z-index: 2;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 8px;
+
+    margin-bottom: 20px;
+}
+
+
+.boss-stat {
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(0, 0, 0, 0.20);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.05);
+
+    text-align: center;
+}
+
+
+.boss-stat-label {
+
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #8f839d;
+
+    font-size: 8px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+}
+
+
+.boss-stat-value {
+
+    color: #e9fdf9;
+
+    font-size: 17px;
+
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   SEÇÕES
+========================================================= */
+
+.boss-section {
+
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 16px;
+
+    padding: 15px;
+
+    border-radius: 14px;
+
+    background:
+        rgba(0, 0, 0, 0.20);
+
+    border:
+        1px solid rgba(52, 211, 153, 0.12);
+}
+
+
+.boss-section-title {
+
+    margin: 0 0 12px;
+
+    color: #67e8f9;
 
     font-size: 11px;
 
     font-weight: bold;
 
     letter-spacing: 1.5px;
+
+    text-transform: uppercase;
 }
 
-.class-passive-card .ability-header span:last-child {
-    padding: 4px 7px;
+
+/* =========================================================
+   PASSIVA DO BOSS
+========================================================= */
+
+.boss-passive {
+
+    padding: 13px;
+
+    border-radius: 11px;
+
+    border-left:
+        2px solid #34d399;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(16, 185, 129, 0.09),
+            rgba(0, 0, 0, 0.15)
+        );
+}
+
+
+.boss-passive-name {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #6ee7b7;
+
+    font-size: 16px;
+
+    font-weight: bold;
+}
+
+
+.boss-passive-description {
+
+    margin: 0;
+
+    color: #c9d8d5;
+
+    font-size: 12px;
+
+    line-height: 1.55;
+}
+
+
+.boss-passive-state {
+
+    display: inline-block;
+
+    margin-top: 9px;
+
+    padding: 5px 7px;
 
     border-radius: 6px;
 
     background:
-        color-mix(
-            in srgb,
-            var(--secondary-a) 15%,
-            transparent
-        );
+        rgba(16, 185, 129, 0.10);
 
-    color: var(--secondary-b);
+    color: #6ee7b7;
 
     font-size: 8px;
 
@@ -705,22 +1121,49 @@
 
 
 /* =========================================================
-   IDENTIFICAÇÃO DA CLASSE
+   HABILIDADES
 ========================================================= */
 
-.class-passive-class,
-.class-passive-content,
-.class-passive-description {
-    position: relative;
-    z-index: 1;
+.boss-skill {
+
+    padding: 13px;
+
+    border-radius: 11px;
+
+    background:
+        rgba(0, 0, 0, 0.18);
+
+    border:
+        1px solid rgba(103, 232, 249, 0.10);
+
+    transition:
+        border-color 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
 
-/*
-   Bloco da classe.
-*/
+.boss-skill + .boss-skill {
 
-.class-passive-class {
+    margin-top: 10px;
+}
+
+
+.boss-skill:hover {
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(103, 232, 249, 0.30);
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.18);
+}
+
+
+.skill-header {
+
     display: flex;
 
     justify-content: space-between;
@@ -728,135 +1171,242 @@
 
     gap: 10px;
 
-    margin-bottom: 12px;
-
-    padding: 9px 11px;
-
-    border-radius: 10px;
-
-    background:
-        rgba(0, 0, 0, 0.18);
-
-    border:
-        1px solid rgba(255, 255, 255, 0.06);
+    margin-bottom: 8px;
 }
 
-.class-passive-class small,
-.class-passive-content small,
-.class-passive-description small {
-    display: block;
 
-    margin-bottom: 5px;
+.skill-header strong {
 
-    color: #8f839d;
+    color: #e0f2fe;
+
+    font-size: 15px;
+}
+
+
+.skill-cost {
+
+    display: flex;
+
+    gap: 5px;
+
+    flex-wrap: wrap;
+
+    justify-content: flex-end;
+}
+
+
+.skill-cost span {
+
+    padding: 4px 6px;
+
+    border-radius: 5px;
 
     font-size: 8px;
 
-    letter-spacing: 1.2px;
+    font-weight: bold;
 }
 
-.class-passive-class small {
+
+.skill-cost .mp-cost {
+
+    color: #93c5fd;
+
+    background:
+        rgba(37, 99, 235, 0.12);
+}
+
+
+.skill-cost .est-cost {
+
+    color: #6ee7b7;
+
+    background:
+        rgba(16, 185, 129, 0.12);
+}
+
+
+.boss-skill p {
+
     margin: 0;
-}
 
-.class-passive-class strong {
-    color: #f5f0ff;
+    color: #b9c8c6;
 
-    font-size: 14px;
+    font-size: 11px;
 
-    letter-spacing: 0.5px;
+    line-height: 1.5;
 }
 
 
 /* =========================================================
-   NOME DA PASSIVA
+   BOTÃO DE HABILIDADE
 ========================================================= */
 
-.class-passive-content {
-    margin-bottom: 12px;
+.boss-skill-button {
 
-    padding: 10px 11px;
+    width: 100%;
 
-    border-left: 2px solid var(--secondary-b);
+    margin-top: 11px;
 
-    border-radius: 0 9px 9px 0;
+    padding: 9px 12px;
+
+    border: 1px solid rgba(52, 211, 153, 0.28);
+
+    border-radius: 8px;
 
     background:
-        color-mix(
-            in srgb,
-            var(--secondary-a) 7%,
-            transparent
-        );
-}
+        rgba(16, 185, 129, 0.08);
 
-.class-passive-content strong {
-    display: block;
+    color: #6ee7b7;
 
-    color: var(--secondary-b);
+    font-size: 9px;
 
-    font-size: 16px;
+    font-weight: bold;
 
-    line-height: 1.25;
+    letter-spacing: 1px;
 
-    letter-spacing: 0.3px;
+    cursor: pointer;
 
     transition:
-        color 0.5s ease;
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
 }
 
 
-/* =========================================================
-   DESCRIÇÃO
-========================================================= */
-
-.class-passive-description {
-    padding: 11px;
-
-    border-radius: 10px;
+.boss-skill-button:hover {
 
     background:
-        rgba(0, 0, 0, 0.16);
+        rgba(16, 185, 129, 0.16);
 
-    border:
-        1px solid rgba(255, 255, 255, 0.05);
+    border-color:
+        rgba(52, 211, 153, 0.55);
+
+    transform:
+        translateY(-1px);
 }
 
-.class-passive-description p {
-    margin: 0;
 
-    color: #c9bdd5;
+.boss-skill-button:active {
 
-    font-size: 12px;
-
-    line-height: 1.55;
+    transform:
+        translateY(0);
 }
 
 
 /* =========================================================
-   ANIMAÇÃO DA PASSIVA DE CLASSE
+   CONTROLES DE TESTE
 ========================================================= */
 
-@keyframes classPassivePulse {
+.boss-test-buttons {
 
-    0%,
-    100% {
-        transform: scale(0.9);
-        opacity: 0.55;
-    }
+    display: grid;
 
-    50% {
-        transform: scale(1.1);
-        opacity: 0.9;
-    }
+    grid-template-columns:
+        repeat(2, 1fr);
 
+    gap: 8px;
+
+    margin-top: 18px;
+}
+
+
+.boss-test-buttons button {
+
+    padding: 9px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 8px;
+
+    background:
+        rgba(255, 255, 255, 0.045);
+
+    color: #d8e7e5;
+
+    font-size: 9px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.boss-test-buttons button:hover {
+
+    background:
+        rgba(52, 211, 153, 0.08);
+
+    border-color:
+        rgba(52, 211, 153, 0.25);
+
+    transform:
+        translateY(-1px);
 }
 
 
 /* =========================================================
-   ANIMAÇÃO GERAL
+   ESTADO DO BOSS
+========================================================= */
+
+.boss-state {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 14px;
+
+    padding: 9px 11px;
+
+    border-radius: 9px;
+
+    background:
+        rgba(0, 0, 0, 0.20);
+
+    border:
+        1px solid rgba(103, 232, 249, 0.08);
+
+    color: #a7f3d0;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.8px;
+}
+
+
+.boss-state-dot {
+
+    width: 7px;
+    height: 7px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #34d399;
+
+    box-shadow:
+        0 0 8px rgba(52, 211, 153, 0.7);
+
+    animation:
+        bossStatePulse 1.8s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   ANIMAÇÕES
 ========================================================= */
 
 @keyframes affinityPulse {
+
     0%,
     100% {
         transform: scale(0.96);
@@ -868,11 +1418,8 @@
 }
 
 
-/* =========================================================
-   VENTO
-========================================================= */
-
 @keyframes windCardEffect {
+
     0% {
         transform:
             translateX(-15%)
@@ -893,11 +1440,8 @@
 }
 
 
-/* =========================================================
-   FOGO
-========================================================= */
-
 @keyframes fireCardEffect {
+
     0%,
     100% {
         transform:
@@ -913,11 +1457,8 @@
 }
 
 
-/* =========================================================
-   AURORA
-========================================================= */
-
 @keyframes auroraCardEffect {
+
     0%,
     100% {
         background-position: 0% 50%;
@@ -925,6 +1466,123 @@
 
     50% {
         background-position: 100% 50%;
+    }
+}
+
+
+@keyframes bossCardShimmer {
+
+    0%,
+    100% {
+        transform:
+            translateX(-25%);
+        opacity: 0.25;
+    }
+
+    50% {
+        transform:
+            translateX(25%);
+        opacity: 0.65;
+    }
+}
+
+
+@keyframes bossImageWind {
+
+    0%,
+    100% {
+        transform:
+            translateX(-20%);
+        opacity: 0.15;
+    }
+
+    50% {
+        transform:
+            translateX(20%);
+        opacity: 0.45;
+    }
+}
+
+
+@keyframes bossStatePulse {
+
+    0%,
+    100% {
+        transform: scale(0.85);
+        opacity: 0.65;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .boss-card {
+
+        padding: 14px;
+
+        border-radius: 18px;
+    }
+
+
+    .boss-header h2 {
+
+        font-size: 20px;
+    }
+
+
+    .boss-image-area {
+
+        min-height: 230px;
+    }
+
+
+    .boss-image {
+
+        max-height: 330px;
+    }
+
+
+    .boss-resources {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .boss-stats {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .boss-test-buttons {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .skill-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    .skill-cost {
+
+        justify-content: flex-start;
     }
 }
 
@@ -937,8 +1595,10 @@
 
     .dimension::after,
     .dimension.affinity-magico::before,
-    .class-passive-card::after {
+    .boss-card::before,
+    .boss-image-area::after,
+    .boss-state-dot {
+
         animation: none;
     }
-
 }
