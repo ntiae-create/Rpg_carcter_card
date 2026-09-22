@@ -188,7 +188,10 @@
 .boss-passive,
 .boss-skill {
     padding: 16px;
+    margin-bottom: 12px;
+
     border-radius: 14px;
+
     background: rgba(255,255,255,.04);
     border: 1px solid rgba(255,255,255,.09);
 }
@@ -207,10 +210,14 @@
 
 #boss-passive-state {
     display: inline-block;
+
     padding: 5px 9px;
+
     border-radius: 8px;
+
     font-size: 11px;
     font-weight: 800;
+
     background: rgba(255,255,255,.07);
 }
 
@@ -229,8 +236,11 @@
 
 .skill-cost {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
+
     margin-bottom: 12px;
+
     font-size: 13px;
     font-weight: 700;
 }
@@ -239,16 +249,29 @@
 .boss-test-buttons button {
     border: 0;
     border-radius: 10px;
+
     padding: 10px 14px;
+
     cursor: pointer;
+
     font-weight: 800;
     color: inherit;
+
     background: rgba(255,255,255,.08);
+
+    transition:
+        background .2s ease,
+        transform .15s ease;
 }
 
 .boss-skill button:hover,
 .boss-test-buttons button:hover {
     background: rgba(255,255,255,.14);
+}
+
+.boss-skill button:active,
+.boss-test-buttons button:active {
+    transform: scale(.97);
 }
 
 .boss-test-buttons {
@@ -284,6 +307,64 @@
     border-color: rgba(255,255,255,.35);
 }
 
+
+/* =========================================================
+   COMBATE
+========================================================= */
+
+.combat-skill-card {
+    padding: 16px;
+    margin-top: 12px;
+
+    border-radius: 14px;
+
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.09);
+}
+
+.combat-skill-card h3 {
+    margin-top: 0;
+}
+
+.combat-skill-card p {
+    opacity: .8;
+    line-height: 1.5;
+}
+
+.combat-skill-card button {
+    border: 0;
+    border-radius: 10px;
+
+    padding: 10px 14px;
+
+    cursor: pointer;
+
+    font-weight: 800;
+    color: inherit;
+
+    background: rgba(255,255,255,.08);
+}
+
+.combat-skill-card button:hover {
+    background: rgba(255,255,255,.15);
+}
+
+.combat-skill-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    margin-bottom: 12px;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
 @media (max-width: 480px) {
 
     .boss-stats {
@@ -304,9 +385,11 @@
 
 </head>
 
+
 <body>
 
 <div class="app">
+
 
 <header class="app-header">
 
@@ -321,6 +404,10 @@
 </header>
 
 
+<!-- =========================================================
+     NAVEGAÇÃO
+========================================================= -->
+
 <nav class="dimension-nav">
 
     <button
@@ -332,6 +419,7 @@
 
     </button>
 
+
     <button
         class="dimension-button"
         data-dimension="status"
@@ -341,6 +429,7 @@
 
     </button>
 
+
     <button
         class="dimension-button"
         data-dimension="combat"
@@ -349,6 +438,7 @@
         ⚔️ Combate
 
     </button>
+
 
     <button
         class="dimension-button"
@@ -365,12 +455,19 @@
 <main class="character-card">
 
 
+<!-- =========================================================
+     BOSS
+========================================================= -->
+
 <section
     class="dimension character-dimension active"
     data-dimension-content="boss">
 
+
 <div class="card-face card-front">
 
+
+<!-- CABEÇALHO -->
 
 <div class="boss-header">
 
@@ -390,6 +487,7 @@
 
     </div>
 
+
     <div
         id="boss-affinity"
         class="boss-affinity">
@@ -401,6 +499,8 @@
 </div>
 
 
+<!-- IMAGEM -->
+
 <div class="boss-image-area">
 
     <img
@@ -408,6 +508,7 @@
         src="assets/bosses/hasvrejk-filhote.png"
         alt="Hasvrejk Filhote"
         class="boss-image">
+
 
     <label class="boss-image-button">
 
@@ -424,7 +525,10 @@
 </div>
 
 
+<!-- RECURSOS -->
+
 <div class="boss-resources">
+
 
 <div class="boss-resource">
 
@@ -437,6 +541,7 @@
         </span>
 
     </div>
+
 
     <div class="resource-bar">
 
@@ -462,6 +567,7 @@
 
     </div>
 
+
     <div class="resource-bar">
 
         <div
@@ -486,6 +592,7 @@
 
     </div>
 
+
     <div class="resource-bar">
 
         <div
@@ -499,6 +606,8 @@
 
 </div>
 
+
+<!-- ATRIBUTOS -->
 
 <div class="boss-stats">
 
@@ -535,19 +644,30 @@
 </div>
 
 
+<!-- =========================================================
+     PASSIVA
+========================================================= -->
+
 <section class="boss-section">
 
-    <h2>👑 PASSIVA</h2>
+    <h2>
+        👑 PASSIVA
+    </h2>
+
 
     <div class="boss-passive">
 
-        <h3>Rei dos Ares</h3>
+        <h3>
+            Rei dos Ares
+        </h3>
+
 
         <p>
             Enquanto estiver no ar,
             torna-se imune a ataques
             corpo a corpo.
         </p>
+
 
         <span id="boss-passive-state">
             INATIVA — NO SOLO
@@ -558,9 +678,18 @@
 </section>
 
 
+<!-- =========================================================
+     HABILIDADES
+========================================================= -->
+
 <section class="boss-section">
 
-    <h2>⚔️ HABILIDADES</h2>
+    <h2>
+        ⚔️ HABILIDADES
+    </h2>
+
+
+    <!-- HABILIDADE 1 -->
 
     <div class="boss-skill">
 
@@ -576,24 +705,124 @@
 
         </div>
 
+
         <p>
             Cria uma pequena área
             de vento cortante.
         </p>
 
+
         <div class="skill-cost">
 
-            <span>🔮 15 MP</span>
+            <span>
+                🎯 Área: 3 jogadores
+            </span>
 
-            <span>⚡ 20 EST</span>
+            <span>
+                🔮 15 MP
+            </span>
+
+            <span>
+                ⚡ 20 EST
+            </span>
 
         </div>
 
+
         <button
             type="button"
-            onclick="BossSystem.usarHabilidade('rajada_vento')">
+            id="skill-rajada-vento">
 
             🌪️ USAR HABILIDADE
+
+        </button>
+
+    </div>
+
+
+    <!-- HABILIDADE 2 -->
+
+    <div class="boss-skill">
+
+        <div class="skill-header">
+
+            <h3>
+                🩸 Garras da Vida
+            </h3>
+
+            <span>
+                FÍSICO
+            </span>
+
+        </div>
+
+
+        <p>
+            Rouba 50% do dano causado.
+        </p>
+
+
+        <div class="skill-cost">
+
+            <span>
+                🎯 Área: alvo atingido
+            </span>
+
+            <span>
+                🩸 Roubo de vida: 50%
+            </span>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="skill-garras-vida">
+
+            🩸 USAR HABILIDADE
+
+        </button>
+
+    </div>
+
+
+    <!-- HABILIDADE 3 -->
+
+    <div class="boss-skill">
+
+        <div class="skill-header">
+
+            <h3>
+                💨 Bater de Asas
+            </h3>
+
+            <span>
+                VENTO
+            </span>
+
+        </div>
+
+
+        <p>
+            Manda todos os jogadores
+            para longe.
+        </p>
+
+
+        <div class="skill-cost">
+
+            <span>
+                🎯 Área: todos os jogadores
+            </span>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="skill-bater-asas">
+
+            💨 USAR HABILIDADE
 
         </button>
 
@@ -602,9 +831,9 @@
 </section>
 
 
-<!-- =================================================
+<!-- =========================================================
      CONTROLE DO BOSS
-================================================== -->
+========================================================= -->
 
 <section class="boss-section">
 
@@ -616,8 +845,6 @@
     <div class="boss-test-buttons">
 
 
-        <!-- DANO -->
-
         <input
             type="number"
             id="boss-damage-input"
@@ -628,25 +855,21 @@
 
         <button
             type="button"
-            onclick="BossSystem.aplicarDanoManual()">
+            id="boss-damage-button">
 
             ❤️ APLICAR DANO
 
         </button>
 
 
-        <!-- DANO CORPO A CORPO -->
-
         <button
             type="button"
-            onclick="BossSystem.aplicarDanoCorpoACorpo()">
+            id="boss-melee-button">
 
             ⚔️ DANO CORPO A CORPO
 
         </button>
 
-
-        <!-- CURA -->
 
         <input
             type="number"
@@ -658,18 +881,16 @@
 
         <button
             type="button"
-            onclick="BossSystem.aplicarCuraManual()">
+            id="boss-heal-button">
 
             💚 APLICAR CURA
 
         </button>
 
 
-        <!-- VOO -->
-
         <button
             type="button"
-            onclick="BossSystem.ativarVoo()">
+            id="boss-fly-button">
 
             💨 COLOCAR NO AR
 
@@ -678,18 +899,16 @@
 
         <button
             type="button"
-            onclick="BossSystem.desativarVoo()">
+            id="boss-ground-button">
 
             🪶 VOLTAR AO SOLO
 
         </button>
 
 
-        <!-- RESET -->
-
         <button
             type="button"
-            onclick="BossSystem.resetar()">
+            id="boss-reset-button">
 
             ↻ RESETAR BOSS
 
@@ -699,22 +918,27 @@
 
 </section>
 
+
 </div>
 
 </section>
 
 
-<!-- =================================================
+<!-- =========================================================
      STATUS
-================================================== -->
+========================================================= -->
 
 <section
     class="dimension status-dimension"
     data-dimension-content="status">
 
+
 <div class="status-section">
 
-    <h2>📊 STATUS</h2>
+    <h2>
+        📊 STATUS
+    </h2>
+
 
     <div class="stats">
 
@@ -722,24 +946,52 @@
             RECURSOS
         </h3>
 
+
         <div class="stats-grid">
 
+
             <div class="stat">
+
                 <span>❤️</span>
-                <strong id="boss-status-hp">150</strong>
-                <small>HP</small>
+
+                <strong id="boss-status-hp">
+                    150
+                </strong>
+
+                <small>
+                    HP
+                </small>
+
             </div>
 
+
             <div class="stat">
+
                 <span>🔮</span>
-                <strong id="boss-status-mp">120</strong>
-                <small>MP</small>
+
+                <strong id="boss-status-mp">
+                    120
+                </strong>
+
+                <small>
+                    MP
+                </small>
+
             </div>
 
+
             <div class="stat">
+
                 <span>⚡</span>
-                <strong id="boss-status-est">200</strong>
-                <small>EST</small>
+
+                <strong id="boss-status-est">
+                    200
+                </strong>
+
+                <small>
+                    EST
+                </small>
+
             </div>
 
         </div>
@@ -753,7 +1005,9 @@
             ATRIBUTOS
         </h3>
 
+
         <div class="stats-grid">
+
 
             <div class="stat">
                 <span>⚔️</span>
@@ -761,11 +1015,13 @@
                 <small>ATK</small>
             </div>
 
+
             <div class="stat">
                 <span>✨</span>
                 <strong>8</strong>
                 <small>ATK MGC</small>
             </div>
+
 
             <div class="stat">
                 <span>🛡️</span>
@@ -773,17 +1029,20 @@
                 <small>DEF</small>
             </div>
 
+
             <div class="stat">
                 <span>🔰</span>
                 <strong>42</strong>
                 <small>RES</small>
             </div>
 
+
             <div class="stat">
                 <span>💨</span>
                 <strong>9</strong>
                 <small>AGI</small>
             </div>
+
 
             <div class="stat">
                 <span>🧠</span>
@@ -800,67 +1059,174 @@
 </section>
 
 
-<!-- =================================================
+<!-- =========================================================
      COMBATE
-================================================== -->
+========================================================= -->
 
 <section
     class="dimension combat-dimension"
     data-dimension-content="combat">
 
+
 <div class="combat-section">
 
-    <h2>⚔️ COMBATE</h2>
+    <h2>
+        ⚔️ COMBATE
+    </h2>
+
 
     <p class="combat-subtitle">
         Ações e habilidades do Boss.
     </p>
 
+
     <div class="combat-resources">
 
         <div>
-            <span>🔮 MP</span>
-            <strong id="combat-mp">120</strong>
+
+            <span>
+                🔮 MP
+            </span>
+
+            <strong id="combat-mp">
+                120
+            </strong>
+
         </div>
 
+
         <div>
-            <span>⚡ EST</span>
-            <strong id="combat-est">200</strong>
+
+            <span>
+                ⚡ EST
+            </span>
+
+            <strong id="combat-est">
+                200
+            </strong>
+
         </div>
 
     </div>
 
 
-    <div class="combat-card">
+    <!-- RAJADA -->
 
-        <div class="combat-card-header">
+    <div class="combat-skill-card">
 
-            <h3>
-                🌪️ RAJADA DE VENTO
-            </h3>
+        <h3>
+            🌪️ RAJADA DE VENTO
+        </h3>
 
-            <span>
-                −15 MP / −20 EST
-            </span>
-
-        </div>
 
         <p>
             Cria uma pequena área
             de vento cortante.
         </p>
 
-        <button
-            class="combat-use-button"
-            type="button"
-            onclick="BossSystem.usarHabilidade('rajada_vento')">
 
-            USAR HABILIDADE
+        <div class="combat-skill-info">
+
+            <span>
+                🎯 3 jogadores
+            </span>
+
+            <span>
+                🔮 −15 MP
+            </span>
+
+            <span>
+                ⚡ −20 EST
+            </span>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="combat-rajada-vento">
+
+            🌪️ USAR HABILIDADE
 
         </button>
 
     </div>
 
+
+    <!-- GARRAS -->
+
+    <div class="combat-skill-card">
+
+        <h3>
+            🩸 GARRAS DA VIDA
+        </h3>
+
+
+        <p>
+            Rouba 50% do dano causado.
+        </p>
+
+
+        <div class="combat-skill-info">
+
+            <span>
+                🎯 Alvo atingido
+            </span>
+
+            <span>
+                🩸 50% roubo de vida
+            </span>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="combat-garras-vida">
+
+            🩸 USAR HABILIDADE
+
+        </button>
+
+    </div>
+
+
+    <!-- ASAS -->
+
+    <div class="combat-skill-card">
+
+        <h3>
+            💨 BATER DE ASAS
+        </h3>
+
+
+        <p>
+            Manda todos os jogadores
+            para longe.
+        </p>
+
+
+        <div class="combat-skill-info">
+
+            <span>
+                🎯 Todos os jogadores
+            </span>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="combat-bater-asas">
+
+            💨 USAR HABILIDADE
+
+        </button>
+
+    </div>
+
+
+    <!-- PASSIVA -->
 
     <div class="passive-section">
 
@@ -868,19 +1234,26 @@
             PASSIVA
         </h3>
 
+
         <div class="passive-card">
 
             <div class="ability-header">
 
-                <span>PASSIVA</span>
+                <span>
+                    PASSIVA
+                </span>
 
-                <span>AUTOMÁTICA</span>
+                <span>
+                    AUTOMÁTICA
+                </span>
 
             </div>
+
 
             <h3>
                 👑 Rei dos Ares
             </h3>
+
 
             <p>
                 Enquanto estiver no ar,
@@ -897,25 +1270,35 @@
 </section>
 
 
-<!-- =================================================
+<!-- =========================================================
      INVENTÁRIO
-================================================== -->
+========================================================= -->
 
 <section
     class="dimension inventory-dimension"
     data-dimension-content="inventory">
 
+
 <div class="inventory-section">
 
-    <h2>🎒 INVENTÁRIO</h2>
+    <h2>
+        🎒 INVENTÁRIO
+    </h2>
+
 
     <div class="inventory-list-section">
 
-        <h3>ITENS DO BOSS</h3>
+        <h3>
+            ITENS DO BOSS
+        </h3>
+
 
         <div class="inventory-empty">
 
-            <span>🎒</span>
+            <span>
+                🎒
+            </span>
+
 
             <p>
                 Nenhum item.
@@ -929,12 +1312,18 @@
 
 </section>
 
+
 </main>
 
 </div>
 
 
+<!-- =========================================================
+     BOSS JS
+========================================================= -->
+
 <script src="boss.js"></script>
+
 
 <script>
 
@@ -942,38 +1331,47 @@
 
 
 /* =========================================================
-   ATUALIZAÇÃO DO STATUS E COMBATE
+   ATUALIZAÇÃO DO STATUS / COMBATE
 ========================================================= */
 
 const bossOriginalAtualizar =
-    BossSystem.atualizarCard.bind(BossSystem);
+    BossSystem.atualizarCard.bind(
+        BossSystem
+    );
 
 
 BossSystem.atualizarCard = function () {
 
     bossOriginalAtualizar();
 
-    const boss = this.boss;
+
+    const boss =
+        this.boss;
+
 
     const hp =
         document.getElementById(
             "boss-status-hp"
         );
 
+
     const mp =
         document.getElementById(
             "boss-status-mp"
         );
+
 
     const est =
         document.getElementById(
             "boss-status-est"
         );
 
+
     const combatMP =
         document.getElementById(
             "combat-mp"
         );
+
 
     const combatEST =
         document.getElementById(
@@ -982,28 +1380,30 @@ BossSystem.atualizarCard = function () {
 
 
     if (hp)
-        hp.textContent = boss.hp;
+        hp.textContent =
+            boss.hp;
+
 
     if (mp)
-        mp.textContent = boss.mp;
+        mp.textContent =
+            boss.mp;
+
 
     if (est)
-        est.textContent = boss.est;
+        est.textContent =
+            boss.est;
+
 
     if (combatMP)
-        combatMP.textContent = boss.mp;
+        combatMP.textContent =
+            boss.mp;
+
 
     if (combatEST)
-        combatEST.textContent = boss.est;
+        combatEST.textContent =
+            boss.est;
 
 };
-
-
-/* =========================================================
-   PRIMEIRA ATUALIZAÇÃO
-========================================================= */
-
-BossSystem.atualizarCard();
 
 
 /* =========================================================
@@ -1011,7 +1411,9 @@ BossSystem.atualizarCard();
 ========================================================= */
 
 document
-    .querySelectorAll(".dimension-button")
+    .querySelectorAll(
+        ".dimension-button"
+    )
     .forEach(button => {
 
         button.addEventListener(
@@ -1023,7 +1425,9 @@ document
 
 
                 document
-                    .querySelectorAll(".dimension-button")
+                    .querySelectorAll(
+                        ".dimension-button"
+                    )
                     .forEach(btn => {
 
                         btn.classList.remove(
@@ -1033,7 +1437,9 @@ document
                     });
 
 
-                button.classList.add("active");
+                button.classList.add(
+                    "active"
+                );
 
 
                 document
@@ -1068,7 +1474,67 @@ document
 
     });
 
+
+/* =========================================================
+   BOTÕES DE COMBATE
+========================================================= */
+
+document
+    .getElementById(
+        "combat-rajada-vento"
+    )
+    ?.addEventListener(
+        "click",
+        () => {
+
+            BossSystem.usarHabilidade(
+                "rajada_vento"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "combat-garras-vida"
+    )
+    ?.addEventListener(
+        "click",
+        () => {
+
+            BossSystem.usarHabilidade(
+                "garras_vida"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "combat-bater-asas"
+    )
+    ?.addEventListener(
+        "click",
+        () => {
+
+            BossSystem.usarHabilidade(
+                "bater_asas"
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   PRIMEIRA ATUALIZAÇÃO
+========================================================= */
+
+BossSystem.atualizarCard();
+
 </script>
 
 </body>
+
 </html>
