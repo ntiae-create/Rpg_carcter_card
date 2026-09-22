@@ -17,11 +17,6 @@ const BossSystem = {
 
         afinidade: "vento",
 
-
-        /* ====================================================
-           RECURSOS
-        ==================================================== */
-
         hpMax: 150,
         hp: 150,
 
@@ -31,22 +26,12 @@ const BossSystem = {
         estMax: 200,
         est: 200,
 
-
-        /* ====================================================
-           ATRIBUTOS
-        ==================================================== */
-
         atk: 10,
         atkMgc: 8,
         def: 12,
         res: 42,
         agi: 9,
         int: 10,
-
-
-        /* ====================================================
-           PASSIVA
-        ==================================================== */
 
         passiva: {
 
@@ -55,11 +40,6 @@ const BossSystem = {
             descricao:
                 "Enquanto estiver no ar, torna-se imune a ataques corpo a corpo."
         },
-
-
-        /* ====================================================
-           HABILIDADES
-        ==================================================== */
 
         habilidades: [
 
@@ -82,11 +62,6 @@ const BossSystem = {
 
         ],
 
-
-        /* ====================================================
-           ESTADO
-        ==================================================== */
-
         noAr: false
     },
 
@@ -106,19 +81,16 @@ const BossSystem = {
 
 
     /* ========================================================
-       HP
+       DANO
     ======================================================== */
 
     receberDano(valor, tipo = "normal") {
 
         valor = Number(valor) || 0;
 
-        if (valor <= 0) return 0;
+        if (valor <= 0)
+            return 0;
 
-
-        /*
-         * PASSIVA REI DOS ARES
-         */
 
         if (
             tipo === "corpo-a-corpo" &&
@@ -135,13 +107,15 @@ const BossSystem = {
         }
 
 
-        const danoAplicado = Math.min(
-            valor,
-            this.boss.hp
-        );
+        const danoAplicado =
+            Math.min(
+                valor,
+                this.boss.hp
+            );
 
 
-        this.boss.hp -= danoAplicado;
+        this.boss.hp -=
+            danoAplicado;
 
 
         if (this.boss.hp < 0) {
@@ -158,6 +132,80 @@ const BossSystem = {
 
 
     /* ========================================================
+       DANO MANUAL
+    ======================================================== */
+
+    aplicarDanoManual() {
+
+        const input =
+            document.getElementById(
+                "boss-damage-input"
+            );
+
+
+        if (!input)
+            return;
+
+
+        const dano =
+            Number(input.value);
+
+
+        if (
+            !Number.isFinite(dano) ||
+            dano <= 0
+        ) {
+
+            return;
+        }
+
+
+        this.receberDano(dano);
+
+        input.value = "";
+    },
+
+
+    /* ========================================================
+       DANO CORPO A CORPO
+    ======================================================== */
+
+    aplicarDanoCorpoACorpo() {
+
+        const input =
+            document.getElementById(
+                "boss-damage-input"
+            );
+
+
+        if (!input)
+            return;
+
+
+        const dano =
+            Number(input.value);
+
+
+        if (
+            !Number.isFinite(dano) ||
+            dano <= 0
+        ) {
+
+            return;
+        }
+
+
+        this.receberDano(
+            dano,
+            "corpo-a-corpo"
+        );
+
+
+        input.value = "";
+    },
+
+
+    /* ========================================================
        MP
     ======================================================== */
 
@@ -165,7 +213,8 @@ const BossSystem = {
 
         valor = Number(valor) || 0;
 
-        if (valor <= 0) return true;
+        if (valor <= 0)
+            return true;
 
 
         if (this.boss.mp < valor) {
@@ -190,10 +239,13 @@ const BossSystem = {
 
         valor = Number(valor) || 0;
 
-        this.boss.mp = Math.min(
-            this.boss.mpMax,
-            this.boss.mp + valor
-        );
+
+        this.boss.mp =
+            Math.min(
+                this.boss.mpMax,
+                this.boss.mp + valor
+            );
+
 
         this.atualizarCard();
     },
@@ -207,7 +259,8 @@ const BossSystem = {
 
         valor = Number(valor) || 0;
 
-        if (valor <= 0) return true;
+        if (valor <= 0)
+            return true;
 
 
         if (this.boss.est < valor) {
@@ -232,10 +285,13 @@ const BossSystem = {
 
         valor = Number(valor) || 0;
 
-        this.boss.est = Math.min(
-            this.boss.estMax,
-            this.boss.est + valor
-        );
+
+        this.boss.est =
+            Math.min(
+                this.boss.estMax,
+                this.boss.est + valor
+            );
+
 
         this.atualizarCard();
     },
@@ -358,10 +414,11 @@ const BossSystem = {
         valor = Number(valor) || 0;
 
 
-        this.boss.hp = Math.min(
-            this.boss.hpMax,
-            this.boss.hp + valor
-        );
+        this.boss.hp =
+            Math.min(
+                this.boss.hpMax,
+                this.boss.hp + valor
+            );
 
 
         this.atualizarCard();
@@ -369,7 +426,42 @@ const BossSystem = {
 
 
     /* ========================================================
-       IMAGEM — CARREGAR
+       CURA MANUAL
+    ======================================================== */
+
+    aplicarCuraManual() {
+
+        const input =
+            document.getElementById(
+                "boss-heal-input"
+            );
+
+
+        if (!input)
+            return;
+
+
+        const cura =
+            Number(input.value);
+
+
+        if (
+            !Number.isFinite(cura) ||
+            cura <= 0
+        ) {
+
+            return;
+        }
+
+
+        this.curar(cura);
+
+        input.value = "";
+    },
+
+
+    /* ========================================================
+       IMAGEM
     ======================================================== */
 
     carregarImagem() {
@@ -380,7 +472,8 @@ const BossSystem = {
             );
 
 
-        if (!imagem) return;
+        if (!imagem)
+            return;
 
 
         let imagemSalva = null;
@@ -402,22 +495,11 @@ const BossSystem = {
         }
 
 
-        if (imagemSalva) {
-
-            imagem.src =
-                imagemSalva;
-
-        } else {
-
-            imagem.src =
-                this.imagem.imagemPadrao;
-        }
+        imagem.src =
+            imagemSalva ||
+            this.imagem.imagemPadrao;
     },
 
-
-    /* ========================================================
-       IMAGEM — SELECIONAR
-    ======================================================== */
 
     selecionarImagem(event) {
 
@@ -425,7 +507,8 @@ const BossSystem = {
             event.target.files?.[0];
 
 
-        if (!arquivo) return;
+        if (!arquivo)
+            return;
 
 
         if (
@@ -473,11 +556,6 @@ const BossSystem = {
                     imagemBase64
                 );
 
-
-                console.log(
-                    "[Boss] Imagem do Boss salva."
-                );
-
             } catch (erro) {
 
                 console.error(
@@ -485,11 +563,11 @@ const BossSystem = {
                     erro
                 );
 
-
                 alert(
                     "A imagem é muito grande para ser salva. Escolha uma imagem menor."
                 );
             }
+
         };
 
 
@@ -505,45 +583,6 @@ const BossSystem = {
     },
 
 
-    /* ========================================================
-       IMAGEM — RESETAR
-    ======================================================== */
-
-    resetarImagem() {
-
-        try {
-
-            localStorage.removeItem(
-                this.imagem.storageKey
-            );
-
-        } catch (erro) {
-
-            console.warn(
-                "[Boss] Não foi possível remover a imagem salva.",
-                erro
-            );
-        }
-
-
-        const imagem =
-            document.getElementById(
-                "boss-image"
-            );
-
-
-        if (imagem) {
-
-            imagem.src =
-                this.imagem.imagemPadrao;
-        }
-    },
-
-
-    /* ========================================================
-       CONFIGURAR INPUT DA IMAGEM
-    ======================================================== */
-
     configurarImagem() {
 
         const input =
@@ -552,16 +591,15 @@ const BossSystem = {
             );
 
 
-        if (!input) return;
+        if (!input)
+            return;
 
 
         input.addEventListener(
             "change",
             event => {
 
-                this.selecionarImagem(
-                    event
-                );
+                this.selecionarImagem(event);
 
             }
         );
@@ -569,7 +607,7 @@ const BossSystem = {
 
 
     /* ========================================================
-       ATUALIZAÇÃO DO CARD
+       ATUALIZAÇÃO
     ======================================================== */
 
     atualizarCard() {
@@ -580,13 +618,11 @@ const BossSystem = {
             this.boss.hpMax
         );
 
-
         this.atualizarBarra(
             "boss-mp",
             this.boss.mp,
             this.boss.mpMax
         );
-
 
         this.atualizarBarra(
             "boss-est",
@@ -600,12 +636,10 @@ const BossSystem = {
             `${this.boss.hp} / ${this.boss.hpMax}`
         );
 
-
         this.atualizarTexto(
             "boss-mp-value",
             `${this.boss.mp} / ${this.boss.mpMax}`
         );
-
 
         this.atualizarTexto(
             "boss-est-value",
@@ -618,12 +652,10 @@ const BossSystem = {
             `Nível ${this.boss.nivel}`
         );
 
-
         this.atualizarTexto(
             "boss-name",
             this.boss.nome
         );
-
 
         this.atualizarTexto(
             "boss-affinity",
@@ -636,30 +668,25 @@ const BossSystem = {
             this.boss.atk
         );
 
-
         this.atualizarTexto(
             "boss-atk-mgc",
             this.boss.atkMgc
         );
-
 
         this.atualizarTexto(
             "boss-def",
             this.boss.def
         );
 
-
         this.atualizarTexto(
             "boss-res",
             this.boss.res
         );
 
-
         this.atualizarTexto(
             "boss-agi",
             this.boss.agi
         );
-
 
         this.atualizarTexto(
             "boss-int",
@@ -677,10 +704,6 @@ const BossSystem = {
     },
 
 
-    /* ========================================================
-       BARRA
-    ======================================================== */
-
     atualizarBarra(
         id,
         atual,
@@ -691,7 +714,8 @@ const BossSystem = {
             document.getElementById(id);
 
 
-        if (!elemento) return;
+        if (!elemento)
+            return;
 
 
         const porcentagem =
@@ -711,10 +735,6 @@ const BossSystem = {
     },
 
 
-    /* ========================================================
-       TEXTO
-    ======================================================== */
-
     atualizarTexto(
         id,
         texto
@@ -724,7 +744,8 @@ const BossSystem = {
             document.getElementById(id);
 
 
-        if (!elemento) return;
+        if (!elemento)
+            return;
 
 
         elemento.textContent =
@@ -757,7 +778,7 @@ const BossSystem = {
 
 
 /* ============================================================
-   DISPONIBILIZA GLOBALMENTE
+   GLOBAL
 ============================================================ */
 
 window.BossSystem =
@@ -777,7 +798,6 @@ document.addEventListener(
         BossSystem.carregarImagem();
 
         BossSystem.configurarImagem();
-
 
         console.log(
             "[Boss] Hasvrejk Filhote carregado."
