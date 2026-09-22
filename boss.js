@@ -41,40 +41,41 @@ const BossSystem = {
 
         habilidades: [
 
-            {
-                id: "rajada_vento",
-                nome: "Rajada de Vento",
-                descricao:
-                    "Cria uma pequena área de vento cortante.",
-                area:
-                    "Até 3 jogadores",
-                custoMP: 15,
-                custoEST: 20,
-                dano: 25,
-                tipo: "vento"
-            },
+    {
+        id: "rajada_vento",
+        nome: "Rajada de Vento",
+        descricao: "Cria uma pequena área de vento cortante.",
+        area: "Até 3 jogadores",
+        custoMP: 12,
+        custoEST: 15,
+        atributoDano: "atkMgc",
+        tipo: "vento"
+    },
 
-            {
-                id: "garras_vida",
-                nome: "Garras da Vida",
-                descricao:
-                    "Rouba 50% do dano causado.",
-                area:
-                    "Alvo atingido",
-                tipo: "fisico",
-                rouboVida:
-                    0.50
-            },
+    {
+        id: "garras_vida",
+        nome: "Garras da Vida",
+        descricao: "Rouba 50% do dano causado.",
+        area: "Alvo atingido",
+        custoMP: 20,
+        custoEST: 15,
+        atributoDano: "atk",
+        rouboVida: 0.50,
+        tipo: "fisico"
+    },
 
-            {
-                id: "bater_asas",
-                nome: "Bater de Asas",
-                descricao:
-                    "Manda os jogadores para longe.",
-                area:
-                    "Todos os jogadores",
-                tipo: "vento"
-            }
+    {
+        id: "bater_asas",
+        nome: "Bater de Asas",
+        descricao: "Manda todos os jogadores para longe.",
+        area: "Todos os jogadores",
+        custoMP: 30,
+        custoEST: 10,
+        atributoDano: "atkMgc",
+        tipo: "vento"
+    }
+
+]
 
         ],
 
