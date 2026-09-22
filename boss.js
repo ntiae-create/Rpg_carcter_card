@@ -34,9 +34,7 @@ const BossSystem = {
         int: 10,
 
         passiva: {
-
             nome: "Rei dos Ares",
-
             descricao:
                 "Enquanto estiver no ar, torna-se imune a ataques corpo a corpo."
         },
@@ -45,18 +43,36 @@ const BossSystem = {
 
             {
                 id: "rajada_vento",
-
                 nome: "Rajada de Vento",
-
                 descricao:
                     "Cria uma pequena área de vento cortante.",
-
+                area:
+                    "Até 3 jogadores",
                 custoMP: 15,
-
                 custoEST: 20,
-
                 dano: 25,
+                tipo: "vento"
+            },
 
+            {
+                id: "garras_vida",
+                nome: "Garras da Vida",
+                descricao:
+                    "Rouba 50% do dano causado.",
+                area:
+                    "Alvo atingido",
+                tipo: "fisico",
+                rouboVida:
+                    0.50
+            },
+
+            {
+                id: "bater_asas",
+                nome: "Bater de Asas",
+                descricao:
+                    "Manda os jogadores para longe.",
+                area:
+                    "Todos os jogadores",
                 tipo: "vento"
             }
 
@@ -91,7 +107,6 @@ const BossSystem = {
         if (valor <= 0)
             return 0;
 
-
         if (
             tipo === "corpo-a-corpo" &&
             this.boss.noAr
@@ -106,34 +121,19 @@ const BossSystem = {
             return 0;
         }
 
-
         const danoAplicado =
-            Math.min(
-                valor,
-                this.boss.hp
-            );
+            Math.min(valor, this.boss.hp);
 
+        this.boss.hp -= danoAplicado;
 
-        this.boss.hp -=
-            danoAplicado;
-
-
-        if (this.boss.hp < 0) {
-
+        if (this.boss.hp < 0)
             this.boss.hp = 0;
-
-        }
-
 
         this.atualizarCard();
 
         return danoAplicado;
     },
 
-
-    /* ========================================================
-       DANO MANUAL
-    ======================================================== */
 
     aplicarDanoManual() {
 
@@ -142,33 +142,23 @@ const BossSystem = {
                 "boss-damage-input"
             );
 
-
         if (!input)
             return;
-
 
         const dano =
             Number(input.value);
 
-
         if (
             !Number.isFinite(dano) ||
             dano <= 0
-        ) {
-
+        )
             return;
-        }
-
 
         this.receberDano(dano);
 
         input.value = "";
     },
 
-
-    /* ========================================================
-       DANO CORPO A CORPO
-    ======================================================== */
 
     aplicarDanoCorpoACorpo() {
 
@@ -177,29 +167,22 @@ const BossSystem = {
                 "boss-damage-input"
             );
 
-
         if (!input)
             return;
-
 
         const dano =
             Number(input.value);
 
-
         if (
             !Number.isFinite(dano) ||
             dano <= 0
-        ) {
-
+        )
             return;
-        }
-
 
         this.receberDano(
             dano,
             "corpo-a-corpo"
         );
-
 
         input.value = "";
     },
@@ -216,7 +199,6 @@ const BossSystem = {
         if (valor <= 0)
             return true;
 
-
         if (this.boss.mp < valor) {
 
             console.warn(
@@ -225,7 +207,6 @@ const BossSystem = {
 
             return false;
         }
-
 
         this.boss.mp -= valor;
 
@@ -239,13 +220,11 @@ const BossSystem = {
 
         valor = Number(valor) || 0;
 
-
         this.boss.mp =
             Math.min(
                 this.boss.mpMax,
                 this.boss.mp + valor
             );
-
 
         this.atualizarCard();
     },
@@ -262,7 +241,6 @@ const BossSystem = {
         if (valor <= 0)
             return true;
 
-
         if (this.boss.est < valor) {
 
             console.warn(
@@ -271,7 +249,6 @@ const BossSystem = {
 
             return false;
         }
-
 
         this.boss.est -= valor;
 
@@ -285,20 +262,18 @@ const BossSystem = {
 
         valor = Number(valor) || 0;
 
-
         this.boss.est =
             Math.min(
                 this.boss.estMax,
                 this.boss.est + valor
             );
 
-
         this.atualizarCard();
     },
 
 
     /* ========================================================
-       HABILIDADE
+       USAR HABILIDADE
     ======================================================== */
 
     usarHabilidade(id) {
@@ -308,7 +283,6 @@ const BossSystem = {
                 habilidade =>
                     habilidade.id === id
             );
-
 
         if (!habilidade) {
 
@@ -321,9 +295,12 @@ const BossSystem = {
         }
 
 
+        /* Habilidades sem custo definido
+           não gastam recurso por enquanto. */
+
         if (
-            this.boss.mp <
-            habilidade.custoMP
+            habilidade.custoMP &&
+            this.boss.mp < habilidade.custoMP
         ) {
 
             console.warn(
@@ -335,8 +312,8 @@ const BossSystem = {
 
 
         if (
-            this.boss.est <
-            habilidade.custoEST
+            habilidade.custoEST &&
+            this.boss.est < habilidade.custoEST
         ) {
 
             console.warn(
@@ -347,12 +324,12 @@ const BossSystem = {
         }
 
 
-        this.boss.mp -=
-            habilidade.custoMP;
+        if (habilidade.custoMP)
+            this.boss.mp -= habilidade.custoMP;
 
 
-        this.boss.est -=
-            habilidade.custoEST;
+        if (habilidade.custoEST)
+            this.boss.est -= habilidade.custoEST;
 
 
         console.log(
@@ -369,16 +346,18 @@ const BossSystem = {
 
             habilidade: habilidade,
 
-            dano: habilidade.dano,
+            dano:
+                habilidade.dano || 0,
 
-            tipo: habilidade.tipo
+            tipo:
+                habilidade.tipo || "normal"
 
         };
     },
 
 
     /* ========================================================
-       PASSIVA
+       PASSIVA — VOO
     ======================================================== */
 
     ativarVoo() {
@@ -413,21 +392,15 @@ const BossSystem = {
 
         valor = Number(valor) || 0;
 
-
         this.boss.hp =
             Math.min(
                 this.boss.hpMax,
                 this.boss.hp + valor
             );
 
-
         this.atualizarCard();
     },
 
-
-    /* ========================================================
-       CURA MANUAL
-    ======================================================== */
 
     aplicarCuraManual() {
 
@@ -436,23 +409,17 @@ const BossSystem = {
                 "boss-heal-input"
             );
 
-
         if (!input)
             return;
-
 
         const cura =
             Number(input.value);
 
-
         if (
             !Number.isFinite(cura) ||
             cura <= 0
-        ) {
-
+        )
             return;
-        }
-
 
         this.curar(cura);
 
@@ -471,13 +438,10 @@ const BossSystem = {
                 "boss-image"
             );
 
-
         if (!imagem)
             return;
 
-
         let imagemSalva = null;
-
 
         try {
 
@@ -494,7 +458,6 @@ const BossSystem = {
             );
         }
 
-
         imagem.src =
             imagemSalva ||
             this.imagem.imagemPadrao;
@@ -506,10 +469,8 @@ const BossSystem = {
         const arquivo =
             event.target.files?.[0];
 
-
         if (!arquivo)
             return;
-
 
         if (
             !arquivo.type ||
@@ -535,18 +496,13 @@ const BossSystem = {
             const imagemBase64 =
                 leitor.result;
 
-
             const imagem =
                 document.getElementById(
                     "boss-image"
                 );
 
-
-            if (imagem) {
-
-                imagem.src =
-                    imagemBase64;
-            }
+            if (imagem)
+                imagem.src = imagemBase64;
 
 
             try {
@@ -567,7 +523,6 @@ const BossSystem = {
                     "A imagem é muito grande para ser salva. Escolha uma imagem menor."
                 );
             }
-
         };
 
 
@@ -590,10 +545,8 @@ const BossSystem = {
                 "boss-image-input"
             );
 
-
         if (!input)
             return;
-
 
         input.addEventListener(
             "change",
@@ -607,7 +560,7 @@ const BossSystem = {
 
 
     /* ========================================================
-       ATUALIZAÇÃO
+       ATUALIZAR CARD
     ======================================================== */
 
     atualizarCard() {
@@ -713,16 +666,13 @@ const BossSystem = {
         const elemento =
             document.getElementById(id);
 
-
         if (!elemento)
             return;
-
 
         const porcentagem =
             maximo > 0
                 ? (atual / maximo) * 100
                 : 0;
-
 
         elemento.style.width =
             `${Math.max(
@@ -735,18 +685,13 @@ const BossSystem = {
     },
 
 
-    atualizarTexto(
-        id,
-        texto
-    ) {
+    atualizarTexto(id, texto) {
 
         const elemento =
             document.getElementById(id);
 
-
         if (!elemento)
             return;
-
 
         elemento.textContent =
             texto;
@@ -771,23 +716,13 @@ const BossSystem = {
         this.boss.noAr =
             false;
 
-
         this.atualizarCard();
     }
 };
 
 
-/* ============================================================
-   GLOBAL
-============================================================ */
+window.BossSystem = BossSystem;
 
-window.BossSystem =
-    BossSystem;
-
-
-/* ============================================================
-   INICIALIZAÇÃO
-============================================================ */
 
 document.addEventListener(
     "DOMContentLoaded",
