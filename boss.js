@@ -1,742 +1,1261 @@
 "use strict";
 
 /* ============================================================
-   BOSS CARD SYSTEM
-   HASVREJK FILHOTE
+BOSS CARD SYSTEM
+HASVREJK FILHOTE
 ============================================================ */
 
 const BossSystem = {
 
-    boss: {
+boss: {
 
-        id: "hasvrejk_filhote",
+    id: "hasvrejk_filhote",
 
-        nome: "Hasvrejk Filhote",
+    nome: "Hasvrejk Filhote",
 
-        nivel: 13,
+    nivel: 13,
 
-        afinidade: "vento",
+    afinidade: "vento",
 
-        hpMax: 150,
-        hp: 150,
+    hpMax: 150,
+    hp: 150,
 
-        mpMax: 120,
-        mp: 120,
+    mpMax: 120,
+    mp: 120,
 
-        estMax: 200,
-        est: 200,
+    estMax: 200,
+    est: 200,
 
-        atk: 10,
-        atkMgc: 8,
-        def: 12,
-        res: 42,
-        agi: 9,
-        int: 10,
+    atk: 10,
+    atkMgc: 8,
+    def: 12,
+    res: 42,
+    agi: 9,
+    int: 10,
 
-        passiva: {
-            nome: "Rei dos Ares",
+    passiva: {
+        nome: "Rei dos Ares",
+
+        descricao:
+            "Enquanto estiver no ar, torna-se imune a ataques corpo a corpo."
+    },
+
+    /* ====================================================
+       HABILIDADES
+    ==================================================== */
+
+    habilidades: [
+
+        {
+            id: "rajada_vento",
+
+            nome: "Rajada de Vento",
+
             descricao:
-                "Enquanto estiver no ar, torna-se imune a ataques corpo a corpo."
-        },
+                "Cria uma pequena área de vento cortante.",
 
-        habilidades: [
+            area:
+                "Até 3 jogadores",
 
-    {
-        id: "rajada_vento",
-        nome: "Rajada de Vento",
-        descricao: "Cria uma pequena área de vento cortante.",
-        area: "Até 3 jogadores",
-        custoMP: 12,
-        custoEST: 15,
-        atributoDano: "atkMgc",
-        tipo: "vento"
-    },
+            custoMP: 12,
 
-    {
-        id: "garras_vida",
-        nome: "Garras da Vida",
-        descricao: "Rouba 50% do dano causado.",
-        area: "Alvo atingido",
-        custoMP: 20,
-        custoEST: 15,
-        atributoDano: "atk",
-        rouboVida: 0.50,
-        tipo: "fisico"
-    },
+            custoEST: 15,
 
-    {
-        id: "bater_asas",
-        nome: "Bater de Asas",
-        descricao: "Manda todos os jogadores para longe.",
-        area: "Todos os jogadores",
-        custoMP: 30,
-        custoEST: 10,
-        atributoDano: "atkMgc",
-        tipo: "vento"
-    }
-
-]
-
-        ],
-
-        noAr: false
-    },
-
-
-    /* ========================================================
-       IMAGEM
-    ======================================================== */
-
-    imagem: {
-
-        storageKey:
-            "rpg_boss_card_image",
-
-        imagemPadrao:
-            "assets/bosses/hasvrejk-filhote.png"
-    },
-
-
-    /* ========================================================
-       DANO
-    ======================================================== */
-
-    receberDano(valor, tipo = "normal") {
-
-        valor = Number(valor) || 0;
-
-        if (valor <= 0)
-            return 0;
-
-        if (
-            tipo === "corpo-a-corpo" &&
-            this.boss.noAr
-        ) {
-
-            console.log(
-                "[Boss] Ataque corpo a corpo bloqueado pela passiva."
-            );
-
-            this.atualizarCard();
-
-            return 0;
-        }
-
-        const danoAplicado =
-            Math.min(valor, this.boss.hp);
-
-        this.boss.hp -= danoAplicado;
-
-        if (this.boss.hp < 0)
-            this.boss.hp = 0;
-
-        this.atualizarCard();
-
-        return danoAplicado;
-    },
-
-
-    aplicarDanoManual() {
-
-        const input =
-            document.getElementById(
-                "boss-damage-input"
-            );
-
-        if (!input)
-            return;
-
-        const dano =
-            Number(input.value);
-
-        if (
-            !Number.isFinite(dano) ||
-            dano <= 0
-        )
-            return;
-
-        this.receberDano(dano);
-
-        input.value = "";
-    },
-
-
-    aplicarDanoCorpoACorpo() {
-
-        const input =
-            document.getElementById(
-                "boss-damage-input"
-            );
-
-        if (!input)
-            return;
-
-        const dano =
-            Number(input.value);
-
-        if (
-            !Number.isFinite(dano) ||
-            dano <= 0
-        )
-            return;
-
-        this.receberDano(
-            dano,
-            "corpo-a-corpo"
-        );
-
-        input.value = "";
-    },
-
-
-    /* ========================================================
-       MP
-    ======================================================== */
-
-    gastarMP(valor) {
-
-        valor = Number(valor) || 0;
-
-        if (valor <= 0)
-            return true;
-
-        if (this.boss.mp < valor) {
-
-            console.warn(
-                "[Boss] MP insuficiente."
-            );
-
-            return false;
-        }
-
-        this.boss.mp -= valor;
-
-        this.atualizarCard();
-
-        return true;
-    },
-
-
-    recuperarMP(valor) {
-
-        valor = Number(valor) || 0;
-
-        this.boss.mp =
-            Math.min(
-                this.boss.mpMax,
-                this.boss.mp + valor
-            );
-
-        this.atualizarCard();
-    },
-
-
-    /* ========================================================
-       ESTAMINA
-    ======================================================== */
-
-    gastarEstamina(valor) {
-
-        valor = Number(valor) || 0;
-
-        if (valor <= 0)
-            return true;
-
-        if (this.boss.est < valor) {
-
-            console.warn(
-                "[Boss] Estamina insuficiente."
-            );
-
-            return false;
-        }
-
-        this.boss.est -= valor;
-
-        this.atualizarCard();
-
-        return true;
-    },
-
-
-    recuperarEstamina(valor) {
-
-        valor = Number(valor) || 0;
-
-        this.boss.est =
-            Math.min(
-                this.boss.estMax,
-                this.boss.est + valor
-            );
-
-        this.atualizarCard();
-    },
-
-
-    /* ========================================================
-       USAR HABILIDADE
-    ======================================================== */
-
-    usarHabilidade(id) {
-
-        const habilidade =
-            this.boss.habilidades.find(
-                habilidade =>
-                    habilidade.id === id
-            );
-
-        if (!habilidade) {
-
-            console.warn(
-                "[Boss] Habilidade não encontrada:",
-                id
-            );
-
-            return false;
-        }
-
-
-        /* Habilidades sem custo definido
-           não gastam recurso por enquanto. */
-
-        if (
-            habilidade.custoMP &&
-            this.boss.mp < habilidade.custoMP
-        ) {
-
-            console.warn(
-                "[Boss] MP insuficiente."
-            );
-
-            return false;
-        }
-
-
-        if (
-            habilidade.custoEST &&
-            this.boss.est < habilidade.custoEST
-        ) {
-
-            console.warn(
-                "[Boss] Estamina insuficiente."
-            );
-
-            return false;
-        }
-
-
-        if (habilidade.custoMP)
-            this.boss.mp -= habilidade.custoMP;
-
-
-        if (habilidade.custoEST)
-            this.boss.est -= habilidade.custoEST;
-
-
-        console.log(
-            `[Boss] ${habilidade.nome} utilizada.`
-        );
-
-
-        this.atualizarCard();
-
-
-        return {
-
-            sucesso: true,
-
-            habilidade: habilidade,
-
-            dano:
-                habilidade.dano || 0,
+            atributoDano:
+                "atkMgc",
 
             tipo:
-                habilidade.tipo || "normal"
-
-        };
-    },
+                "vento"
+        },
 
 
-    /* ========================================================
-       PASSIVA — VOO
-    ======================================================== */
+        {
+            id: "garras_vida",
 
-    ativarVoo() {
+            nome: "Garras da Vida",
 
-        this.boss.noAr = true;
+            descricao:
+                "Rouba 50% do dano causado.",
 
-        this.atualizarCard();
+            area:
+                "Alvo atingido",
+
+            custoMP: 20,
+
+            custoEST: 15,
+
+            atributoDano:
+                "atk",
+
+            rouboVida:
+                0.50,
+
+            tipo:
+                "fisico"
+        },
+
+
+        {
+            id: "bater_asas",
+
+            nome: "Bater de Asas",
+
+            descricao:
+                "Manda todos os jogadores para longe.",
+
+            area:
+                "Todos os jogadores",
+
+            custoMP: 30,
+
+            custoEST: 10,
+
+            atributoDano:
+                "atkMgc",
+
+            tipo:
+                "vento"
+        }
+
+    ],
+
+    noAr: false
+},
+
+
+/* ========================================================
+   IMAGEM
+======================================================== */
+
+imagem: {
+
+    storageKey:
+        "rpg_boss_card_image",
+
+    imagemPadrao:
+        "assets/bosses/hasvrejk-filhote.png"
+},
+
+
+/* ========================================================
+   DANO
+======================================================== */
+
+receberDano(valor, tipo = "normal") {
+
+    valor =
+        Number(valor) || 0;
+
+    if (valor <= 0)
+        return 0;
+
+
+    /* PASSIVA REI DOS ARES */
+
+    if (
+        tipo === "corpo-a-corpo" &&
+        this.boss.noAr
+    ) {
 
         console.log(
-            "[Boss] Hasvrejk está no ar."
+            "[Boss] Ataque corpo a corpo bloqueado pela passiva."
         );
-    },
-
-
-    desativarVoo() {
-
-        this.boss.noAr = false;
 
         this.atualizarCard();
 
-        console.log(
-            "[Boss] Hasvrejk voltou ao solo."
+        return 0;
+    }
+
+
+    const danoAplicado =
+        Math.min(
+            valor,
+            this.boss.hp
         );
-    },
 
 
-    /* ========================================================
-       CURA
-    ======================================================== */
+    this.boss.hp -=
+        danoAplicado;
 
-    curar(valor) {
 
-        valor = Number(valor) || 0;
+    if (this.boss.hp < 0)
+        this.boss.hp = 0;
 
-        this.boss.hp =
-            Math.min(
-                this.boss.hpMax,
-                this.boss.hp + valor
+
+    this.atualizarCard();
+
+
+    return danoAplicado;
+},
+
+
+/* ========================================================
+   DANO MANUAL
+======================================================== */
+
+aplicarDanoManual() {
+
+    const input =
+        document.getElementById(
+            "boss-damage-input"
+        );
+
+    if (!input)
+        return;
+
+
+    const dano =
+        Number(input.value);
+
+
+    if (
+        !Number.isFinite(dano) ||
+        dano <= 0
+    )
+        return;
+
+
+    this.receberDano(
+        dano
+    );
+
+
+    input.value = "";
+},
+
+
+/* ========================================================
+   DANO CORPO A CORPO
+======================================================== */
+
+aplicarDanoCorpoACorpo() {
+
+    const input =
+        document.getElementById(
+            "boss-damage-input"
+        );
+
+    if (!input)
+        return;
+
+
+    const dano =
+        Number(input.value);
+
+
+    if (
+        !Number.isFinite(dano) ||
+        dano <= 0
+    )
+        return;
+
+
+    this.receberDano(
+        dano,
+        "corpo-a-corpo"
+    );
+
+
+    input.value = "";
+},
+
+
+/* ========================================================
+   MP
+======================================================== */
+
+gastarMP(valor) {
+
+    valor =
+        Number(valor) || 0;
+
+
+    if (valor <= 0)
+        return true;
+
+
+    if (this.boss.mp < valor) {
+
+        console.warn(
+            "[Boss] MP insuficiente."
+        );
+
+        return false;
+    }
+
+
+    this.boss.mp -=
+        valor;
+
+
+    this.atualizarCard();
+
+
+    return true;
+},
+
+
+recuperarMP(valor) {
+
+    valor =
+        Number(valor) || 0;
+
+
+    this.boss.mp =
+        Math.min(
+            this.boss.mpMax,
+            this.boss.mp + valor
+        );
+
+
+    this.atualizarCard();
+},
+
+
+/* ========================================================
+   ESTAMINA
+======================================================== */
+
+gastarEstamina(valor) {
+
+    valor =
+        Number(valor) || 0;
+
+
+    if (valor <= 0)
+        return true;
+
+
+    if (this.boss.est < valor) {
+
+        console.warn(
+            "[Boss] Estamina insuficiente."
+        );
+
+        return false;
+    }
+
+
+    this.boss.est -=
+        valor;
+
+
+    this.atualizarCard();
+
+
+    return true;
+},
+
+
+recuperarEstamina(valor) {
+
+    valor =
+        Number(valor) || 0;
+
+
+    this.boss.est =
+        Math.min(
+            this.boss.estMax,
+            this.boss.est + valor
+        );
+
+
+    this.atualizarCard();
+},
+
+
+/* ========================================================
+   USAR HABILIDADE
+======================================================== */
+
+usarHabilidade(id) {
+
+    const habilidade =
+        this.boss.habilidades.find(
+            habilidade =>
+                habilidade.id === id
+        );
+
+
+    if (!habilidade) {
+
+        console.warn(
+            "[Boss] Habilidade não encontrada:",
+            id
+        );
+
+        return false;
+    }
+
+
+    /* VERIFICA MP */
+
+    if (
+        this.boss.mp <
+        habilidade.custoMP
+    ) {
+
+        console.warn(
+            "[Boss] MP insuficiente para:",
+            habilidade.nome
+        );
+
+        return false;
+    }
+
+
+    /* VERIFICA ESTAMINA */
+
+    if (
+        this.boss.est <
+        habilidade.custoEST
+    ) {
+
+        console.warn(
+            "[Boss] Estamina insuficiente para:",
+            habilidade.nome
+        );
+
+        return false;
+    }
+
+
+    /* CALCULA DANO */
+
+    const dano =
+        this.boss[
+            habilidade.atributoDano
+        ] || 0;
+
+
+    /* GASTA RECURSOS */
+
+    this.boss.mp -=
+        habilidade.custoMP;
+
+
+    this.boss.est -=
+        habilidade.custoEST;
+
+
+    /* INFORMAÇÃO DA HABILIDADE */
+
+    console.log(
+        `[Boss] ${habilidade.nome} utilizada.`
+    );
+
+    console.log(
+        `[Boss] Dano: ${dano}`
+    );
+
+    console.log(
+        `[Boss] MP: -${habilidade.custoMP}`
+    );
+
+    console.log(
+        `[Boss] EST: -${habilidade.custoEST}`
+    );
+
+
+    /* ATUALIZA TUDO */
+
+    this.atualizarCard();
+
+
+    return {
+
+        sucesso: true,
+
+        habilidade:
+            habilidade,
+
+        dano:
+            dano,
+
+        tipo:
+            habilidade.tipo,
+
+        rouboVida:
+            habilidade.rouboVida || 0
+    };
+},
+
+
+/* ========================================================
+   PASSIVA — VOO
+======================================================== */
+
+ativarVoo() {
+
+    this.boss.noAr =
+        true;
+
+
+    this.atualizarCard();
+
+
+    console.log(
+        "[Boss] Hasvrejk está no ar."
+    );
+},
+
+
+desativarVoo() {
+
+    this.boss.noAr =
+        false;
+
+
+    this.atualizarCard();
+
+
+    console.log(
+        "[Boss] Hasvrejk voltou ao solo."
+    );
+},
+
+
+/* ========================================================
+   CURA
+======================================================== */
+
+curar(valor) {
+
+    valor =
+        Number(valor) || 0;
+
+
+    if (valor <= 0)
+        return;
+
+
+    this.boss.hp =
+        Math.min(
+            this.boss.hpMax,
+            this.boss.hp + valor
+        );
+
+
+    this.atualizarCard();
+},
+
+
+aplicarCuraManual() {
+
+    const input =
+        document.getElementById(
+            "boss-heal-input"
+        );
+
+
+    if (!input)
+        return;
+
+
+    const cura =
+        Number(input.value);
+
+
+    if (
+        !Number.isFinite(cura) ||
+        cura <= 0
+    )
+        return;
+
+
+    this.curar(
+        cura
+    );
+
+
+    input.value = "";
+},
+
+
+/* ========================================================
+   IMAGEM
+======================================================== */
+
+carregarImagem() {
+
+    const imagem =
+        document.getElementById(
+            "boss-image"
+        );
+
+
+    if (!imagem)
+        return;
+
+
+    let imagemSalva =
+        null;
+
+
+    try {
+
+        imagemSalva =
+            localStorage.getItem(
+                this.imagem.storageKey
             );
 
-        this.atualizarCard();
-    },
+    } catch (erro) {
+
+        console.warn(
+            "[Boss] Não foi possível acessar a imagem salva.",
+            erro
+        );
+    }
 
 
-    aplicarCuraManual() {
+    imagem.src =
+        imagemSalva ||
+        this.imagem.imagemPadrao;
+},
 
-        const input =
-            document.getElementById(
-                "boss-heal-input"
-            );
 
-        if (!input)
-            return;
+selecionarImagem(event) {
 
-        const cura =
-            Number(input.value);
+    const arquivo =
+        event.target.files?.[0];
 
-        if (
-            !Number.isFinite(cura) ||
-            cura <= 0
+
+    if (!arquivo)
+        return;
+
+
+    if (
+        !arquivo.type ||
+        !arquivo.type.startsWith(
+            "image/"
         )
-            return;
+    ) {
 
-        this.curar(cura);
+        alert(
+            "Selecione uma imagem válida."
+        );
 
-        input.value = "";
-    },
+
+        event.target.value =
+            "";
 
 
-    /* ========================================================
-       IMAGEM
-    ======================================================== */
+        return;
+    }
 
-    carregarImagem() {
+
+    const leitor =
+        new FileReader();
+
+
+    leitor.onload = () => {
+
+        const imagemBase64 =
+            leitor.result;
+
 
         const imagem =
             document.getElementById(
                 "boss-image"
             );
 
-        if (!imagem)
-            return;
 
-        let imagemSalva = null;
+        if (imagem)
+            imagem.src =
+                imagemBase64;
+
 
         try {
 
-            imagemSalva =
-                localStorage.getItem(
-                    this.imagem.storageKey
-                );
+            localStorage.setItem(
+                this.imagem.storageKey,
+                imagemBase64
+            );
 
         } catch (erro) {
 
-            console.warn(
-                "[Boss] Não foi possível acessar a imagem salva.",
+            console.error(
+                "[Boss] Não foi possível salvar a imagem:",
                 erro
             );
-        }
 
-        imagem.src =
-            imagemSalva ||
-            this.imagem.imagemPadrao;
-    },
-
-
-    selecionarImagem(event) {
-
-        const arquivo =
-            event.target.files?.[0];
-
-        if (!arquivo)
-            return;
-
-        if (
-            !arquivo.type ||
-            !arquivo.type.startsWith("image/")
-        ) {
 
             alert(
-                "Selecione uma imagem válida."
+                "A imagem é muito grande para ser salva. Escolha uma imagem menor."
             );
-
-            event.target.value = "";
-
-            return;
         }
+    };
 
 
-        const leitor =
-            new FileReader();
+    leitor.onerror = () => {
+
+        alert(
+            "Não foi possível carregar a imagem."
+        );
+    };
 
 
-        leitor.onload = () => {
-
-            const imagemBase64 =
-                leitor.result;
-
-            const imagem =
-                document.getElementById(
-                    "boss-image"
-                );
-
-            if (imagem)
-                imagem.src = imagemBase64;
+    leitor.readAsDataURL(
+        arquivo
+    );
+},
 
 
-            try {
+configurarImagem() {
 
-                localStorage.setItem(
-                    this.imagem.storageKey,
-                    imagemBase64
-                );
-
-            } catch (erro) {
-
-                console.error(
-                    "[Boss] Não foi possível salvar a imagem:",
-                    erro
-                );
-
-                alert(
-                    "A imagem é muito grande para ser salva. Escolha uma imagem menor."
-                );
-            }
-        };
+    const input =
+        document.getElementById(
+            "boss-image-input"
+        );
 
 
-        leitor.onerror = () => {
-
-            alert(
-                "Não foi possível carregar a imagem."
-            );
-        };
+    if (!input)
+        return;
 
 
-        leitor.readAsDataURL(arquivo);
-    },
+    input.addEventListener(
+        "change",
+        event => {
 
-
-    configurarImagem() {
-
-        const input =
-            document.getElementById(
-                "boss-image-input"
+            this.selecionarImagem(
+                event
             );
 
-        if (!input)
-            return;
+        }
+    );
+},
 
-        input.addEventListener(
-            "change",
-            event => {
 
-                this.selecionarImagem(event);
+/* ========================================================
+   ATUALIZAR CARD
+======================================================== */
 
-            }
+atualizarCard() {
+
+    /* RECURSOS */
+
+    this.atualizarBarra(
+        "boss-hp",
+        this.boss.hp,
+        this.boss.hpMax
+    );
+
+
+    this.atualizarBarra(
+        "boss-mp",
+        this.boss.mp,
+        this.boss.mpMax
+    );
+
+
+    this.atualizarBarra(
+        "boss-est",
+        this.boss.est,
+        this.boss.estMax
+    );
+
+
+    /* VALORES */
+
+    this.atualizarTexto(
+        "boss-hp-value",
+        `${this.boss.hp} / ${this.boss.hpMax}`
+    );
+
+
+    this.atualizarTexto(
+        "boss-mp-value",
+        `${this.boss.mp} / ${this.boss.mpMax}`
+    );
+
+
+    this.atualizarTexto(
+        "boss-est-value",
+        `${this.boss.est} / ${this.boss.estMax}`
+    );
+
+
+    /* IDENTIFICAÇÃO */
+
+    this.atualizarTexto(
+        "boss-level",
+        `Nível ${this.boss.nivel}`
+    );
+
+
+    this.atualizarTexto(
+        "boss-name",
+        this.boss.nome
+    );
+
+
+    this.atualizarTexto(
+        "boss-affinity",
+        this.boss.afinidade
+    );
+
+
+    /* ATRIBUTOS */
+
+    this.atualizarTexto(
+        "boss-atk",
+        this.boss.atk
+    );
+
+
+    this.atualizarTexto(
+        "boss-atk-mgc",
+        this.boss.atkMgc
+    );
+
+
+    this.atualizarTexto(
+        "boss-def",
+        this.boss.def
+    );
+
+
+    this.atualizarTexto(
+        "boss-res",
+        this.boss.res
+    );
+
+
+    this.atualizarTexto(
+        "boss-agi",
+        this.boss.agi
+    );
+
+
+    this.atualizarTexto(
+        "boss-int",
+        this.boss.int
+    );
+
+
+    /* PASSIVA */
+
+    this.atualizarTexto(
+        "boss-passive-state",
+
+        this.boss.noAr
+            ? "ATIVA — NO AR"
+            : "INATIVA — NO SOLO"
+    );
+
+
+    /* ====================================================
+       DANO DAS HABILIDADES
+    ==================================================== */
+
+    this.atualizarTexto(
+        "skill-rajada-dano",
+        this.boss.atkMgc
+    );
+
+
+    this.atualizarTexto(
+        "skill-garras-dano",
+        this.boss.atk
+    );
+
+
+    this.atualizarTexto(
+        "skill-bater-dano",
+        this.boss.atkMgc
+    );
+
+
+    this.atualizarTexto(
+        "combat-rajada-dano",
+        this.boss.atkMgc
+    );
+
+
+    this.atualizarTexto(
+        "combat-garras-dano",
+        this.boss.atk
+    );
+
+
+    this.atualizarTexto(
+        "combat-bater-dano",
+        this.boss.atkMgc
+    );
+},
+
+
+atualizarBarra(
+    id,
+    atual,
+    maximo
+) {
+
+    const elemento =
+        document.getElementById(
+            id
         );
-    },
 
 
-    /* ========================================================
-       ATUALIZAR CARD
-    ======================================================== */
-
-    atualizarCard() {
-
-        this.atualizarBarra(
-            "boss-hp",
-            this.boss.hp,
-            this.boss.hpMax
-        );
-
-        this.atualizarBarra(
-            "boss-mp",
-            this.boss.mp,
-            this.boss.mpMax
-        );
-
-        this.atualizarBarra(
-            "boss-est",
-            this.boss.est,
-            this.boss.estMax
-        );
+    if (!elemento)
+        return;
 
 
-        this.atualizarTexto(
-            "boss-hp-value",
-            `${this.boss.hp} / ${this.boss.hpMax}`
-        );
+    const porcentagem =
+        maximo > 0
+            ? (
+                atual /
+                maximo
+            ) * 100
+            : 0;
 
-        this.atualizarTexto(
-            "boss-mp-value",
-            `${this.boss.mp} / ${this.boss.mpMax}`
-        );
 
-        this.atualizarTexto(
-            "boss-est-value",
-            `${this.boss.est} / ${this.boss.estMax}`
+    elemento.style.width =
+        `${Math.max(
+            0,
+            Math.min(
+                100,
+                porcentagem
+            )
+        )}%`;
+},
+
+
+atualizarTexto(
+    id,
+    texto
+) {
+
+    const elemento =
+        document.getElementById(
+            id
         );
 
 
-        this.atualizarTexto(
-            "boss-level",
-            `Nível ${this.boss.nivel}`
-        );
-
-        this.atualizarTexto(
-            "boss-name",
-            this.boss.nome
-        );
-
-        this.atualizarTexto(
-            "boss-affinity",
-            this.boss.afinidade
-        );
+    if (!elemento)
+        return;
 
 
-        this.atualizarTexto(
-            "boss-atk",
-            this.boss.atk
-        );
-
-        this.atualizarTexto(
-            "boss-atk-mgc",
-            this.boss.atkMgc
-        );
-
-        this.atualizarTexto(
-            "boss-def",
-            this.boss.def
-        );
-
-        this.atualizarTexto(
-            "boss-res",
-            this.boss.res
-        );
-
-        this.atualizarTexto(
-            "boss-agi",
-            this.boss.agi
-        );
-
-        this.atualizarTexto(
-            "boss-int",
-            this.boss.int
-        );
+    elemento.textContent =
+        texto;
+},
 
 
-        this.atualizarTexto(
-            "boss-passive-state",
+/* ========================================================
+   RESET
+======================================================== */
 
-            this.boss.noAr
-                ? "ATIVA — NO AR"
-                : "INATIVA — NO SOLO"
-        );
-    },
+resetar() {
 
-
-    atualizarBarra(
-        id,
-        atual,
-        maximo
-    ) {
-
-        const elemento =
-            document.getElementById(id);
-
-        if (!elemento)
-            return;
-
-        const porcentagem =
-            maximo > 0
-                ? (atual / maximo) * 100
-                : 0;
-
-        elemento.style.width =
-            `${Math.max(
-                0,
-                Math.min(
-                    100,
-                    porcentagem
-                )
-            )}%`;
-    },
+    this.boss.hp =
+        this.boss.hpMax;
 
 
-    atualizarTexto(id, texto) {
-
-        const elemento =
-            document.getElementById(id);
-
-        if (!elemento)
-            return;
-
-        elemento.textContent =
-            texto;
-    },
+    this.boss.mp =
+        this.boss.mpMax;
 
 
-    /* ========================================================
-       RESET
-    ======================================================== */
+    this.boss.est =
+        this.boss.estMax;
 
-    resetar() {
 
-        this.boss.hp =
-            this.boss.hpMax;
+    this.boss.noAr =
+        false;
 
-        this.boss.mp =
-            this.boss.mpMax;
 
-        this.boss.est =
-            this.boss.estMax;
+    this.atualizarCard();
 
-        this.boss.noAr =
-            false;
 
-        this.atualizarCard();
-    }
+    console.log(
+        "[Boss] Boss resetado."
+    );
+}
+
 };
 
+/* ============================================================
+DISPONIBILIZA GLOBALMENTE
+============================================================ */
 
-window.BossSystem = BossSystem;
+window.BossSystem =
+BossSystem;
 
+/* ============================================================
+BOTÕES
+============================================================ */
+
+function configurarBotoesBoss() {
+
+/* DANO */
+
+document
+    .getElementById(
+        "boss-damage-button"
+    )
+    ?.addEventListener(
+        "click",
+        () => {
+
+            BossSystem.aplicarDanoManual();
+
+        }
+    );
+
+
+/* DANO CORPO A CORPO */
+
+document
+    .getElementById(
+        "boss-melee-button"
+    )
+    ?.addEventListener(
+        "click",
+        () => {
+
+            BossSystem.aplicarDanoCorpoACorpo();
+
+        }
+    );
+
+
+/* CURA */
+
+document
+    .getElementById(
+        "boss-heal-button"
+    )
+    ?.addEventListener(
+        "click",
+        () => {
+
+            BossSystem.aplicarCuraManual();
+
+        }
+    );
+
+
+/* COLOCAR NO AR */
+
+document
+    .getElementById(
+        "boss-fly-button"
+    )
+    ?.addEventListener(
+        "click",
+        () => {
+
+            BossSystem.ativarVoo();
+
+        }
+    );
+
+
+/* VOLTAR AO SOLO */
+
+document
+    .getElementById(
+        "boss-ground-button"
+    )
+    ?.addEventListener(
+        "click",
+        () => {
+
+            BossSystem.desativarVoo();
+
+        }
+    );
+
+
+/* RESET */
+
+document
+    .getElementById(
+        "boss-reset-button"
+    )
+    ?.addEventListener(
+        "click",
+        () => {
+
+            BossSystem.resetar();
+
+        }
+    );
+
+
+/* ========================================================
+   HABILIDADES — CARD BOSS
+======================================================== */
+
+document
+    .getElementById(
+        "skill-rajada-vento"
+    )
+    ?.addEventListener(
+        "click",
+        () => {
+
+            BossSystem.usarHabilidade(
+                "rajada_vento"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "skill-garras-vida"
+    )
+    ?.addEventListener(
+        "click",
+        () => {
+
+            BossSystem.usarHabilidade(
+                "garras_vida"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "skill-bater-asas"
+    )
+    ?.addEventListener(
+        "click",
+        () => {
+
+            BossSystem.usarHabilidade(
+                "bater_asas"
+            );
+
+        }
+    );
+
+
+/* ========================================================
+   HABILIDADES — COMBATE
+======================================================== */
+
+document
+    .getElementById(
+        "combat-rajada-vento"
+    )
+    ?.addEventListener(
+        "click",
+        () => {
+
+            BossSystem.usarHabilidade(
+                "rajada_vento"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "combat-garras-vida"
+    )
+    ?.addEventListener(
+        "click",
+        () => {
+
+            BossSystem.usarHabilidade(
+                "garras_vida"
+            );
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "combat-bater-asas"
+    )
+    ?.addEventListener(
+        "click",
+        () => {
+
+            BossSystem.usarHabilidade(
+                "bater_asas"
+            );
+
+        }
+    );
+
+}
+
+/* ============================================================
+ENTER NOS INPUTS
+============================================================ */
+
+function configurarInputsBoss() {
+
+document
+    .getElementById(
+        "boss-damage-input"
+    )
+    ?.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                BossSystem.aplicarDanoManual();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "boss-heal-input"
+    )
+    ?.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                BossSystem.aplicarCuraManual();
+
+            }
+
+        }
+    );
+
+}
+
+/* ============================================================
+INICIALIZAÇÃO
+============================================================ */
 
 document.addEventListener(
-    "DOMContentLoaded",
-    () => {
+"DOMContentLoaded",
+() => {
 
-        BossSystem.atualizarCard();
+    BossSystem.atualizarCard();
 
-        BossSystem.carregarImagem();
+    BossSystem.carregarImagem();
 
-        BossSystem.configurarImagem();
+    BossSystem.configurarImagem();
 
-        console.log(
-            "[Boss] Hasvrejk Filhote carregado."
-        );
-    }
+    configurarBotoesBoss();
+
+    configurarInputsBoss();
+
+
+    console.log(
+        "[Boss] Hasvrejk Filhote carregado."
+    );
+}
+
 );
