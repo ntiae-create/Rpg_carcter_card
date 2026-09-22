@@ -1,21 +1,10 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<head>
-
-<meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0">
-
-<title>RPG Boss Card</title>
-
-<link rel="stylesheet" href="style.css">
+<title>RPG Boss Card</title><link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="card.css">
-<link rel="stylesheet" href="effects.css">
-
-<style>
+<link rel="stylesheet" href="effects.css"><style>
 
 .boss-card {
     width: 100%;
@@ -245,6 +234,24 @@
     font-weight: 700;
 }
 
+.skill-damage {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin-bottom: 12px;
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.skill-damage-value {
+    padding: 5px 9px;
+    border-radius: 8px;
+    background: rgba(239, 68, 68, .12);
+    border: 1px solid rgba(239, 68, 68, .25);
+}
+
 .boss-skill button,
 .boss-test-buttons button {
     border: 0;
@@ -360,6 +367,13 @@
     font-weight: 700;
 }
 
+.combat-damage {
+    margin-bottom: 10px;
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
 
 /* =========================================================
    RESPONSIVO
@@ -381,284 +395,881 @@
 
 }
 
-</style>
+</style></head><body><div class="app"><header class="app-header"><h1>
+    RPG BOSS CARD
+</h1>
 
-</head>
+<p>
+    Ficha interativa de Boss
+</p>
+
+</header><!-- =========================================================
+     NAVEGAÇÃO
+========================================================= --><nav class="dimension-nav"><button
+    class="dimension-button active"
+    data-dimension="boss"
+    type="button">
+
+    👑 Boss
+
+</button>
 
 
-<body>
+<button
+    class="dimension-button"
+    data-dimension="status"
+    type="button">
 
-<div class="app">
+    📊 Status
+
+</button>
 
 
-<header class="app-header">
+<button
+    class="dimension-button"
+    data-dimension="combat"
+    type="button">
 
-    <h1>
-        RPG BOSS CARD
+    ⚔️ Combate
+
+</button>
+
+
+<button
+    class="dimension-button"
+    data-dimension="inventory"
+    type="button">
+
+    🎒 Inventário
+
+</button>
+
+</nav><main class="character-card"><!-- =========================================================
+     BOSS
+========================================================= --><section
+    class="dimension character-dimension active"
+    data-dimension-content="boss"><div class="card-face card-front"><!-- CABEÇALHO --><div class="boss-header"><div>
+
+    <h1 id="boss-name">
+        Hasvrejk Filhote
     </h1>
 
-    <p>
-        Ficha interativa de Boss
-    </p>
+    <span
+        id="boss-level"
+        class="boss-level">
 
-</header>
+        Nível 13
 
+    </span>
 
-<!-- =========================================================
-     NAVEGAÇÃO
-========================================================= -->
-
-<nav class="dimension-nav">
-
-    <button
-        class="dimension-button active"
-        data-dimension="boss"
-        type="button">
-
-        👑 Boss
-
-    </button>
+</div>
 
 
-    <button
-        class="dimension-button"
-        data-dimension="status"
-        type="button">
+<div
+    id="boss-affinity"
+    class="boss-affinity">
 
-        📊 Status
+    VENTO
 
-    </button>
+</div>
 
-
-    <button
-        class="dimension-button"
-        data-dimension="combat"
-        type="button">
-
-        ⚔️ Combate
-
-    </button>
+</div><!-- IMAGEM --><div class="boss-image-area"><img
+    id="boss-image"
+    src="assets/bosses/hasvrejk-filhote.png"
+    alt="Hasvrejk Filhote"
+    class="boss-image">
 
 
-    <button
-        class="dimension-button"
-        data-dimension="inventory"
-        type="button">
+<label class="boss-image-button">
 
-        🎒 Inventário
+    🖼️ Escolher imagem
 
-    </button>
+    <input
+        type="file"
+        id="boss-image-input"
+        accept="image/*"
+        hidden>
 
-</nav>
+</label>
 
+</div><!-- RECURSOS --><div class="boss-resources"><div class="boss-resource"><div class="resource-header">
 
-<main class="character-card">
+    <span>❤️ HP</span>
 
+    <span id="boss-hp-value">
+        150 / 150
+    </span>
 
-<!-- =========================================================
-     BOSS
-========================================================= -->
-
-<section
-    class="dimension character-dimension active"
-    data-dimension-content="boss">
-
-
-<div class="card-face card-front">
+</div>
 
 
-<!-- CABEÇALHO -->
-
-<div class="boss-header">
-
-    <div>
-
-        <h1 id="boss-name">
-            Hasvrejk Filhote
-        </h1>
-
-        <span
-            id="boss-level"
-            class="boss-level">
-
-            Nível 13
-
-        </span>
-
-    </div>
-
+<div class="resource-bar">
 
     <div
-        id="boss-affinity"
-        class="boss-affinity">
-
-        VENTO
-
+        id="boss-hp"
+        class="resource-fill hp">
     </div>
 
 </div>
 
+</div><div class="boss-resource"><div class="resource-header">
 
-<!-- IMAGEM -->
+    <span>🔮 MP</span>
 
-<div class="boss-image-area">
-
-    <img
-        id="boss-image"
-        src="assets/bosses/hasvrejk-filhote.png"
-        alt="Hasvrejk Filhote"
-        class="boss-image">
-
-
-    <label class="boss-image-button">
-
-        🖼️ Escolher imagem
-
-        <input
-            type="file"
-            id="boss-image-input"
-            accept="image/*"
-            hidden>
-
-    </label>
+    <span id="boss-mp-value">
+        120 / 120
+    </span>
 
 </div>
 
 
-<!-- RECURSOS -->
+<div class="resource-bar">
 
-<div class="boss-resources">
-
-
-<div class="boss-resource">
-
-    <div class="resource-header">
-
-        <span>❤️ HP</span>
-
-        <span id="boss-hp-value">
-            150 / 150
-        </span>
-
-    </div>
-
-
-    <div class="resource-bar">
-
-        <div
-            id="boss-hp"
-            class="resource-fill hp">
-        </div>
-
+    <div
+        id="boss-mp"
+        class="resource-fill mp">
     </div>
 
 </div>
 
+</div><div class="boss-resource"><div class="resource-header">
 
-<div class="boss-resource">
+    <span>⚡ EST</span>
 
-    <div class="resource-header">
-
-        <span>🔮 MP</span>
-
-        <span id="boss-mp-value">
-            120 / 120
-        </span>
-
-    </div>
-
-
-    <div class="resource-bar">
-
-        <div
-            id="boss-mp"
-            class="resource-fill mp">
-        </div>
-
-    </div>
+    <span id="boss-est-value">
+        200 / 200
+    </span>
 
 </div>
 
 
-<div class="boss-resource">
+<div class="resource-bar">
 
-    <div class="resource-header">
-
-        <span>⚡ EST</span>
-
-        <span id="boss-est-value">
-            200 / 200
-        </span>
-
-    </div>
-
-
-    <div class="resource-bar">
-
-        <div
-            id="boss-est"
-            class="resource-fill est">
-        </div>
-
+    <div
+        id="boss-est"
+        class="resource-fill est">
     </div>
 
 </div>
 
+</div></div><!-- ATRIBUTOS --><div class="boss-stats"><div>
+    <span>ATK</span>
+    <strong id="boss-atk">10</strong>
 </div>
 
-
-<!-- ATRIBUTOS -->
-
-<div class="boss-stats">
-
-    <div>
-        <span>ATK</span>
-        <strong id="boss-atk">10</strong>
-    </div>
-
-    <div>
-        <span>ATK MGC</span>
-        <strong id="boss-atk-mgc">8</strong>
-    </div>
-
-    <div>
-        <span>DEF</span>
-        <strong id="boss-def">12</strong>
-    </div>
-
-    <div>
-        <span>RES</span>
-        <strong id="boss-res">42</strong>
-    </div>
-
-    <div>
-        <span>AGI</span>
-        <strong id="boss-agi">9</strong>
-    </div>
-
-    <div>
-        <span>INT</span>
-        <strong id="boss-int">10</strong>
-    </div>
-
+<div>
+    <span>ATK MGC</span>
+    <strong id="boss-atk-mgc">8</strong>
 </div>
 
+<div>
+    <span>DEF</span>
+    <strong id="boss-def">12</strong>
+</div>
 
-<!-- =========================================================
+<div>
+    <span>RES</span>
+    <strong id="boss-res">42</strong>
+</div>
+
+<div>
+    <span>AGI</span>
+    <strong id="boss-agi">9</strong>
+</div>
+
+<div>
+    <span>INT</span>
+    <strong id="boss-int">10</strong>
+</div>
+
+</div><!-- =========================================================
      PASSIVA
-========================================================= -->
-
-<section class="boss-section">
-
-    <h2>
-        👑 PASSIVA
-    </h2>
+========================================================= --><section class="boss-section"><h2>
+    👑 PASSIVA
+</h2>
 
 
-    <div class="boss-passive">
+<div class="boss-passive">
+
+    <h3>
+        Rei dos Ares
+    </h3>
+
+
+    <p>
+        Enquanto estiver no ar,
+        torna-se imune a ataques
+        corpo a corpo.
+    </p>
+
+
+    <span id="boss-passive-state">
+        INATIVA — NO SOLO
+    </span>
+
+</div>
+
+</section><!-- =========================================================
+     HABILIDADES
+========================================================= --><section class="boss-section"><h2>
+    ⚔️ HABILIDADES
+</h2>
+
+
+<!-- =====================================================
+     HABILIDADE 1
+====================================================== -->
+
+<div class="boss-skill">
+
+    <div class="skill-header">
 
         <h3>
-            Rei dos Ares
+            🌪️ Rajada de Vento
+        </h3>
+
+        <span>
+            VENTO
+        </span>
+
+    </div>
+
+
+    <p>
+        Cria uma pequena área
+        de vento cortante.
+    </p>
+
+
+    <div class="skill-damage">
+
+        <span class="skill-damage-value">
+
+            💥 Dano:
+            <strong id="skill-rajada-dano">
+                8
+            </strong>
+
+            — ATK MGC
+
+        </span>
+
+    </div>
+
+
+    <div class="skill-cost">
+
+        <span>
+            🎯 Área: 3 jogadores
+        </span>
+
+        <span>
+            🔮 12 MP
+        </span>
+
+        <span>
+            ⚡ 15 EST
+        </span>
+
+    </div>
+
+
+    <button
+        type="button"
+        id="skill-rajada-vento">
+
+        🌪️ USAR HABILIDADE
+
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     HABILIDADE 2
+====================================================== -->
+
+<div class="boss-skill">
+
+    <div class="skill-header">
+
+        <h3>
+            🩸 Garras da Vida
+        </h3>
+
+        <span>
+            FÍSICO
+        </span>
+
+    </div>
+
+
+    <p>
+        Rouba 50% do dano causado.
+    </p>
+
+
+    <div class="skill-damage">
+
+        <span class="skill-damage-value">
+
+            💥 Dano:
+            <strong id="skill-garras-dano">
+                10
+            </strong>
+
+            — ATK
+
+        </span>
+
+    </div>
+
+
+    <div class="skill-cost">
+
+        <span>
+            🎯 Área: alvo atingido
+        </span>
+
+        <span>
+            🩸 Roubo de vida: 50%
+        </span>
+
+        <span>
+            🔮 20 MP
+        </span>
+
+        <span>
+            ⚡ 15 EST
+        </span>
+
+    </div>
+
+
+    <button
+        type="button"
+        id="skill-garras-vida">
+
+        🩸 USAR HABILIDADE
+
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     HABILIDADE 3
+====================================================== -->
+
+<div class="boss-skill">
+
+    <div class="skill-header">
+
+        <h3>
+            💨 Bater de Asas
+        </h3>
+
+        <span>
+            VENTO
+        </span>
+
+    </div>
+
+
+    <p>
+        Manda todos os jogadores
+        para longe.
+    </p>
+
+
+    <div class="skill-damage">
+
+        <span class="skill-damage-value">
+
+            💥 Dano:
+            <strong id="skill-bater-dano">
+                8
+            </strong>
+
+            — ATK MGC
+
+        </span>
+
+    </div>
+
+
+    <div class="skill-cost">
+
+        <span>
+            🎯 Área: todos os jogadores
+        </span>
+
+        <span>
+            🔮 30 MP
+        </span>
+
+        <span>
+            ⚡ 10 EST
+        </span>
+
+    </div>
+
+
+    <button
+        type="button"
+        id="skill-bater-asas">
+
+        💨 USAR HABILIDADE
+
+    </button>
+
+</div>
+
+</section><!-- =========================================================
+     CONTROLE DO BOSS
+========================================================= --><section class="boss-section"><h2>
+    ⚙️ CONTROLE DO BOSS
+</h2>
+
+
+<div class="boss-test-buttons">
+
+
+    <input
+        type="number"
+        id="boss-damage-input"
+        min="0"
+        step="1"
+        placeholder="Quantidade de dano">
+
+
+    <button
+        type="button"
+        id="boss-damage-button">
+
+        ❤️ APLICAR DANO
+
+    </button>
+
+
+    <button
+        type="button"
+        id="boss-melee-button">
+
+        ⚔️ DANO CORPO A CORPO
+
+    </button>
+
+
+    <input
+        type="number"
+        id="boss-heal-input"
+        min="0"
+        step="1"
+        placeholder="Quantidade de cura">
+
+
+    <button
+        type="button"
+        id="boss-heal-button">
+
+        💚 APLICAR CURA
+
+    </button>
+
+
+    <button
+        type="button"
+        id="boss-fly-button">
+
+        💨 COLOCAR NO AR
+
+    </button>
+
+
+    <button
+        type="button"
+        id="boss-ground-button">
+
+        🪶 VOLTAR AO SOLO
+
+    </button>
+
+
+    <button
+        type="button"
+        id="boss-reset-button">
+
+        ↻ RESETAR BOSS
+
+    </button>
+
+</div>
+
+</section></div></section><!-- =========================================================
+     STATUS
+========================================================= --><section
+    class="dimension status-dimension"
+    data-dimension-content="status"><div class="status-section"><h2>
+    📊 STATUS
+</h2>
+
+
+<div class="stats">
+
+    <h3 class="stats-title">
+        RECURSOS
+    </h3>
+
+
+    <div class="stats-grid">
+
+
+        <div class="stat">
+
+            <span>❤️</span>
+
+            <strong id="boss-status-hp">
+                150
+            </strong>
+
+            <small>
+                HP
+            </small>
+
+        </div>
+
+
+        <div class="stat">
+
+            <span>🔮</span>
+
+            <strong id="boss-status-mp">
+                120
+            </strong>
+
+            <small>
+                MP
+            </small>
+
+        </div>
+
+
+        <div class="stat">
+
+            <span>⚡</span>
+
+            <strong id="boss-status-est">
+                200
+            </strong>
+
+            <small>
+                EST
+            </small>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="stats">
+
+    <h3 class="stats-title">
+        ATRIBUTOS
+    </h3>
+
+
+    <div class="stats-grid">
+
+
+        <div class="stat">
+            <span>⚔️</span>
+            <strong>10</strong>
+            <small>ATK</small>
+        </div>
+
+
+        <div class="stat">
+            <span>✨</span>
+            <strong>8</strong>
+            <small>ATK MGC</small>
+        </div>
+
+
+        <div class="stat">
+            <span>🛡️</span>
+            <strong>12</strong>
+            <small>DEF</small>
+        </div>
+
+
+        <div class="stat">
+            <span>🔰</span>
+            <strong>42</strong>
+            <small>RES</small>
+        </div>
+
+
+        <div class="stat">
+            <span>💨</span>
+            <strong>9</strong>
+            <small>AGI</small>
+        </div>
+
+
+        <div class="stat">
+            <span>🧠</span>
+            <strong>10</strong>
+            <small>INT</small>
+        </div>
+
+    </div>
+
+</div>
+
+</div></section><!-- =========================================================
+     COMBATE
+========================================================= --><section
+    class="dimension combat-dimension"
+    data-dimension-content="combat"><div class="combat-section"><h2>
+    ⚔️ COMBATE
+</h2>
+
+
+<p class="combat-subtitle">
+    Ações e habilidades do Boss.
+</p>
+
+
+<div class="combat-resources">
+
+    <div>
+
+        <span>
+            🔮 MP
+        </span>
+
+        <strong id="combat-mp">
+            120
+        </strong>
+
+    </div>
+
+
+    <div>
+
+        <span>
+            ⚡ EST
+        </span>
+
+        <strong id="combat-est">
+            200
+        </strong>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     RAJADA
+====================================================== -->
+
+<div class="combat-skill-card">
+
+    <h3>
+        🌪️ RAJADA DE VENTO
+    </h3>
+
+
+    <p>
+        Cria uma pequena área
+        de vento cortante.
+    </p>
+
+
+    <div class="combat-damage">
+
+        💥 Dano:
+        <strong id="combat-rajada-dano">
+            8
+        </strong>
+        — ATK MGC
+
+    </div>
+
+
+    <div class="combat-skill-info">
+
+        <span>
+            🎯 3 jogadores
+        </span>
+
+        <span>
+            🔮 −12 MP
+        </span>
+
+        <span>
+            ⚡ −15 EST
+        </span>
+
+    </div>
+
+
+    <button
+        type="button"
+        id="combat-rajada-vento">
+
+        🌪️ USAR HABILIDADE
+
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     GARRAS
+====================================================== -->
+
+<div class="combat-skill-card">
+
+    <h3>
+        🩸 GARRAS DA VIDA
+    </h3>
+
+
+    <p>
+        Rouba 50% do dano causado.
+    </p>
+
+
+    <div class="combat-damage">
+
+        💥 Dano:
+        <strong id="combat-garras-dano">
+            10
+        </strong>
+        — ATK
+
+    </div>
+
+
+    <div class="combat-skill-info">
+
+        <span>
+            🎯 Alvo atingido
+        </span>
+
+        <span>
+            🩸 50% roubo de vida
+        </span>
+
+        <span>
+            🔮 −20 MP
+        </span>
+
+        <span>
+            ⚡ −15 EST
+        </span>
+
+    </div>
+
+
+    <button
+        type="button"
+        id="combat-garras-vida">
+
+        🩸 USAR HABILIDADE
+
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     ASAS
+====================================================== -->
+
+<div class="combat-skill-card">
+
+    <h3>
+        💨 BATER DE ASAS
+    </h3>
+
+
+    <p>
+        Manda todos os jogadores
+        para longe.
+    </p>
+
+
+    <div class="combat-damage">
+
+        💥 Dano:
+        <strong id="combat-bater-dano">
+            8
+        </strong>
+        — ATK MGC
+
+    </div>
+
+
+    <div class="combat-skill-info">
+
+        <span>
+            🎯 Todos os jogadores
+        </span>
+
+        <span>
+            🔮 −30 MP
+        </span>
+
+        <span>
+            ⚡ −10 EST
+        </span>
+
+    </div>
+
+
+    <button
+        type="button"
+        id="combat-bater-asas">
+
+        💨 USAR HABILIDADE
+
+    </button>
+
+</div>
+
+
+<!-- PASSIVA -->
+
+<div class="passive-section">
+
+    <h3 class="stats-title">
+        PASSIVA
+    </h3>
+
+
+    <div class="passive-card">
+
+        <div class="ability-header">
+
+            <span>
+                PASSIVA
+            </span>
+
+            <span>
+                AUTOMÁTICA
+            </span>
+
+        </div>
+
+
+        <h3>
+            👑 Rei dos Ares
         </h3>
 
 
@@ -668,664 +1279,44 @@
             corpo a corpo.
         </p>
 
+    </div>
 
-        <span id="boss-passive-state">
-            INATIVA — NO SOLO
+</div>
+
+</div></section><!-- =========================================================
+     INVENTÁRIO
+========================================================= --><section
+    class="dimension inventory-dimension"
+    data-dimension-content="inventory"><div class="inventory-section"><h2>
+    🎒 INVENTÁRIO
+</h2>
+
+
+<div class="inventory-list-section">
+
+    <h3>
+        ITENS DO BOSS
+    </h3>
+
+
+    <div class="inventory-empty">
+
+        <span>
+            🎒
         </span>
 
-    </div>
-
-</section>
-
-
-<!-- =========================================================
-     HABILIDADES
-========================================================= -->
-
-<section class="boss-section">
-
-    <h2>
-        ⚔️ HABILIDADES
-    </h2>
-
-
-    <!-- HABILIDADE 1 -->
-
-    <div class="boss-skill">
-
-        <div class="skill-header">
-
-            <h3>
-                🌪️ Rajada de Vento
-            </h3>
-
-            <span>
-                VENTO
-            </span>
-
-        </div>
-
 
         <p>
-            Cria uma pequena área
-            de vento cortante.
+            Nenhum item.
         </p>
-
-
-        <div class="skill-cost">
-
-            <span>
-                🎯 Área: 3 jogadores
-            </span>
-
-            <span>
-                🔮 15 MP
-            </span>
-
-            <span>
-                ⚡ 20 EST
-            </span>
-
-        </div>
-
-
-        <button
-            type="button"
-            id="skill-rajada-vento">
-
-            🌪️ USAR HABILIDADE
-
-        </button>
-
-    </div>
-
-
-    <!-- HABILIDADE 2 -->
-
-    <div class="boss-skill">
-
-        <div class="skill-header">
-
-            <h3>
-                🩸 Garras da Vida
-            </h3>
-
-            <span>
-                FÍSICO
-            </span>
-
-        </div>
-
-
-        <p>
-            Rouba 50% do dano causado.
-        </p>
-
-
-        <div class="skill-cost">
-
-            <span>
-                🎯 Área: alvo atingido
-            </span>
-
-            <span>
-                🩸 Roubo de vida: 50%
-            </span>
-
-        </div>
-
-
-        <button
-            type="button"
-            id="skill-garras-vida">
-
-            🩸 USAR HABILIDADE
-
-        </button>
-
-    </div>
-
-
-    <!-- HABILIDADE 3 -->
-
-    <div class="boss-skill">
-
-        <div class="skill-header">
-
-            <h3>
-                💨 Bater de Asas
-            </h3>
-
-            <span>
-                VENTO
-            </span>
-
-        </div>
-
-
-        <p>
-            Manda todos os jogadores
-            para longe.
-        </p>
-
-
-        <div class="skill-cost">
-
-            <span>
-                🎯 Área: todos os jogadores
-            </span>
-
-        </div>
-
-
-        <button
-            type="button"
-            id="skill-bater-asas">
-
-            💨 USAR HABILIDADE
-
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- =========================================================
-     CONTROLE DO BOSS
-========================================================= -->
-
-<section class="boss-section">
-
-    <h2>
-        ⚙️ CONTROLE DO BOSS
-    </h2>
-
-
-    <div class="boss-test-buttons">
-
-
-        <input
-            type="number"
-            id="boss-damage-input"
-            min="0"
-            step="1"
-            placeholder="Quantidade de dano">
-
-
-        <button
-            type="button"
-            id="boss-damage-button">
-
-            ❤️ APLICAR DANO
-
-        </button>
-
-
-        <button
-            type="button"
-            id="boss-melee-button">
-
-            ⚔️ DANO CORPO A CORPO
-
-        </button>
-
-
-        <input
-            type="number"
-            id="boss-heal-input"
-            min="0"
-            step="1"
-            placeholder="Quantidade de cura">
-
-
-        <button
-            type="button"
-            id="boss-heal-button">
-
-            💚 APLICAR CURA
-
-        </button>
-
-
-        <button
-            type="button"
-            id="boss-fly-button">
-
-            💨 COLOCAR NO AR
-
-        </button>
-
-
-        <button
-            type="button"
-            id="boss-ground-button">
-
-            🪶 VOLTAR AO SOLO
-
-        </button>
-
-
-        <button
-            type="button"
-            id="boss-reset-button">
-
-            ↻ RESETAR BOSS
-
-        </button>
-
-    </div>
-
-</section>
-
-
-</div>
-
-</section>
-
-
-<!-- =========================================================
-     STATUS
-========================================================= -->
-
-<section
-    class="dimension status-dimension"
-    data-dimension-content="status">
-
-
-<div class="status-section">
-
-    <h2>
-        📊 STATUS
-    </h2>
-
-
-    <div class="stats">
-
-        <h3 class="stats-title">
-            RECURSOS
-        </h3>
-
-
-        <div class="stats-grid">
-
-
-            <div class="stat">
-
-                <span>❤️</span>
-
-                <strong id="boss-status-hp">
-                    150
-                </strong>
-
-                <small>
-                    HP
-                </small>
-
-            </div>
-
-
-            <div class="stat">
-
-                <span>🔮</span>
-
-                <strong id="boss-status-mp">
-                    120
-                </strong>
-
-                <small>
-                    MP
-                </small>
-
-            </div>
-
-
-            <div class="stat">
-
-                <span>⚡</span>
-
-                <strong id="boss-status-est">
-                    200
-                </strong>
-
-                <small>
-                    EST
-                </small>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="stats">
-
-        <h3 class="stats-title">
-            ATRIBUTOS
-        </h3>
-
-
-        <div class="stats-grid">
-
-
-            <div class="stat">
-                <span>⚔️</span>
-                <strong>10</strong>
-                <small>ATK</small>
-            </div>
-
-
-            <div class="stat">
-                <span>✨</span>
-                <strong>8</strong>
-                <small>ATK MGC</small>
-            </div>
-
-
-            <div class="stat">
-                <span>🛡️</span>
-                <strong>12</strong>
-                <small>DEF</small>
-            </div>
-
-
-            <div class="stat">
-                <span>🔰</span>
-                <strong>42</strong>
-                <small>RES</small>
-            </div>
-
-
-            <div class="stat">
-                <span>💨</span>
-                <strong>9</strong>
-                <small>AGI</small>
-            </div>
-
-
-            <div class="stat">
-                <span>🧠</span>
-                <strong>10</strong>
-                <small>INT</small>
-            </div>
-
-        </div>
 
     </div>
 
 </div>
 
-</section>
-
-
-<!-- =========================================================
-     COMBATE
-========================================================= -->
-
-<section
-    class="dimension combat-dimension"
-    data-dimension-content="combat">
-
-
-<div class="combat-section">
-
-    <h2>
-        ⚔️ COMBATE
-    </h2>
-
-
-    <p class="combat-subtitle">
-        Ações e habilidades do Boss.
-    </p>
-
-
-    <div class="combat-resources">
-
-        <div>
-
-            <span>
-                🔮 MP
-            </span>
-
-            <strong id="combat-mp">
-                120
-            </strong>
-
-        </div>
-
-
-        <div>
-
-            <span>
-                ⚡ EST
-            </span>
-
-            <strong id="combat-est">
-                200
-            </strong>
-
-        </div>
-
-    </div>
-
-
-    <!-- RAJADA -->
-
-    <div class="combat-skill-card">
-
-        <h3>
-            🌪️ RAJADA DE VENTO
-        </h3>
-
-
-        <p>
-            Cria uma pequena área
-            de vento cortante.
-        </p>
-
-
-        <div class="combat-skill-info">
-
-            <span>
-                🎯 3 jogadores
-            </span>
-
-            <span>
-                🔮 −15 MP
-            </span>
-
-            <span>
-                ⚡ −20 EST
-            </span>
-
-        </div>
-
-
-        <button
-            type="button"
-            id="combat-rajada-vento">
-
-            🌪️ USAR HABILIDADE
-
-        </button>
-
-    </div>
-
-
-    <!-- GARRAS -->
-
-    <div class="combat-skill-card">
-
-        <h3>
-            🩸 GARRAS DA VIDA
-        </h3>
-
-
-        <p>
-            Rouba 50% do dano causado.
-        </p>
-
-
-        <div class="combat-skill-info">
-
-            <span>
-                🎯 Alvo atingido
-            </span>
-
-            <span>
-                🩸 50% roubo de vida
-            </span>
-
-        </div>
-
-
-        <button
-            type="button"
-            id="combat-garras-vida">
-
-            🩸 USAR HABILIDADE
-
-        </button>
-
-    </div>
-
-
-    <!-- ASAS -->
-
-    <div class="combat-skill-card">
-
-        <h3>
-            💨 BATER DE ASAS
-        </h3>
-
-
-        <p>
-            Manda todos os jogadores
-            para longe.
-        </p>
-
-
-        <div class="combat-skill-info">
-
-            <span>
-                🎯 Todos os jogadores
-            </span>
-
-        </div>
-
-
-        <button
-            type="button"
-            id="combat-bater-asas">
-
-            💨 USAR HABILIDADE
-
-        </button>
-
-    </div>
-
-
-    <!-- PASSIVA -->
-
-    <div class="passive-section">
-
-        <h3 class="stats-title">
-            PASSIVA
-        </h3>
-
-
-        <div class="passive-card">
-
-            <div class="ability-header">
-
-                <span>
-                    PASSIVA
-                </span>
-
-                <span>
-                    AUTOMÁTICA
-                </span>
-
-            </div>
-
-
-            <h3>
-                👑 Rei dos Ares
-            </h3>
-
-
-            <p>
-                Enquanto estiver no ar,
-                torna-se imune a ataques
-                corpo a corpo.
-            </p>
-
-        </div>
-
-    </div>
-
-</div>
-
-</section>
-
-
-<!-- =========================================================
-     INVENTÁRIO
-========================================================= -->
-
-<section
-    class="dimension inventory-dimension"
-    data-dimension-content="inventory">
-
-
-<div class="inventory-section">
-
-    <h2>
-        🎒 INVENTÁRIO
-    </h2>
-
-
-    <div class="inventory-list-section">
-
-        <h3>
-            ITENS DO BOSS
-        </h3>
-
-
-        <div class="inventory-empty">
-
-            <span>
-                🎒
-            </span>
-
-
-            <p>
-                Nenhum item.
-            </p>
-
-        </div>
-
-    </div>
-
-</div>
-
-</section>
-
-
-</main>
-
-</div>
-
-
-<!-- =========================================================
+</div></section></main></div><!-- =========================================================
      BOSS JS
-========================================================= -->
-
-<script src="boss.js"></script>
-
-
-<script>
+========================================================= --><script src="boss.js"></script><script>
 
 "use strict";
 
@@ -1403,6 +1394,76 @@ BossSystem.atualizarCard = function () {
         combatEST.textContent =
             boss.est;
 
+
+    /*
+       DANO DAS HABILIDADES
+
+       Rajada de Vento  = ATK MGC
+       Garras da Vida   = ATK
+       Bater de Asas    = ATK MGC
+    */
+
+    const rajadaDano =
+        document.getElementById(
+            "skill-rajada-dano"
+        );
+
+    const garrasDano =
+        document.getElementById(
+            "skill-garras-dano"
+        );
+
+    const baterDano =
+        document.getElementById(
+            "skill-bater-dano"
+        );
+
+
+    const combatRajadaDano =
+        document.getElementById(
+            "combat-rajada-dano"
+        );
+
+    const combatGarrasDano =
+        document.getElementById(
+            "combat-garras-dano"
+        );
+
+    const combatBaterDano =
+        document.getElementById(
+            "combat-bater-dano"
+        );
+
+
+    if (rajadaDano)
+        rajadaDano.textContent =
+            boss.atkMgc;
+
+
+    if (garrasDano)
+        garrasDano.textContent =
+            boss.atk;
+
+
+    if (baterDano)
+        baterDano.textContent =
+            boss.atkMgc;
+
+
+    if (combatRajadaDano)
+        combatRajadaDano.textContent =
+            boss.atkMgc;
+
+
+    if (combatGarrasDano)
+        combatGarrasDano.textContent =
+            boss.atk;
+
+
+    if (combatBaterDano)
+        combatBaterDano.textContent =
+            boss.atkMgc;
+
 };
 
 
@@ -1475,56 +1536,20 @@ document
     });
 
 
-/* =========================================================
-   BOTÕES DE COMBATE
-========================================================= */
+/*
+   IMPORTANTE:
 
-document
-    .getElementById(
-        "combat-rajada-vento"
-    )
-    ?.addEventListener(
-        "click",
-        () => {
+   Os botões das habilidades de Combate
+   NÃO recebem listeners aqui.
 
-            BossSystem.usarHabilidade(
-                "rajada_vento"
-            );
+   O boss.js já é responsável por:
 
-        }
-    );
+   #combat-rajada-vento
+   #combat-garras-vida
+   #combat-bater-asas
 
-
-document
-    .getElementById(
-        "combat-garras-vida"
-    )
-    ?.addEventListener(
-        "click",
-        () => {
-
-            BossSystem.usarHabilidade(
-                "garras_vida"
-            );
-
-        }
-    );
-
-
-document
-    .getElementById(
-        "combat-bater-asas"
-    )
-    ?.addEventListener(
-        "click",
-        () => {
-
-            BossSystem.usarHabilidade(
-                "bater_asas"
-            );
-
-        }
-    );
+   Isso evita executar a mesma habilidade duas vezes.
+*/
 
 
 /* =========================================================
@@ -1533,8 +1558,4 @@ document
 
 BossSystem.atualizarCard();
 
-</script>
-
-</body>
-
-</html>
+</script></body></html>
