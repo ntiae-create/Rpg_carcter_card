@@ -2,7 +2,7 @@
 // BOSS SYSTEM — CONTROLADOR CENTRAL
 // Hræsvelgr + Skoll & Hati
 //
-// Os dados ficam em:
+// Dados dos Bosses:
 // bosses/hraesvelgr.js
 // bosses/skoll-hati.js
 // =========================================================
@@ -42,7 +42,7 @@ const $ = id => document.getElementById(id);
 
 
 // =========================================================
-// OBTÉM DADOS DO BOSS
+// OBTÉM BOSS
 // =========================================================
 
 function obterBoss() {
@@ -53,45 +53,58 @@ function obterBoss() {
 
 
 // =========================================================
-// OBTÉM DADOS DO NÍVEL
+// OBTÉM NÍVEL
 // =========================================================
 
 function obterNivel() {
 
     const boss = obterBoss();
 
-    return boss.niveis[nivelAtual];
+    return boss?.niveis?.[nivelAtual];
 
 }
 
 
 // =========================================================
-// IMAGEM DO BOSS
+// OBTÉM IMAGEM
 // =========================================================
 
 function obterImagemBoss() {
 
     const boss = obterBoss();
 
-    if (nivelAtual >= 400) {
+    if (!boss || !boss.imagens) {
+        return "";
+    }
+
+
+    if (
+        nivelAtual >= 400 &&
+        boss.imagens.ultimate
+    ) {
 
         return boss.imagens.ultimate;
 
     }
 
-    if (nivelAtual >= 300) {
+
+    if (
+        nivelAtual >= 300 &&
+        boss.imagens.evolucao
+    ) {
 
         return boss.imagens.evolucao;
 
     }
 
-    return boss.imagens.base;
+
+    return boss.imagens.base || "";
 
 }
 
 
 // =========================================================
-// INICIALIZA ESTADO
+// INICIALIZAR ESTADO
 // =========================================================
 
 function inicializarEstado() {
@@ -99,6 +112,17 @@ function inicializarEstado() {
     const boss = obterBoss();
 
     const dados = obterNivel();
+
+
+    if (!boss || !dados) {
+
+        console.error(
+            "Não foi possível inicializar o Boss."
+        );
+
+        return;
+
+    }
 
 
     // =====================================================
@@ -114,37 +138,25 @@ function inicializarEstado() {
             id: bossAtual,
 
             hp: dados.hp,
-
             mp: dados.mp,
-
             est: dados.est,
 
             hpMax: dados.hp,
-
             mpMax: dados.mp,
-
             estMax: dados.est,
 
             atk: dados.atk,
-
             atkMgc: dados.atkMgc,
-
             agi: dados.agi,
-
             def: dados.def,
-
             res: dados.res,
-
             int: dados.int,
 
             agiBase: dados.agi,
-
             defBase: dados.def,
 
             abatido: false,
-
             enfurecido: false,
-
             reflexo: false
 
         };
@@ -170,15 +182,11 @@ function inicializarEstado() {
                 ...dados.skoll,
 
                 hpMax: dados.skoll.hp,
-
                 mpMax: dados.skoll.mp,
-
                 estMax: dados.skoll.est,
 
                 hpAtual: dados.skoll.hp,
-
                 mpAtual: dados.skoll.mp,
-
                 estAtual: dados.skoll.est,
 
                 abatido: false
@@ -191,15 +199,11 @@ function inicializarEstado() {
                 ...dados.hati,
 
                 hpMax: dados.hati.hp,
-
                 mpMax: dados.hati.mp,
-
                 estMax: dados.hati.est,
 
                 hpAtual: dados.hati.hp,
-
                 mpAtual: dados.hati.mp,
-
                 estAtual: dados.hati.est,
 
                 abatido: false
@@ -229,7 +233,10 @@ function carregarBoss(id) {
 
     if (!BOSS_DATABASE[id]) {
 
-        console.error("Boss não encontrado:", id);
+        console.error(
+            "Boss não encontrado:",
+            id
+        );
 
         return;
 
@@ -252,7 +259,7 @@ function carregarBoss(id) {
 
 
 // =========================================================
-// TROCAR NÍVEL
+// CARREGAR NÍVEL
 // =========================================================
 
 function carregarNivel(nivel) {
@@ -262,10 +269,11 @@ function carregarNivel(nivel) {
 
     const boss = obterBoss();
 
-    if (!boss.niveis[nivel]) {
+
+    if (!boss?.niveis?.[nivel]) {
 
         console.error(
-            `O Boss ${boss.nome} não possui o nível ${nivel}.`
+            `O Boss ${boss?.nome || "desconhecido"} não possui o nível ${nivel}.`
         );
 
         return;
@@ -287,7 +295,7 @@ function carregarNivel(nivel) {
 
 
 // =========================================================
-// ATUALIZA INTERFACE
+// ATUALIZAR INTERFACE
 // =========================================================
 
 function atualizarInterface() {
@@ -295,6 +303,11 @@ function atualizarInterface() {
     const boss = obterBoss();
 
     const dados = obterNivel();
+
+
+    if (!boss || !dados || !estado) {
+        return;
+    }
 
 
     // =====================================================
@@ -312,6 +325,7 @@ function atualizarInterface() {
             "affinity-trevas",
             "affinity-terra",
             "affinity-luz",
+            "affinity-agua",
             "affinity-dual"
         );
 
@@ -324,6 +338,13 @@ function atualizarInterface() {
 
         }
 
+
+        // Importante para os efeitos
+        // de nível do card.
+
+        card.dataset.level =
+            nivelAtual;
+
     }
 
 
@@ -331,71 +352,71 @@ function atualizarInterface() {
     // NOME
     // =====================================================
 
-    if ($("boss-name")) {
-
-        $("boss-name").textContent =
-            boss.nome;
-
-    }
+    atualizarTexto(
+        "boss-name",
+        boss.nome
+    );
 
 
     // =====================================================
     // NÍVEL
     // =====================================================
 
-    if ($("boss-level")) {
-
-        $("boss-level").textContent =
-            `NÍVEL ${nivelAtual} · ${boss.afinidade}`;
-
-    }
+    atualizarTexto(
+        "boss-level",
+        `NÍVEL ${nivelAtual}`
+    );
 
 
     // =====================================================
     // AFINIDADE
     // =====================================================
 
-    if ($("boss-affinity")) {
-
-        $("boss-affinity").textContent =
-            boss.afinidade;
-
-    }
+    atualizarTexto(
+        "boss-affinity",
+        boss.afinidade
+    );
 
 
     // =====================================================
     // IMAGEM
     // =====================================================
 
-    if ($("boss-image")) {
+    const imagem = $("boss-image");
 
-        $("boss-image").src =
+
+    if (imagem) {
+
+        imagem.src =
             obterImagemBoss();
 
-        $("boss-image").alt =
+        imagem.alt =
             boss.nome;
 
     }
 
 
     // =====================================================
-    // BOSS ÚNICO
+    // PAINÉIS
+    // =====================================================
+
+    atualizarVisibilidadePaineis();
+
+
+    // =====================================================
+    // DADOS
     // =====================================================
 
     if (estado.tipo === "single") {
 
-        atualizarBossUnico(dados);
+        atualizarBossUnico();
 
     }
 
 
-    // =====================================================
-    // BOSS DUPLO
-    // =====================================================
-
     if (estado.tipo === "dual") {
 
-        atualizarBossDuplo(dados);
+        atualizarBossDuplo();
 
     }
 
@@ -417,10 +438,67 @@ function atualizarInterface() {
 
 
 // =========================================================
+// VISIBILIDADE DOS PAINÉIS
+// =========================================================
+
+function atualizarVisibilidadePaineis() {
+
+    const singleResources =
+        $("boss-single-resources");
+
+    const dualResources =
+        $("boss-dual-resources");
+
+    const singleStats =
+        $("boss-single-stats");
+
+    const dualStats =
+        $("boss-dual-stats");
+
+
+    const isDual =
+        estado.tipo === "dual";
+
+
+    if (singleResources) {
+
+        singleResources.style.display =
+            isDual ? "none" : "";
+
+    }
+
+
+    if (dualResources) {
+
+        dualResources.style.display =
+            isDual ? "" : "none";
+
+    }
+
+
+    if (singleStats) {
+
+        singleStats.style.display =
+            isDual ? "none" : "";
+
+    }
+
+
+    if (dualStats) {
+
+        dualStats.style.display =
+            isDual ? "" : "none";
+
+    }
+
+}
+
+
+// =========================================================
 // BOSS ÚNICO
 // =========================================================
 
-function atualizarBossUnico(dados) {
+function atualizarBossUnico() {
 
     atualizarBarra(
         "hp",
@@ -428,11 +506,13 @@ function atualizarBossUnico(dados) {
         estado.hpMax
     );
 
+
     atualizarBarra(
         "mp",
         estado.mp,
         estado.mpMax
     );
+
 
     atualizarBarra(
         "est",
@@ -446,25 +526,30 @@ function atualizarBossUnico(dados) {
         estado.atk
     );
 
+
     atualizarTexto(
         "boss-atk-mgc",
         estado.atkMgc
     );
+
 
     atualizarTexto(
         "boss-agi",
         estado.agi
     );
 
+
     atualizarTexto(
         "boss-def",
         estado.def
     );
 
+
     atualizarTexto(
         "boss-res",
         estado.res
     );
+
 
     atualizarTexto(
         "boss-int",
@@ -478,102 +563,161 @@ function atualizarBossUnico(dados) {
 // BOSS DUPLO
 // =========================================================
 
-function atualizarBossDuplo(dados) {
+function atualizarBossDuplo() {
 
-    /*
-       Aqui o card poderá futuramente possuir
-       dois painéis separados:
+    const skoll =
+        estado.skoll;
 
-       SKOLL
-       HATI
-
-       Por enquanto mantemos os dados no estado
-       para o sistema central.
-    */
+    const hati =
+        estado.hati;
 
 
-    console.log(
-        "SKOLL:",
-        estado.skoll
-    );
+    // =====================================================
+    // SKOLL — RECURSOS
+    // =====================================================
 
-    console.log(
-        "HATI:",
-        estado.hati
+    atualizarBarraDual(
+        "skoll",
+        "hp",
+        skoll.hpAtual,
+        skoll.hpMax
     );
 
 
-    /*
-       Se o HTML possuir os elementos abaixo,
-       eles serão atualizados automaticamente.
-    */
+    atualizarBarraDual(
+        "skoll",
+        "mp",
+        skoll.mpAtual,
+        skoll.mpMax
+    );
+
+
+    atualizarBarraDual(
+        "skoll",
+        "est",
+        skoll.estAtual,
+        skoll.estMax
+    );
+
+
+    // =====================================================
+    // HATI — RECURSOS
+    // =====================================================
+
+    atualizarBarraDual(
+        "hati",
+        "hp",
+        hati.hpAtual,
+        hati.hpMax
+    );
+
+
+    atualizarBarraDual(
+        "hati",
+        "mp",
+        hati.mpAtual,
+        hati.mpMax
+    );
+
+
+    atualizarBarraDual(
+        "hati",
+        "est",
+        hati.estAtual,
+        hati.estMax
+    );
+
+
+    // =====================================================
+    // SKOLL — ATRIBUTOS
+    // =====================================================
 
     atualizarTexto(
         "skoll-atk",
-        estado.skoll.atk
+        skoll.atk
     );
 
     atualizarTexto(
         "skoll-atk-mgc",
-        estado.skoll.atkMgc
+        skoll.atkMgc
     );
 
     atualizarTexto(
         "skoll-agi",
-        estado.skoll.agi
+        skoll.agi
     );
 
     atualizarTexto(
         "skoll-def",
-        estado.skoll.def
+        skoll.def
     );
 
     atualizarTexto(
         "skoll-res",
-        estado.skoll.res
+        skoll.res
     );
 
     atualizarTexto(
         "skoll-int",
-        estado.skoll.int
+        skoll.int
     );
 
 
+    // =====================================================
+    // HATI — ATRIBUTOS
+    // =====================================================
+
     atualizarTexto(
         "hati-atk",
-        estado.hati.atk
+        hati.atk
     );
 
     atualizarTexto(
         "hati-atk-mgc",
-        estado.hati.atkMgc
+        hati.atkMgc
     );
 
     atualizarTexto(
         "hati-agi",
-        estado.hati.agi
+        hati.agi
     );
 
     atualizarTexto(
         "hati-def",
-        estado.hati.def
+        hati.def
     );
 
     atualizarTexto(
         "hati-res",
-        estado.hati.res
+        hati.res
     );
 
     atualizarTexto(
         "hati-int",
-        estado.hati.int
+        hati.int
+    );
+
+
+    // =====================================================
+    // ESTADO DOS IRMÃOS
+    // =====================================================
+
+    atualizarEstadoIrmao(
+        "skoll-state",
+        skoll
+    );
+
+
+    atualizarEstadoIrmao(
+        "hati-state",
+        hati
     );
 
 }
 
 
 // =========================================================
-// BARRAS
+// BARRA DO BOSS ÚNICO
 // =========================================================
 
 function atualizarBarra(tipo, atual, max) {
@@ -585,10 +729,24 @@ function atualizarBarra(tipo, atual, max) {
         $(`boss-${tipo}`);
 
 
+    const valorAtual =
+        Math.max(
+            0,
+            Number(atual) || 0
+        );
+
+
+    const valorMax =
+        Math.max(
+            1,
+            Number(max) || 1
+        );
+
+
     if (texto) {
 
         texto.textContent =
-            `${Math.max(0, atual)} / ${max}`;
+            `${valorAtual} / ${valorMax}`;
 
     }
 
@@ -600,9 +758,10 @@ function atualizarBarra(tipo, atual, max) {
                 0,
                 Math.min(
                     100,
-                    (atual / max) * 100
+                    (valorAtual / valorMax) * 100
                 )
             );
+
 
         barra.style.width =
             `${porcentagem}%`;
@@ -613,16 +772,139 @@ function atualizarBarra(tipo, atual, max) {
 
 
 // =========================================================
+// BARRAS SKOLL / HATI
+// =========================================================
+
+function atualizarBarraDual(
+    membro,
+    tipo,
+    atual,
+    max
+) {
+
+    const texto =
+        $(`${membro}-${tipo}-text`);
+
+    const barra =
+        $(`${membro}-${tipo}`);
+
+
+    const valorAtual =
+        Math.max(
+            0,
+            Number(atual) || 0
+        );
+
+
+    const valorMax =
+        Math.max(
+            1,
+            Number(max) || 1
+        );
+
+
+    if (texto) {
+
+        texto.textContent =
+            `${valorAtual} / ${valorMax}`;
+
+    }
+
+
+    if (barra) {
+
+        const porcentagem =
+            Math.max(
+                0,
+                Math.min(
+                    100,
+                    (valorAtual / valorMax) * 100
+                )
+            );
+
+
+        barra.style.width =
+            `${porcentagem}%`;
+
+    }
+
+}
+
+
+// =========================================================
+// ESTADO DO IRMÃO
+// =========================================================
+
+function atualizarEstadoIrmao(
+    id,
+    membro
+) {
+
+    const elemento =
+        $(id);
+
+
+    if (!elemento) {
+        return;
+    }
+
+
+    if (membro.abatido) {
+
+        elemento.textContent =
+            "DERROTADO";
+
+        elemento.classList.add(
+            "derrotado"
+        );
+
+        elemento.classList.remove(
+            "ativo"
+        );
+
+        return;
+
+    }
+
+
+    elemento.textContent =
+        estado.furia &&
+        estado.irmaoDerrotado
+            ? "FÚRIA"
+            : "ATIVO";
+
+
+    elemento.classList.remove(
+        "derrotado"
+    );
+
+    elemento.classList.add(
+        estado.furia &&
+        estado.irmaoDerrotado
+            ? "furia"
+            : "ativo"
+    );
+
+}
+
+
+// =========================================================
 // TEXTO
 // =========================================================
 
-function atualizarTexto(id, valor) {
+function atualizarTexto(
+    id,
+    valor
+) {
 
-    const elemento = $(id);
+    const elemento =
+        $(id);
+
 
     if (elemento) {
 
-        elemento.textContent = valor;
+        elemento.textContent =
+            valor ?? "";
 
     }
 
@@ -635,24 +917,47 @@ function atualizarTexto(id, valor) {
 
 function atualizarPassiva(dados) {
 
-    if (!dados.passiva) return;
+    const passiva =
+        dados?.passiva;
+
+
+    if (!passiva) {
+
+        atualizarTexto(
+            "passive-name",
+            ""
+        );
+
+        atualizarTexto(
+            "passive-desc",
+            ""
+        );
+
+        atualizarTexto(
+            "passive-state",
+            ""
+        );
+
+        return;
+
+    }
 
 
     atualizarTexto(
         "passive-name",
-        dados.passiva.nome
+        passiva.nome
     );
 
 
     atualizarTexto(
         "passive-desc",
-        dados.passiva.descricao
+        passiva.descricao
     );
 
 
     atualizarTexto(
         "passive-state",
-        dados.passiva.estado
+        passiva.estado || ""
     );
 
 }
@@ -665,7 +970,9 @@ function atualizarPassiva(dados) {
 function atualizarHabilidades(dados) {
 
     const habilidades =
-        dados.habilidades || [];
+        Array.isArray(dados?.habilidades)
+            ? dados.habilidades
+            : [];
 
 
     for (
@@ -698,6 +1005,16 @@ function atualizarHabilidades(dados) {
             $(`skill-est-${i + 1}`);
 
 
+        const botao =
+            container?.querySelector(
+                ".boss-skill-button"
+            );
+
+
+        // =================================================
+        // SEM HABILIDADE
+        // =================================================
+
         if (!habilidade) {
 
             if (container) {
@@ -712,6 +1029,10 @@ function atualizarHabilidades(dados) {
         }
 
 
+        // =================================================
+        // MOSTRAR
+        // =================================================
+
         if (container) {
 
             container.style.display =
@@ -720,64 +1041,90 @@ function atualizarHabilidades(dados) {
         }
 
 
+        // =================================================
+        // NOME
+        // =================================================
+
         if (nome) {
 
-            let titulo =
-                habilidade.nome;
-
-
-            if (habilidade.usuario) {
-
-                titulo =
-                    `${habilidade.usuario} · ${habilidade.nome}`;
-
-            }
+            const usuario =
+                habilidade.usuario
+                    ? `${habilidade.usuario} · `
+                    : "";
 
 
             nome.textContent =
-                titulo;
+                `${usuario}${habilidade.nome || "Habilidade"}`;
 
         }
 
+
+        // =================================================
+        // DESCRIÇÃO
+        // =================================================
 
         if (descricao) {
 
             descricao.textContent =
-                habilidade.efeito || "";
+                habilidade.efeito ||
+                habilidade.descricao ||
+                "";
 
         }
 
+
+        // =================================================
+        // CUSTO MP
+        // =================================================
 
         if (mp) {
 
+            const custoMp =
+                Number(
+                    habilidade.custoMp || 0
+                );
+
+
             mp.textContent =
-                habilidade.custoMp > 0
-                    ? `${habilidade.custoMp} ALMA`
-                    : "";
+                custoMp > 0
+                    ? `${custoMp} ALMA`
+                    : "—";
 
         }
 
+
+        // =================================================
+        // CUSTO EST
+        // =================================================
 
         if (est) {
 
+            const custoEst =
+                Number(
+                    habilidade.custoEst || 0
+                );
+
+
             est.textContent =
-                habilidade.custoEst > 0
-                    ? `${habilidade.custoEst} FORÇA`
-                    : "";
+                custoEst > 0
+                    ? `${custoEst} FORÇA`
+                    : "—";
 
         }
 
 
-        const botao =
-            container?.querySelector(
-                ".boss-skill-button"
-            );
-
+        // =================================================
+        // BOTÃO
+        // =================================================
 
         if (botao) {
 
             botao.dataset.skill =
-                habilidade.id;
+                habilidade.id || "";
+
+
+            botao.disabled =
+                false;
 
         }
 
@@ -836,6 +1183,22 @@ function atualizarSeletorNivel() {
 
 function receberDano(valor) {
 
+    valor =
+        Math.max(
+            0,
+            Number(valor) || 0
+        );
+
+
+    if (valor <= 0) {
+        return;
+    }
+
+
+    // =====================================================
+    // BOSS ÚNICO
+    // =====================================================
+
     if (estado.tipo === "single") {
 
         estado.hp =
@@ -845,16 +1208,20 @@ function receberDano(valor) {
             );
 
 
-        if (estado.hp === 0) {
+        if (estado.hp <= 0) {
+
+            estado.hp = 0;
 
             estado.abatido = true;
-
-            atualizarStatusGeral();
 
         }
 
     }
 
+
+    // =====================================================
+    // BOSS DUPLO
+    // =====================================================
 
     if (estado.tipo === "dual") {
 
@@ -865,25 +1232,30 @@ function receberDano(valor) {
 
     atualizarInterface();
 
+    atualizarStatusGeral();
+
 }
 
 
 // =========================================================
-// DANO BOSS DUPLO
+// DANO SKOLL & HATI
 // =========================================================
 
 function receberDanoDuplo(valor) {
 
     /*
-       Por padrão, o dano de teste será aplicado
-       ao Skoll.
+       TESTE:
 
-       Mais tarde o sistema de combate poderá
-       escolher exatamente qual irmão será atingido.
+       O botão de dano atinge primeiro o Skoll.
+
+       O sistema de combate real poderá escolher
+       posteriormente qual irmão recebe o ataque.
     */
 
 
-    if (!estado.skoll.abatido) {
+    if (
+        !estado.skoll.abatido
+    ) {
 
         estado.skoll.hpAtual =
             Math.max(
@@ -892,11 +1264,46 @@ function receberDanoDuplo(valor) {
             );
 
 
-        if (estado.skoll.hpAtual === 0) {
+        if (
+            estado.skoll.hpAtual <= 0
+        ) {
+
+            estado.skoll.hpAtual = 0;
 
             estado.skoll.abatido = true;
 
             ativarFuriaSobrevivente();
+
+        }
+
+
+        return;
+
+    }
+
+
+    // =====================================================
+    // SE SKOLL JÁ CAIU → HATI
+    // =====================================================
+
+    if (
+        !estado.hati.abatido
+    ) {
+
+        estado.hati.hpAtual =
+            Math.max(
+                0,
+                estado.hati.hpAtual - valor
+            );
+
+
+        if (
+            estado.hati.hpAtual <= 0
+        ) {
+
+            estado.hati.hpAtual = 0;
+
+            estado.hati.abatido = true;
 
         }
 
@@ -911,18 +1318,32 @@ function receberDanoDuplo(valor) {
 
 function ativarFuriaSobrevivente() {
 
-    if (estado.furia) return;
+    if (
+        estado.furia ||
+        estado.tipo !== "dual"
+    ) {
 
+        return;
 
-    estado.furia = true;
-
-    estado.irmaoDerrotado = true;
+    }
 
 
     const sobrevivente =
         !estado.skoll.abatido
             ? estado.skoll
-            : estado.hati;
+            : !estado.hati.abatido
+                ? estado.hati
+                : null;
+
+
+    if (!sobrevivente) {
+        return;
+    }
+
+
+    estado.furia = true;
+
+    estado.irmaoDerrotado = true;
 
 
     sobrevivente.agi += 2;
@@ -945,18 +1366,24 @@ function ativarFuriaSobrevivente() {
 
 function avancarRodada() {
 
+    if (
+        estado.tipo !== "single" &&
+        estado.tipo !== "dual"
+    ) {
+
+        return;
+
+    }
+
+
     rodada++;
 
 
     // =====================================================
-    // RECURSOS
+    // HRÆSVELGR
     // =====================================================
 
     if (estado.tipo === "single") {
-
-        const dados =
-            obterNivel();
-
 
         estado.mp =
             Math.min(
@@ -972,8 +1399,10 @@ function avancarRodada() {
             );
 
 
-        // Hræsvelgr
-        if (bossAtual === "hraesvelgr") {
+        if (
+            bossAtual === "hraesvelgr" &&
+            !estado.abatido
+        ) {
 
             estado.agi++;
 
@@ -983,8 +1412,7 @@ function avancarRodada() {
                 estado.hpMax <= 0.4
             ) {
 
-                estado.enfurecido =
-                    true;
+                estado.enfurecido = true;
 
             }
 
@@ -999,39 +1427,47 @@ function avancarRodada() {
 
     if (estado.tipo === "dual") {
 
-        estado.skoll.mpAtual =
-            Math.min(
-                estado.skoll.mpMax,
-                estado.skoll.mpAtual + 5
-            );
+        if (!estado.skoll.abatido) {
+
+            estado.skoll.mpAtual =
+                Math.min(
+                    estado.skoll.mpMax,
+                    estado.skoll.mpAtual + 5
+                );
 
 
-        estado.skoll.estAtual =
-            Math.min(
-                estado.skoll.estMax,
-                estado.skoll.estAtual + 8
-            );
+            estado.skoll.estAtual =
+                Math.min(
+                    estado.skoll.estMax,
+                    estado.skoll.estAtual + 8
+                );
+
+        }
 
 
-        estado.hati.mpAtual =
-            Math.min(
-                estado.hati.mpMax,
-                estado.hati.mpAtual + 5
-            );
+        if (!estado.hati.abatido) {
+
+            estado.hati.mpAtual =
+                Math.min(
+                    estado.hati.mpMax,
+                    estado.hati.mpAtual + 5
+                );
 
 
-        estado.hati.estAtual =
-            Math.min(
-                estado.hati.estMax,
-                estado.hati.estAtual + 8
-            );
+            estado.hati.estAtual =
+                Math.min(
+                    estado.hati.estMax,
+                    estado.hati.estAtual + 8
+                );
+
+        }
 
     }
 
 
-    atualizarStatusGeral();
-
     atualizarInterface();
+
+    atualizarStatusGeral();
 
 }
 
@@ -1043,6 +1479,44 @@ function avancarRodada() {
 function restaurar() {
 
     inicializarEstado();
+
+    atualizarInterface();
+
+    atualizarSeletorNivel();
+
+    atualizarStatusGeral();
+
+}
+
+
+// =========================================================
+// ZERAR BATALHA
+// =========================================================
+
+function zerarBoss() {
+
+    if (estado.tipo === "single") {
+
+        estado.hp = 0;
+
+        estado.abatido = true;
+
+    }
+
+
+    if (estado.tipo === "dual") {
+
+        estado.skoll.hpAtual = 0;
+        estado.hati.hpAtual = 0;
+
+        estado.skoll.abatido = true;
+        estado.hati.abatido = true;
+
+        estado.furia = false;
+        estado.irmaoDerrotado = true;
+
+    }
+
 
     atualizarInterface();
 
@@ -1061,8 +1535,14 @@ function atualizarStatusGeral() {
         $("boss-status");
 
 
-    if (!status) return;
+    if (!status) {
+        return;
+    }
 
+
+    // =====================================================
+    // BOSS ÚNICO
+    // =====================================================
 
     if (estado.tipo === "single") {
 
@@ -1091,8 +1571,15 @@ function atualizarStatusGeral() {
                 ? `Rodada ${rodada} — O Boss aguarda sua próxima ação.`
                 : "Aguardando batalha...";
 
+
+        return;
+
     }
 
+
+    // =====================================================
+    // SKOLL & HATI
+    // =====================================================
 
     if (estado.tipo === "dual") {
 
@@ -1111,8 +1598,14 @@ function atualizarStatusGeral() {
 
         if (estado.furia) {
 
+            const sobrevivente =
+                !estado.skoll.abatido
+                    ? "Skoll"
+                    : "Hati";
+
+
             status.textContent =
-                "🔥 Um dos irmãos caiu — o sobrevivente entrou em Fúria!";
+                `🔥 ${sobrevivente} entrou em Fúria!`;
 
             return;
 
@@ -1130,6 +1623,50 @@ function atualizarStatusGeral() {
 
 
 // =========================================================
+// ENCONTRAR DONO DA HABILIDADE
+// =========================================================
+
+function obterDonoHabilidade(habilidade) {
+
+    if (
+        estado.tipo !== "dual"
+    ) {
+
+        return null;
+
+    }
+
+
+    const usuario =
+        String(
+            habilidade.usuario || ""
+        ).toLowerCase();
+
+
+    if (
+        usuario.includes("skoll")
+    ) {
+
+        return estado.skoll;
+
+    }
+
+
+    if (
+        usuario.includes("hati")
+    ) {
+
+        return estado.hati;
+
+    }
+
+
+    return null;
+
+}
+
+
+// =========================================================
 // EXECUTAR HABILIDADE
 // =========================================================
 
@@ -1140,7 +1677,7 @@ function executarHabilidade(id) {
 
 
     const habilidade =
-        dados.habilidades?.find(
+        dados?.habilidades?.find(
             habilidade =>
                 habilidade.id === id
         );
@@ -1158,25 +1695,34 @@ function executarHabilidade(id) {
     }
 
 
-    /*
-       Por enquanto o sistema apenas consome
-       recursos e registra a ação.
+    const custoMp =
+        Number(
+            habilidade.custoMp || 0
+        );
 
-       O sistema de combate real poderá assumir
-       essa função posteriormente.
-    */
 
+    const custoEst =
+        Number(
+            habilidade.custoEst || 0
+        );
+
+
+    // =====================================================
+    // BOSS ÚNICO
+    // =====================================================
 
     if (estado.tipo === "single") {
 
         if (
-            estado.mp < habilidade.custoMp ||
-            estado.est < habilidade.custoEst
+            estado.mp < custoMp ||
+            estado.est < custoEst
         ) {
 
-            alert(
-                "Recursos insuficientes!"
+            console.warn(
+                "Recursos insuficientes."
             );
+
+            atualizarStatusRecursos();
 
             return;
 
@@ -1184,21 +1730,108 @@ function executarHabilidade(id) {
 
 
         estado.mp -=
-            habilidade.custoMp;
+            custoMp;
 
 
         estado.est -=
-            habilidade.custoEst;
+            custoEst;
+
+
+        console.log(
+            `⚔️ ${obterBoss().nome} usa ${habilidade.nome}!`
+        );
 
     }
 
 
-    console.log(
-        `⚔️ ${obterBoss().nome} usa ${habilidade.nome}!`
-    );
+    // =====================================================
+    // BOSS DUPLO
+    // =====================================================
+
+    if (estado.tipo === "dual") {
+
+        const usuario =
+            obterDonoHabilidade(
+                habilidade
+            );
+
+
+        if (!usuario) {
+
+            console.warn(
+                "Não foi possível identificar o dono da habilidade:",
+                habilidade.nome
+            );
+
+            return;
+
+        }
+
+
+        if (usuario.abatido) {
+
+            console.warn(
+                `${habilidade.usuario} está derrotado.`
+            );
+
+            return;
+
+        }
+
+
+        if (
+            usuario.mpAtual < custoMp ||
+            usuario.estAtual < custoEst
+        ) {
+
+            console.warn(
+                "Recursos insuficientes."
+            );
+
+            return;
+
+        }
+
+
+        usuario.mpAtual -=
+            custoMp;
+
+
+        usuario.estAtual -=
+            custoEst;
+
+
+        console.log(
+            `⚔️ ${habilidade.usuario} usa ${habilidade.nome}!`
+        );
+
+    }
 
 
     atualizarInterface();
+
+    atualizarStatusGeral();
+
+}
+
+
+// =========================================================
+// STATUS DE RECURSOS
+// =========================================================
+
+function atualizarStatusRecursos() {
+
+    const status =
+        $("boss-status");
+
+
+    if (!status) {
+        return;
+    }
+
+
+    status.textContent =
+        "Recursos insuficientes para usar essa habilidade.";
 
 }
 
@@ -1213,7 +1846,7 @@ document.addEventListener(
 
 
         // =================================================
-        // BOSS
+        // SELETOR DE BOSS
         // =================================================
 
         document
@@ -1237,7 +1870,7 @@ document.addEventListener(
 
 
         // =================================================
-        // NÍVEL
+        // SELETOR DE NÍVEL
         // =================================================
 
         document
@@ -1330,39 +1963,7 @@ document.addEventListener(
 
             zerar.addEventListener(
                 "click",
-                () => {
-
-                    if (
-                        estado.tipo === "single"
-                    ) {
-
-                        estado.hp = 0;
-
-                        estado.abatido = true;
-
-                    }
-
-
-                    if (
-                        estado.tipo === "dual"
-                    ) {
-
-                        estado.skoll.hpAtual = 0;
-
-                        estado.hati.hpAtual = 0;
-
-                        estado.skoll.abatido = true;
-
-                        estado.hati.abatido = true;
-
-                    }
-
-
-                    atualizarInterface();
-
-                    atualizarStatusGeral();
-
-                }
+                zerarBoss
             );
 
         }
@@ -1402,3 +2003,28 @@ document.addEventListener(
 
     }
 );
+
+
+// =========================================================
+// DEBUG / ACESSO GLOBAL
+// =========================================================
+
+window.BossSystem = {
+
+    carregarBoss,
+    carregarNivel,
+
+    receberDano,
+    avancarRodada,
+    restaurar,
+    zerarBoss,
+
+    executarHabilidade,
+
+    obterBoss,
+    obterNivel,
+
+    getEstado: () =>
+        estado
+
+};
