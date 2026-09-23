@@ -1,4 +1,3 @@
-
 // =========================================================
 // BOSS SYSTEM — RENDER
 //
@@ -55,6 +54,8 @@ function renderizarBoss() {
 
 
     atualizarCard(boss);
+
+    atualizarCabecalho(boss);
 
     atualizarImagem(boss);
 
@@ -314,6 +315,11 @@ function renderizarRecursosDual(estado) {
 
     const hati =
         estado.hati;
+
+
+    if (!skoll || !hati) {
+        return;
+    }
 
 
     // =====================================================
@@ -596,6 +602,11 @@ function atualizarAtributosDual(estado) {
         estado.hati;
 
 
+    if (!skoll || !hati) {
+        return;
+    }
+
+
     // =====================================================
     // SKOLL
     // =====================================================
@@ -733,6 +744,22 @@ function atualizarPassiva(dados) {
 // =========================================================
 // HABILIDADES
 // =========================================================
+//
+// Suporta até 6 habilidades.
+//
+// O índice usado pelo motor é:
+//
+// 0 → habilidade 1
+// 1 → habilidade 2
+// 2 → habilidade 3
+// 3 → habilidade 4
+// 4 → habilidade 5
+// 5 → habilidade 6
+//
+// O data-skill-index é colocado diretamente no botão
+// para o BossEvents não precisar descobrir o índice
+// pela posição do elemento no DOM.
+// =========================================================
 
 function atualizarHabilidades(dados) {
 
@@ -744,9 +771,13 @@ function atualizarHabilidades(dados) {
             : [];
 
 
+    const TOTAL_SLOTS =
+        6;
+
+
     for (
         let i = 0;
-        i < 5;
+        i < TOTAL_SLOTS;
         i++
     ) {
 
@@ -807,6 +838,19 @@ function atualizarHabilidades(dados) {
 
             }
 
+            if (botao) {
+
+                botao.disabled =
+                    true;
+
+                botao.dataset.skillIndex =
+                    "";
+
+                botao.dataset.skill =
+                    "";
+
+            }
+
             continue;
 
         }
@@ -857,20 +901,53 @@ function atualizarHabilidades(dados) {
 
 
         // =================================================
+        // CUSTO
+        // =================================================
+        //
+        // Compatível com:
+        //
+        // custo: {
+        //     mp: 100,
+        //     est: 50
+        // }
+        //
+        // e também com o formato antigo:
+        //
+        // custoMp
+        // custoEst
+        // =================================================
+
+        const custo =
+            habilidade.custo || {};
+
+
+        const custoMp =
+            Number(
+                custo.mp ??
+                habilidade.custoMp ??
+                habilidade.mp ??
+                0
+            );
+
+
+        const custoEst =
+            Number(
+                custo.est ??
+                habilidade.custoEst ??
+                habilidade.est ??
+                0
+            );
+
+
+        // =================================================
         // CUSTO MP
         // =================================================
 
         if (mp) {
 
-            const custo =
-                Number(
-                    habilidade.custoMp || 0
-                );
-
-
             mp.textContent =
-                custo > 0
-                    ? `${custo} ALMA`
+                custoMp > 0
+                    ? `${custoMp} MP`
                     : "—";
 
         }
@@ -882,15 +959,9 @@ function atualizarHabilidades(dados) {
 
         if (est) {
 
-            const custo =
-                Number(
-                    habilidade.custoEst || 0
-                );
-
-
             est.textContent =
-                custo > 0
-                    ? `${custo} FORÇA`
+                custoEst > 0
+                    ? `${custoEst} EST`
                     : "—";
 
         }
@@ -902,8 +973,30 @@ function atualizarHabilidades(dados) {
 
         if (botao) {
 
+            /*
+               Índice usado pelo BossSkills.
+
+               Habilidade 1 = 0
+               Habilidade 6 = 5
+            */
+
+            botao.dataset.skillIndex =
+                String(i);
+
+
+            /*
+               Mantém também o ID da habilidade,
+               caso seja útil no futuro.
+            */
+
             botao.dataset.skill =
                 habilidade.id || "";
+
+
+            /*
+               O BossEvents vai decidir
+               se o botão pode ser usado.
+            */
 
             botao.disabled =
                 false;
