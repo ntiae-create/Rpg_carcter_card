@@ -561,6 +561,65 @@
 
 
 /* =========================================================
+   SELEÇÃO DE BOSS
+========================================================= */
+
+.boss-selector {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.boss-selector button {
+    padding: 10px 16px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    background: rgba(42, 42, 58, 0.8);
+    color: #b9c8c6;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition:
+        all 0.3s ease,
+        transform 0.2s ease;
+}
+
+.boss-selector button:hover {
+    background: rgba(58, 58, 74, 0.9);
+    transform: translateY(-2px);
+}
+
+.boss-selector button.ativo {
+    border-color: #facc15;
+    background: rgba(250, 204, 21, 0.12);
+    color: #facc15;
+    box-shadow:
+        0 0 12px rgba(250, 204, 21, 0.25),
+        inset 0 0 10px rgba(250, 204, 21, 0.08);
+}
+
+/* Efeito de Fúria ativa */
+.boss-passive-state.furia {
+    background: linear-gradient(90deg, rgba(239, 68, 68, 0.2), rgba(249, 115, 22, 0.15));
+    color: #fca5a5;
+    border-left: 2px solid #ef4444;
+    animation: furiaPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes furiaPulse {
+    0%, 100% {
+        box-shadow: 0 0 6px rgba(239, 68, 68, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 16px rgba(239, 68, 68, 0.5);
+    }
+}
+
+
+/* =========================================================
    =========================================================
    BOSS CARD
    =========================================================
@@ -1584,6 +1643,10 @@
 
         justify-content: flex-start;
     }
+
+    .boss-selector {
+        flex-direction: column;
+    }
 }
 
 
@@ -1597,7 +1660,9 @@
     .dimension.affinity-magico::before,
     .boss-card::before,
     .boss-image-area::after,
-    .boss-state-dot {
+    .boss-state-dot,
+    .boss-selector button,
+    .boss-passive-state.furia {
 
         animation: none;
     }
