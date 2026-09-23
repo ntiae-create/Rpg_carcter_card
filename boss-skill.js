@@ -1,304 +1,859 @@
-/* =========================================================
-   RPG BOSS CARD
-   MÓDULO: STATUS
-========================================================= */
-
-"use strict";
-
-
-const StatusModule = (() => {
-
-    /* =====================================================
-       ELEMENTOS
-    ===================================================== */
-
-    const ELEMENTS = {
-
-        agua: {
-            name: "Água",
-            symbol: "💧"
-        },
-
-        luz: {
-            name: "Luz",
-            symbol: "☀️"
-        },
-
-        terra: {
-            name: "Terra",
-            symbol: "🪨"
-        },
-
-        trevas: {
-            name: "Trevas",
-            symbol: "🌑"
-        },
-
-        vento: {
-            name: "Vento",
-            symbol: "🌪️"
-        },
-
-        fogo: {
-            name: "Fogo",
-            symbol: "🔥"
-        },
-
-        fisico: {
-            name: "Físico",
-            symbol: "💪"
-        },
-
-        magico: {
-            name: "Mágico",
-            symbol: "✨"
-        }
-
-    };
+// =========================================================
+// BOSS SYSTEM — HABILIDADES
+//
+// Responsável por:
+// - Encontrar habilidades
+// - Verificar custos
+// - Consumir MP
+// - Consumir EST
+// - Executar habilidade
+// - Preparar sistema para efeitos especiais
+//
+// NÃO controla:
+// - Botões
+// - Seletores
+// - HTML
+// - Dados base dos Bosses
+// - Rodadas
+// - Dano direto
+// =========================================================
 
 
-    /* =====================================================
-       PEGAR BOSS
-    ===================================================== */
+// =========================================================
+// OBTER HABILIDADE
+// =========================================================
 
-    function obterBoss() {
+function obterHabilidade(indice) {
 
-        if (
-            typeof window.BossSystem ===
-            "undefined"
-        ) {
-            return null;
-        }
+    const boss =
+        BossState.obterBoss();
 
-        return window.BossSystem.boss || null;
+    const nivel =
+        BossState.obterNivel();
+
+
+    if (!boss) {
+        return null;
+    }
+
+
+    const dadosNivel =
+        boss.niveis?.[nivel];
+
+
+    if (!dadosNivel) {
+        return null;
+    }
+
+
+    const habilidades =
+        dadosNivel.habilidades || [];
+
+
+    return habilidades[indice] || null;
+
+}
+
+
+// =========================================================
+// LISTAR HABILIDADES
+// =========================================================
+
+function obterHabilidades() {
+
+    const boss =
+        BossState.obterBoss();
+
+    const nivel =
+        BossState.obterNivel();
+
+
+    if (!boss) {
+        return [];
+    }
+
+
+    const dadosNivel =
+        boss.niveis?.[nivel];
+
+
+    if (!dadosNivel) {
+        return [];
+    }
+
+
+    return dadosNivel.habilidades || [];
+
+}
+
+
+// =========================================================
+// NORMALIZAR CUSTO
+// =========================================================
+//
+// Aceita diferentes formatos:
+//
+// mp
+// est
+//
+// ou:
+//
+// custo: {
+//     mp: 50,
+//     est: 30
+// }
+// =========================================================
+
+function obterCustoHabilidade(habilidade) {
+
+    if (!habilidade) {
+
+        return {
+            mp: 0,
+            est: 0
+        };
 
     }
 
 
-    /* =====================================================
-       ATUALIZAR TEXTO
-    ===================================================== */
+    const custo =
+        habilidade.custo || {};
 
-    function definirTexto(id, valor) {
-
-        const elemento =
-            document.getElementById(id);
-
-        if (!elemento) {
-            return;
-        }
-
-        elemento.textContent = valor;
-
-    }
-
-
-    /* =====================================================
-       ATUALIZAR STATUS
-    ===================================================== */
-
-    function atualizarStatus() {
-
-        const boss = obterBoss();
-
-        if (!boss) {
-            return;
-        }
-
-
-        /* =================================================
-           RECURSOS
-        ================================================= */
-
-        definirTexto(
-            "stat-hp",
-            boss.hp
-        );
-
-        definirTexto(
-            "stat-mp",
-            boss.mp
-        );
-
-        definirTexto(
-            "stat-est",
-            boss.est
-        );
-
-
-        /* =================================================
-           ATRIBUTOS
-        ================================================= */
-
-        definirTexto(
-            "stat-atk",
-            boss.atk
-        );
-
-        definirTexto(
-            "stat-atkMgc",
-            boss.atkMgc
-        );
-
-        definirTexto(
-            "stat-def",
-            boss.def
-        );
-
-        definirTexto(
-            "stat-res",
-            boss.res
-        );
-
-        definirTexto(
-            "stat-agi",
-            boss.agi
-        );
-
-        definirTexto(
-            "stat-int",
-            boss.int
-        );
-
-
-        /* =================================================
-           NÍVEL
-        ================================================= */
-
-        definirTexto(
-            "stat-level",
-            boss.nivel
-        );
-
-
-        /* =================================================
-           AFINIDADE
-        ================================================= */
-
-        const affinity =
-            ELEMENTS[
-                boss.afinidade
-            ];
-
-
-        if (affinity) {
-
-            definirTexto(
-                "character-affinity",
-                affinity.name
-            );
-
-            definirTexto(
-                "character-affinity-symbol",
-                affinity.symbol
-            );
-
-        } else {
-
-            definirTexto(
-                "character-affinity",
-                "Nenhuma"
-            );
-
-            definirTexto(
-                "character-affinity-symbol",
-                "?"
-            );
-
-        }
-
-    }
-
-
-    /* =====================================================
-       ATUALIZAÇÃO AUTOMÁTICA
-    ===================================================== */
-
-    function iniciarAtualizacao() {
-
-        atualizarStatus();
-
-
-        /*
-           Atualiza periodicamente para acompanhar
-           dano, cura, habilidades, MP e EST.
-        */
-
-        setInterval(
-            atualizarStatus,
-            100
-        );
-
-    }
-
-
-    /* =====================================================
-       INICIALIZAÇÃO
-    ===================================================== */
-
-    function iniciar() {
-
-        /*
-           O BossSystem pode carregar depois do módulo.
-           Por isso fazemos uma pequena espera.
-        */
-
-        if (
-            typeof window.BossSystem ===
-            "undefined"
-        ) {
-
-            setTimeout(
-                iniciar,
-                50
-            );
-
-            return;
-
-        }
-
-
-        atualizarStatus();
-
-        iniciarAtualizacao();
-
-    }
-
-
-    /* =====================================================
-       API
-    ===================================================== */
 
     return {
 
-        ELEMENTS,
+        mp:
+            Number(
+                custo.mp ??
+                habilidade.mp ??
+                0
+            ),
 
-        iniciar,
-
-        atualizarStatus
+        est:
+            Number(
+                custo.est ??
+                habilidade.est ??
+                0
+            )
 
     };
 
-})();
+}
 
 
-/* =========================================================
-   DISPONIBILIZAR GLOBALMENTE
-========================================================= */
+// =========================================================
+// VERIFICAR CUSTO — SINGLE
+// =========================================================
 
-window.StatusModule =
-    StatusModule;
+function podeUsarHabilidadeSingle(
+    estado,
+    habilidade
+) {
+
+    const custo =
+        obterCustoHabilidade(
+            habilidade
+        );
 
 
-/* =========================================================
-   INICIAR
-========================================================= */
+    if (
+        estado.mp < custo.mp
+    ) {
 
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        StatusModule.iniciar();
+        return false;
 
     }
-);
+
+
+    if (
+        estado.est < custo.est
+    ) {
+
+        return false;
+
+    }
+
+
+    return true;
+
+}
+
+
+// =========================================================
+// VERIFICAR CUSTO — DUAL
+// =========================================================
+//
+// membro deve ser:
+// "skoll"
+// "hati"
+// =========================================================
+
+function podeUsarHabilidadeDual(
+    estado,
+    membro,
+    habilidade
+) {
+
+    const personagem =
+        estado[membro];
+
+
+    if (!personagem) {
+        return false;
+    }
+
+
+    if (
+        personagem.abatido
+    ) {
+
+        return false;
+
+    }
+
+
+    const custo =
+        obterCustoHabilidade(
+            habilidade
+        );
+
+
+    if (
+        personagem.mpAtual < custo.mp
+    ) {
+
+        return false;
+
+    }
+
+
+    if (
+        personagem.estAtual < custo.est
+    ) {
+
+        return false;
+
+    }
+
+
+    return true;
+
+}
+
+
+// =========================================================
+// CONSUMIR CUSTO — SINGLE
+// =========================================================
+
+function consumirCustoSingle(
+    estado,
+    habilidade
+) {
+
+    const custo =
+        obterCustoHabilidade(
+            habilidade
+        );
+
+
+    if (
+        !podeUsarHabilidadeSingle(
+            estado,
+            habilidade
+        )
+    ) {
+
+        return false;
+
+    }
+
+
+    estado.mp -= custo.mp;
+
+    estado.est -= custo.est;
+
+
+    estado.mp =
+        Math.max(
+            0,
+            estado.mp
+        );
+
+
+    estado.est =
+        Math.max(
+            0,
+            estado.est
+        );
+
+
+    return true;
+
+}
+
+
+// =========================================================
+// CONSUMIR CUSTO — DUAL
+// =========================================================
+
+function consumirCustoDual(
+    estado,
+    membro,
+    habilidade
+) {
+
+    const personagem =
+        estado[membro];
+
+
+    if (!personagem) {
+        return false;
+    }
+
+
+    if (
+        !podeUsarHabilidadeDual(
+            estado,
+            membro,
+            habilidade
+        )
+    ) {
+
+        return false;
+
+    }
+
+
+    const custo =
+        obterCustoHabilidade(
+            habilidade
+        );
+
+
+    personagem.mpAtual -= custo.mp;
+
+    personagem.estAtual -= custo.est;
+
+
+    personagem.mpAtual =
+        Math.max(
+            0,
+            personagem.mpAtual
+        );
+
+
+    personagem.estAtual =
+        Math.max(
+            0,
+            personagem.estAtual
+        );
+
+
+    return true;
+
+}
+
+
+// =========================================================
+// EXECUTAR HABILIDADE — SINGLE
+// =========================================================
+//
+// O efeito da habilidade pode ser:
+//
+// 1. uma função
+// 2. um objeto de configuração
+//
+// Isso permite que cada Boss tenha mecânicas próprias
+// sem transformar boss-skills.js em um arquivo gigante.
+// =========================================================
+
+function executarHabilidadeSingle(
+    indice
+) {
+
+    const boss =
+        BossState.obterBoss();
+
+    const estado =
+        BossState.obterEstado();
+
+
+    if (
+        !boss ||
+        !estado ||
+        estado.tipo !== "single"
+    ) {
+
+        return {
+            sucesso: false,
+            motivo: "Batalha inválida."
+        };
+
+    }
+
+
+    if (
+        estado.abatido
+    ) {
+
+        return {
+            sucesso: false,
+            motivo: "O Boss está derrotado."
+        };
+
+    }
+
+
+    const habilidade =
+        obterHabilidade(indice);
+
+
+    if (!habilidade) {
+
+        return {
+            sucesso: false,
+            motivo: "Habilidade não encontrada."
+        };
+
+    }
+
+
+    // =====================================================
+    // VERIFICAR CUSTO
+    // =====================================================
+
+    if (
+        !consumirCustoSingle(
+            estado,
+            habilidade
+        )
+    ) {
+
+        return {
+            sucesso: false,
+            motivo: "Recursos insuficientes."
+        };
+
+    }
+
+
+    // =====================================================
+    // EXECUTAR EFEITO
+    // =====================================================
+
+    let resultado = null;
+
+
+    if (
+        typeof habilidade.executar === "function"
+    ) {
+
+        resultado =
+            habilidade.executar({
+                estado,
+                boss,
+                nivel:
+                    BossState.obterNivel(),
+                rodada:
+                    BossState.obterRodada()
+            });
+
+    }
+
+
+    BossRender.renderizarBoss();
+
+
+    return {
+
+        sucesso: true,
+
+        habilidade,
+
+        resultado
+
+    };
+
+}
+
+
+// =========================================================
+// EXECUTAR HABILIDADE — DUAL
+// =========================================================
+
+function executarHabilidadeDual(
+    membro,
+    indice
+) {
+
+    const boss =
+        BossState.obterBoss();
+
+    const estado =
+        BossState.obterEstado();
+
+
+    if (
+        !boss ||
+        !estado ||
+        estado.tipo !== "dual"
+    ) {
+
+        return {
+            sucesso: false,
+            motivo: "Batalha inválida."
+        };
+
+    }
+
+
+    const membroEstado =
+        estado[membro];
+
+
+    if (!membroEstado) {
+
+        return {
+            sucesso: false,
+            motivo: "Membro inválido."
+        };
+
+    }
+
+
+    if (
+        membroEstado.abatido
+    ) {
+
+        return {
+            sucesso: false,
+            motivo:
+                `${membro} está derrotado.`
+        };
+
+    }
+
+
+    const habilidade =
+        obterHabilidade(indice);
+
+
+    if (!habilidade) {
+
+        return {
+            sucesso: false,
+            motivo: "Habilidade não encontrada."
+        };
+
+    }
+
+
+    // =====================================================
+    // VERIFICAR / CONSUMIR CUSTO
+    // =====================================================
+
+    if (
+        !consumirCustoDual(
+            estado,
+            membro,
+            habilidade
+        )
+    ) {
+
+        return {
+            sucesso: false,
+            motivo: "Recursos insuficientes."
+        };
+
+    }
+
+
+    // =====================================================
+    // EXECUTAR EFEITO
+    // =====================================================
+
+    let resultado = null;
+
+
+    if (
+        typeof habilidade.executar === "function"
+    ) {
+
+        resultado =
+            habilidade.executar({
+
+                estado,
+
+                boss,
+
+                membro,
+
+                membroEstado,
+
+                nivel:
+                    BossState.obterNivel(),
+
+                rodada:
+                    BossState.obterRodada()
+
+            });
+
+    }
+
+
+    BossRender.renderizarBoss();
+
+
+    return {
+
+        sucesso: true,
+
+        habilidade,
+
+        resultado
+
+    };
+
+}
+
+
+// =========================================================
+// EXECUTOR GENÉRICO
+// =========================================================
+//
+// Permite futuramente fazer:
+//
+// BossSkills.usar(0)
+//
+// sem precisar saber se o Boss é único ou duplo.
+//
+// Para Boss duplo:
+//
+// BossSkills.usar(0, "skoll")
+// =========================================================
+
+function usarHabilidade(
+    indice,
+    membro = null
+) {
+
+    const estado =
+        BossState.obterEstado();
+
+
+    if (!estado) {
+
+        return {
+            sucesso: false,
+            motivo: "Estado inexistente."
+        };
+
+    }
+
+
+    if (
+        estado.tipo === "single"
+    ) {
+
+        return executarHabilidadeSingle(
+            indice
+        );
+
+    }
+
+
+    if (
+        estado.tipo === "dual"
+    ) {
+
+        if (!membro) {
+
+            return {
+                sucesso: false,
+                motivo:
+                    "É necessário informar o membro."
+            };
+
+        }
+
+
+        return executarHabilidadeDual(
+            membro,
+            indice
+        );
+
+    }
+
+
+    return {
+
+        sucesso: false,
+
+        motivo:
+            "Tipo de Boss desconhecido."
+
+    };
+
+}
+
+
+// =========================================================
+// VERIFICAR SE HABILIDADE PODE SER USADA
+// =========================================================
+
+function podeUsarHabilidade(
+    indice,
+    membro = null
+) {
+
+    const estado =
+        BossState.obterEstado();
+
+
+    const habilidade =
+        obterHabilidade(indice);
+
+
+    if (
+        !estado ||
+        !habilidade
+    ) {
+
+        return false;
+
+    }
+
+
+    if (
+        estado.tipo === "single"
+    ) {
+
+        if (
+            estado.abatido
+        ) {
+
+            return false;
+
+        }
+
+
+        return podeUsarHabilidadeSingle(
+            estado,
+            habilidade
+        );
+
+    }
+
+
+    if (
+        estado.tipo === "dual"
+    ) {
+
+        if (!membro) {
+            return false;
+        }
+
+
+        return podeUsarHabilidadeDual(
+            estado,
+            membro,
+            habilidade
+        );
+
+    }
+
+
+    return false;
+
+}
+
+
+// =========================================================
+// FORMATAR CUSTO
+// =========================================================
+//
+// Retorna algo como:
+//
+// "50 MP / 30 EST"
+//
+// ou:
+//
+// "100 MP"
+//
+// ou:
+//
+// "40 EST"
+// =========================================================
+
+function formatarCustoHabilidade(
+    habilidade
+) {
+
+    const custo =
+        obterCustoHabilidade(
+            habilidade
+        );
+
+
+    const partes = [];
+
+
+    if (
+        custo.mp > 0
+    ) {
+
+        partes.push(
+            `${custo.mp} MP`
+        );
+
+    }
+
+
+    if (
+        custo.est > 0
+    ) {
+
+        partes.push(
+            `${custo.est} EST`
+        );
+
+    }
+
+
+    if (
+        partes.length === 0
+    ) {
+
+        return "SEM CUSTO";
+
+    }
+
+
+    return partes.join(" / ");
+
+}
+
+
+// =========================================================
+// API GLOBAL
+// =========================================================
+
+window.BossSkills = {
+
+    obterHabilidade,
+
+    obterHabilidades,
+
+    obterCustoHabilidade,
+
+    podeUsarHabilidade,
+
+    usarHabilidade,
+
+    executarHabilidadeSingle,
+
+    executarHabilidadeDual,
+
+    formatarCustoHabilidade
+
+};
