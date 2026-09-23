@@ -1,8 +1,8 @@
 /* =========================================================
-   CARD DE BOSS — Estilos Completos
+   CARD DE BOSS — ESTILO COMPLETO + ANIMAÇÕES POR ELEMENTO
    ========================================================= */
 
-/* ---------- CONTAINER PRINCIPAL ---------- */
+/* ---------- CONTAINER BASE ---------- */
 .boss-card {
   background: linear-gradient(145deg, #1a1520, #0f0c14);
   border: 2px solid #3a2f47;
@@ -10,49 +10,35 @@
   padding: 16px;
   max-width: 420px;
   margin: 0 auto;
-  box-shadow: 
-    0 0 20px rgba(88, 69, 112, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  font-family: 'Segoe UI', sans-serif;
   color: #e0d6eb;
-  transition: all 0.4s ease;
+  font-family: 'Segoe UI', sans-serif;
+  position: relative;
+  overflow: visible;
+  transform: translateY(0);
+  transition: 
+    transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.4s ease,
+    border-color 0.3s ease;
 }
 
-.boss-card.dimension {
-  backdrop-filter: blur(6px);
+/* Efeito brilho externo ao passar o mouse */
+.boss-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 18px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+  pointer-events: none;
 }
 
-/* ---------- SELETOR DE BOSS ---------- */
-.boss-selector {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 16px;
-  justify-content: center;
+.boss-card:hover {
+  transform: translateY(-6px);
 }
 
-.boss-selector button {
-  background: #2a2233;
-  border: 1px solid #4a3c5c;
-  color: #c4b8d4;
-  padding: 8px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 13px;
-  transition: all 0.3s ease;
-}
-
-.boss-selector button:hover {
-  background: #3a2f47;
-  border-color: #6a5c7c;
-  transform: translateY(-1px);
-}
-
-.boss-selector button.ativo {
-  background: linear-gradient(135deg, #5a3f7c, #4a2f6c);
-  border-color: #9a7fd4;
-  color: #fff;
-  box-shadow: 0 0 10px rgba(154, 127, 212, 0.4);
+.boss-card:hover::before {
+  opacity: 1;
 }
 
 /* ---------- CABEÇALHO ---------- */
@@ -107,7 +93,7 @@
 }
 
 .boss-card:hover .boss-image {
-  transform: scale(1.03);
+  transform: scale(1.05);
 }
 
 /* ---------- BARRAS DE RECURSOS ---------- */
@@ -145,7 +131,6 @@
   transition: width 0.4s ease, background 0.3s ease;
 }
 
-/* Cores padrão das barras */
 #boss-hp { background: linear-gradient(90deg, #992e48, #c93e58); }
 #boss-mp { background: linear-gradient(90deg, #2e4899, #4e78d9); }
 #boss-est { background: linear-gradient(90deg, #99662e, #d9963e); }
@@ -226,18 +211,6 @@
   transition: all 0.3s ease;
 }
 
-.boss-passive-state.furia {
-  color: #ffaa44;
-  font-weight: 600;
-  text-shadow: 0 0 6px rgba(255, 170, 68, 0.4);
-  animation: pulse-furia 1.5s infinite;
-}
-
-@keyframes pulse-furia {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
-}
-
 /* ---------- HABILIDADES ---------- */
 .boss-skill {
   background: rgba(42, 34, 51, 0.5);
@@ -245,11 +218,12 @@
   padding: 12px;
   margin-bottom: 8px;
   border: 1px solid #3a2f47;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, transform 0.2s ease;
 }
 
 .boss-skill:hover {
   border-color: #5a4f6c;
+  transform: translateX(3px);
 }
 
 .skill-header {
@@ -310,160 +284,167 @@
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
-/* ---------- ESTADO DO BOSS ---------- */
-.boss-state {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  background: rgba(34, 28, 44, 0.6);
-  border-radius: 8px;
-  margin-bottom: 14px;
-}
+/* =========================================================
+   ANIMAÇÕES E ESTILOS POR AFINIDADE
+   ========================================================= */
 
-.boss-state-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #4ade80;
-  box-shadow: 0 0 8px #4ade80;
-  animation: dot-pulse 2s infinite;
-}
-
-@keyframes dot-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-.boss-state span:last-child {
-  font-size: 12px;
-  color: #a898bc;
-}
-
-/* ---------- BOTÕES DE TESTE ---------- */
-.boss-test-buttons {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-}
-
-.boss-test-buttons button {
-  background: #2a2233;
-  border: 1px solid #4a3c5c;
-  color: #c4b8d4;
-  padding: 8px;
-  border-radius: 8px;
-  font-size: 11px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.boss-test-buttons button:hover {
-  background: #3a2f47;
-  border-color: #6a5c7c;
-}
-
-/* ---------- CORES POR AFINIDADE ---------- */
-
-/* Vento — Hræsvelgr */
+/* ---------- 💨 VENTO — Hræsvelgr ---------- */
 .affinity-vento {
-  border-color: #3a6b8c;
-  box-shadow: 
-    0 0 20px rgba(58, 107, 140, 0.3),
-    inset 0 0 30px rgba(90, 150, 200, 0.05);
+  border-color: #3a8aaa;
+  box-shadow: 0 0 20px rgba(58, 138, 170, 0.25);
+}
+.affinity-vento::before {
+  background: linear-gradient(45deg, #4aa3c2, #87ceeb, #4aa3c2);
+  background-size: 300% 300%;
+  animation: vento-brilho 3s ease infinite;
+}
+@keyframes vento-brilho {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 .affinity-vento .boss-affinity {
   background: linear-gradient(135deg, #2a6b8c, #4a9bbc);
   color: #fff;
 }
-.affinity-vento .boss-image-area {
-  border-color: #3a6b8c;
-  box-shadow: inset 0 0 20px rgba(90, 180, 220, 0.1);
+.affinity-vento .boss-image {
+  animation: vento-flutua 4s ease-in-out infinite;
+}
+@keyframes vento-flutua {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-7px) rotate(1deg); }
+  75% { transform: translateY(5px) rotate(-1deg); }
+}
+.affinity-vento .boss-passive-state.furia {
+  color: #87ceeb;
+  text-shadow: 0 0 8px rgba(135, 206, 235, 0.5);
+  animation: vento-rajada 1.5s infinite;
+}
+@keyframes vento-rajada {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
-/* Fogo — Skoll */
+/* ---------- 🔥 FOGO — Skoll ---------- */
 .affinity-fogo {
-  border-color: #8c4a2a;
-  box-shadow: 
-    0 0 20px rgba(140, 74, 42, 0.3),
-    inset 0 0 30px rgba(200, 90, 50, 0.05);
+  border-color: #b94a2a;
+  box-shadow: 0 0 20px rgba(185, 74, 42, 0.3);
+}
+.affinity-fogo::before {
+  background: linear-gradient(45deg, #e97a3a, #ff4422, #e97a3a);
+  background-size: 300% 300%;
+  animation: fogo-chama 2s ease infinite;
+}
+@keyframes fogo-chama {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 80%; }
+  100% { background-position: 0% 50%; }
 }
 .affinity-fogo .boss-affinity {
   background: linear-gradient(135deg, #b94a2a, #e97a3a);
   color: #fff;
 }
-.affinity-fogo .boss-image-area {
-  border-color: #8c4a2a;
-  box-shadow: inset 0 0 20px rgba(255, 120, 60, 0.1);
+.affinity-fogo .boss-image {
+  animation: fogo-brilho 2s ease-in-out infinite alternate;
+}
+@keyframes fogo-brilho {
+  0% { filter: brightness(1) saturate(1); }
+  100% { filter: brightness(1.2) saturate(1.3); }
 }
 .affinity-fogo .boss-passive-state.furia {
   color: #ff6633;
-  text-shadow: 0 0 8px rgba(255, 102, 51, 0.5);
+  text-shadow: 0 0 10px rgba(255, 102, 51, 0.6);
+  animation: fogo-ardente 1s infinite alternate;
+}
+@keyframes fogo-ardente {
+  0% { opacity: 0.8; }
+  100% { opacity: 1; }
 }
 
-/* Trevas — Hati */
+/* ---------- 🌑 TREVAS — Hati ---------- */
 .affinity-trevas {
-  border-color: #2a2a4c;
-  box-shadow: 
-    0 0 20px rgba(42, 42, 76, 0.4),
-    inset 0 0 30px rgba(80, 40, 120, 0.08);
+  border-color: #3a2a6c;
+  box-shadow: 0 0 25px rgba(58, 42, 108, 0.4), inset 0 0 40px rgba(80, 50, 140, 0.08);
+}
+.affinity-trevas::before {
+  background: linear-gradient(45deg, #2a1a4c, #5a3a8c, #2a1a4c);
+  background-size: 300% 300%;
+  animation: trevas-espiral 4s ease infinite;
+}
+@keyframes trevas-espiral {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 .affinity-trevas .boss-affinity {
   background: linear-gradient(135deg, #3a2a6c, #5a3a8c);
   color: #d4c8ff;
 }
-.affinity-trevas .boss-image-area {
-  border-color: #3a2a5c;
-  box-shadow: inset 0 0 20px rgba(100, 60, 160, 0.1);
+.affinity-trevas .boss-image {
+  animation: trevas-pulso 3s ease-in-out infinite;
+}
+@keyframes trevas-pulso {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 1; }
+}
+.affinity-trevas .boss-passive-state.furia {
+  color: #aa77ff;
+  text-shadow: 0 0 12px rgba(170, 119, 255, 0.5);
+  animation: trevas-sombra 2s infinite;
+}
+@keyframes trevas-sombra {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
-/* Terra — Mórdrax (NOVO) */
+/* ---------- ⛰️ TERRA — MÓRDRAX ---------- */
 .affinity-terra {
-  border-color: #5c4a3a;
-  box-shadow: 
-    0 0 20px rgba(92, 74, 58, 0.35),
-    inset 0 0 30px rgba(140, 110, 80, 0.06);
+  border-color: #7c5a3a;
+  box-shadow: 0 0 20px rgba(124, 90, 58, 0.35);
+}
+.affinity-terra::before {
+  background: linear-gradient(45deg, #7c5a3a, #aa8855, #7c5a3a);
+  background-size: 300% 300%;
+  animation: terra-peso 5s ease infinite;
+}
+@keyframes terra-peso {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 .affinity-terra .boss-affinity {
   background: linear-gradient(135deg, #7c5a3a, #aa8855);
   color: #fff;
 }
-.affinity-terra .boss-image-area {
-  border-color: #6c5a4a;
-  box-shadow: inset 0 0 20px rgba(180, 150, 100, 0.1);
-}
 .affinity-terra .boss-passive {
   border-left-color: #aa8855;
+}
+.affinity-terra .boss-image {
+  animation: terra-firme 6s ease-in-out infinite;
+}
+@keyframes terra-firme {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
 }
 .affinity-terra .boss-passive-state.furia {
   color: #ddaa66;
   text-shadow: 0 0 8px rgba(221, 170, 102, 0.5);
+  animation: terra-treme 2s infinite;
+}
+@keyframes terra-treme {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(1px); }
+  75% { transform: translateX(-1px); }
 }
 
-/* ---------- RESPONSIVO (CELULAR) ---------- */
+/* ---------- RESPONSIVO — CELULAR ---------- */
 @media (max-width: 480px) {
   .boss-card {
     padding: 12px;
     margin: 0 8px;
   }
-  
-  .boss-title-area h2 {
-    font-size: 18px;
-  }
-  
-  .boss-image-area {
-    height: 140px;
-  }
-  
-  .boss-stats {
-    gap: 6px;
-  }
-  
-  .boss-stat {
-    padding: 8px 4px;
-  }
-  
-  .boss-test-buttons {
-    grid-template-columns: 1fr 1fr;
-  }
+  .boss-title-area h2 { font-size: 18px; }
+  .boss-image-area { height: 140px; }
+  .boss-stats { gap: 6px; }
+  .boss-stat { padding: 8px 4px; }
 }
