@@ -1,22 +1,20 @@
 <!-- =========================================================
      SELEÇÃO DE BOSS
 ========================================================= -->
+
 <div class="boss-selector">
 
-  <button data-boss-id="hraesvelgr" class="ativo">
+  <button
+    data-boss-id="hraesvelgr"
+    class="ativo"
+  >
     🦅 Hræsvelgr
   </button>
 
-  <button data-boss-id="skoll">
-    ☀️ Skoll
-  </button>
-
-  <button data-boss-id="hati">
-    🌑 Hati
-  </button>
-
-  <button data-boss-id="mordrax">
-    ⛰️ Mórdrax
+  <button
+    data-boss-id="skoll-hati"
+  >
+    ☀️🌑 Skoll & Hati
   </button>
 
 </div>
@@ -25,29 +23,41 @@
 <!-- =========================================================
      SELEÇÃO DE NÍVEL
 ========================================================= -->
+
 <div class="boss-level-selector">
 
   <span class="level-selector-title">
     NÍVEL DO BOSS
   </span>
 
-  <button data-level="12" class="ativo">
+  <button
+    data-level="12"
+    class="ativo"
+  >
     12
   </button>
 
-  <button data-level="100">
+  <button
+    data-level="100"
+  >
     100
   </button>
 
-  <button data-level="200">
+  <button
+    data-level="200"
+  >
     200
   </button>
 
-  <button data-level="300">
+  <button
+    data-level="300"
+  >
     300
   </button>
 
-  <button data-level="400">
+  <button
+    data-level="400"
+  >
     400
   </button>
 
@@ -57,12 +67,17 @@
 <!-- =========================================================
      CARD DO BOSS
 ========================================================= -->
+
 <div
-  class="boss-card dimension affinity-terra"
+  class="boss-card dimension affinity-vento"
   id="boss-card"
 >
 
-  <!-- CABEÇALHO -->
+
+  <!-- =======================================================
+       CABEÇALHO
+  ======================================================== -->
+
   <div class="boss-header">
 
     <div class="boss-title-area">
@@ -93,6 +108,7 @@
   <!-- =======================================================
        IMAGEM
   ======================================================== -->
+
   <div class="boss-image-area">
 
     <img
@@ -107,11 +123,16 @@
 
 
   <!-- =======================================================
-       RECURSOS
+       RECURSOS — BOSS ÚNICO
   ======================================================== -->
-  <div class="boss-resources">
+
+  <div
+    class="boss-single-resources"
+    id="boss-single-resources"
+  >
 
     <!-- HP -->
+
     <div class="boss-resource">
 
       <div class="resource-header">
@@ -138,6 +159,7 @@
 
 
     <!-- MP -->
+
     <div class="boss-resource">
 
       <div class="resource-header">
@@ -164,6 +186,7 @@
 
 
     <!-- EST -->
+
     <div class="boss-resource">
 
       <div class="resource-header">
@@ -192,14 +215,240 @@
 
 
   <!-- =======================================================
-       STATUS
+       RECURSOS — SKOLL & HATI
   ======================================================== -->
-  <div class="boss-stats">
+
+  <div
+    class="boss-dual-resources"
+    id="boss-dual-resources"
+    style="display: none;"
+  >
+
+
+    <!-- =====================================================
+         SKOLL
+    ====================================================== -->
+
+    <div class="boss-member">
+
+      <div class="boss-member-header">
+
+        <span class="boss-member-name">
+          ☀️ SKOLL
+        </span>
+
+        <span
+          class="boss-member-state"
+          id="skoll-state"
+        >
+          ATIVO
+        </span>
+
+      </div>
+
+
+      <!-- VIDA -->
+
+      <div class="boss-resource">
+
+        <div class="resource-header">
+
+          <span>VIDA</span>
+
+          <span id="skoll-hp-text">
+            0 / 0
+          </span>
+
+        </div>
+
+        <div class="resource-bar">
+
+          <div
+            class="resource-fill"
+            id="skoll-hp"
+            style="width: 100%"
+          ></div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ALMA -->
+
+      <div class="boss-resource">
+
+        <div class="resource-header">
+
+          <span>ALMA</span>
+
+          <span id="skoll-mp-text">
+            0 / 0
+          </span>
+
+        </div>
+
+        <div class="resource-bar">
+
+          <div
+            class="resource-fill"
+            id="skoll-mp"
+            style="width: 100%"
+          ></div>
+
+        </div>
+
+      </div>
+
+
+      <!-- FORÇA -->
+
+      <div class="boss-resource">
+
+        <div class="resource-header">
+
+          <span>FORÇA</span>
+
+          <span id="skoll-est-text">
+            0 / 0
+          </span>
+
+        </div>
+
+        <div class="resource-bar">
+
+          <div
+            class="resource-fill"
+            id="skoll-est"
+            style="width: 100%"
+          ></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         HATI
+    ====================================================== -->
+
+    <div class="boss-member">
+
+      <div class="boss-member-header">
+
+        <span class="boss-member-name">
+          🌑 HATI
+        </span>
+
+        <span
+          class="boss-member-state"
+          id="hati-state"
+        >
+          ATIVO
+        </span>
+
+      </div>
+
+
+      <!-- VIDA -->
+
+      <div class="boss-resource">
+
+        <div class="resource-header">
+
+          <span>VIDA</span>
+
+          <span id="hati-hp-text">
+            0 / 0
+          </span>
+
+        </div>
+
+        <div class="resource-bar">
+
+          <div
+            class="resource-fill"
+            id="hati-hp"
+            style="width: 100%"
+          ></div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ALMA -->
+
+      <div class="boss-resource">
+
+        <div class="resource-header">
+
+          <span>ALMA</span>
+
+          <span id="hati-mp-text">
+            0 / 0
+          </span>
+
+        </div>
+
+        <div class="resource-bar">
+
+          <div
+            class="resource-fill"
+            id="hati-mp"
+            style="width: 100%"
+          ></div>
+
+        </div>
+
+      </div>
+
+
+      <!-- FORÇA -->
+
+      <div class="boss-resource">
+
+        <div class="resource-header">
+
+          <span>FORÇA</span>
+
+          <span id="hati-est-text">
+            0 / 0
+          </span>
+
+        </div>
+
+        <div class="resource-bar">
+
+          <div
+            class="resource-fill"
+            id="hati-est"
+            style="width: 100%"
+          ></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =======================================================
+       STATUS — BOSS ÚNICO
+  ======================================================== -->
+
+  <div
+    class="boss-stats"
+    id="boss-single-stats"
+  >
 
     <div class="boss-stat">
-
       <span class="boss-stat-label">
-        ATAQUE
+        ATK
       </span>
 
       <span
@@ -208,14 +457,40 @@
       >
         0
       </span>
-
     </div>
 
 
     <div class="boss-stat">
-
       <span class="boss-stat-label">
-        DEFESA
+        ATK MGC
+      </span>
+
+      <span
+        class="boss-stat-value"
+        id="boss-atk-mgc"
+      >
+        0
+      </span>
+    </div>
+
+
+    <div class="boss-stat">
+      <span class="boss-stat-label">
+        AGI
+      </span>
+
+      <span
+        class="boss-stat-value"
+        id="boss-agi"
+      >
+        0
+      </span>
+    </div>
+
+
+    <div class="boss-stat">
+      <span class="boss-stat-label">
+        DEF
       </span>
 
       <span
@@ -224,22 +499,196 @@
       >
         0
       </span>
-
     </div>
 
 
     <div class="boss-stat">
-
       <span class="boss-stat-label">
-        VELOCIDADE
+        RES
       </span>
 
       <span
         class="boss-stat-value"
-        id="boss-spd"
+        id="boss-res"
       >
         0
       </span>
+    </div>
+
+
+    <div class="boss-stat">
+      <span class="boss-stat-label">
+        INT
+      </span>
+
+      <span
+        class="boss-stat-value"
+        id="boss-int"
+      >
+        0
+      </span>
+    </div>
+
+  </div>
+
+
+  <!-- =======================================================
+       STATUS — SKOLL & HATI
+  ======================================================== -->
+
+  <div
+    class="boss-dual-stats"
+    id="boss-dual-stats"
+    style="display: none;"
+  >
+
+
+    <!-- SKOLL -->
+
+    <div class="boss-member-stats">
+
+      <h3>
+        ☀️ SKOLL
+      </h3>
+
+      <div class="boss-stats">
+
+        <div class="boss-stat">
+          <span class="boss-stat-label">ATK</span>
+          <span
+            class="boss-stat-value"
+            id="skoll-atk"
+          >
+            0
+          </span>
+        </div>
+
+        <div class="boss-stat">
+          <span class="boss-stat-label">ATK MGC</span>
+          <span
+            class="boss-stat-value"
+            id="skoll-atk-mgc"
+          >
+            0
+          </span>
+        </div>
+
+        <div class="boss-stat">
+          <span class="boss-stat-label">AGI</span>
+          <span
+            class="boss-stat-value"
+            id="skoll-agi"
+          >
+            0
+          </span>
+        </div>
+
+        <div class="boss-stat">
+          <span class="boss-stat-label">DEF</span>
+          <span
+            class="boss-stat-value"
+            id="skoll-def"
+          >
+            0
+          </span>
+        </div>
+
+        <div class="boss-stat">
+          <span class="boss-stat-label">RES</span>
+          <span
+            class="boss-stat-value"
+            id="skoll-res"
+          >
+            0
+          </span>
+        </div>
+
+        <div class="boss-stat">
+          <span class="boss-stat-label">INT</span>
+          <span
+            class="boss-stat-value"
+            id="skoll-int"
+          >
+            0
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- HATI -->
+
+    <div class="boss-member-stats">
+
+      <h3>
+        🌑 HATI
+      </h3>
+
+      <div class="boss-stats">
+
+        <div class="boss-stat">
+          <span class="boss-stat-label">ATK</span>
+          <span
+            class="boss-stat-value"
+            id="hati-atk"
+          >
+            0
+          </span>
+        </div>
+
+        <div class="boss-stat">
+          <span class="boss-stat-label">ATK MGC</span>
+          <span
+            class="boss-stat-value"
+            id="hati-atk-mgc"
+          >
+            0
+          </span>
+        </div>
+
+        <div class="boss-stat">
+          <span class="boss-stat-label">AGI</span>
+          <span
+            class="boss-stat-value"
+            id="hati-agi"
+          >
+            0
+          </span>
+        </div>
+
+        <div class="boss-stat">
+          <span class="boss-stat-label">DEF</span>
+          <span
+            class="boss-stat-value"
+            id="hati-def"
+          >
+            0
+          </span>
+        </div>
+
+        <div class="boss-stat">
+          <span class="boss-stat-label">RES</span>
+          <span
+            class="boss-stat-value"
+            id="hati-res"
+          >
+            0
+          </span>
+        </div>
+
+        <div class="boss-stat">
+          <span class="boss-stat-label">INT</span>
+          <span
+            class="boss-stat-value"
+            id="hati-int"
+          >
+            0
+          </span>
+        </div>
+
+      </div>
 
     </div>
 
@@ -249,6 +698,7 @@
   <!-- =======================================================
        PODER ANCESTRAL
   ======================================================== -->
+
   <div class="boss-section">
 
     <h3 class="boss-section-title">
@@ -286,6 +736,7 @@
   <!-- =======================================================
        HABILIDADES
   ======================================================== -->
+
   <div class="boss-section">
 
     <h3 class="boss-section-title">
@@ -294,7 +745,11 @@
 
 
     <!-- HABILIDADE 1 -->
-    <div class="boss-skill">
+
+    <div
+      class="boss-skill"
+      id="skill-container-1"
+    >
 
       <div class="skill-header">
 
@@ -328,7 +783,7 @@
 
       <button
         class="boss-skill-button"
-        data-skill="1"
+        data-skill=""
       >
         USAR HABILIDADE
       </button>
@@ -337,7 +792,11 @@
 
 
     <!-- HABILIDADE 2 -->
-    <div class="boss-skill">
+
+    <div
+      class="boss-skill"
+      id="skill-container-2"
+    >
 
       <div class="skill-header">
 
@@ -371,7 +830,7 @@
 
       <button
         class="boss-skill-button"
-        data-skill="2"
+        data-skill=""
       >
         USAR HABILIDADE
       </button>
@@ -380,7 +839,11 @@
 
 
     <!-- HABILIDADE 3 -->
-    <div class="boss-skill">
+
+    <div
+      class="boss-skill"
+      id="skill-container-3"
+    >
 
       <div class="skill-header">
 
@@ -414,7 +877,7 @@
 
       <button
         class="boss-skill-button"
-        data-skill="3"
+        data-skill=""
       >
         USAR HABILIDADE
       </button>
@@ -423,6 +886,7 @@
 
 
     <!-- HABILIDADE 4 -->
+
     <div
       class="boss-skill"
       id="skill-container-4"
@@ -460,7 +924,7 @@
 
       <button
         class="boss-skill-button"
-        data-skill="4"
+        data-skill=""
       >
         USAR HABILIDADE
       </button>
@@ -469,6 +933,7 @@
 
 
     <!-- HABILIDADE 5 -->
+
     <div
       class="boss-skill"
       id="skill-container-5"
@@ -506,7 +971,7 @@
 
       <button
         class="boss-skill-button"
-        data-skill="5"
+        data-skill=""
       >
         USAR HABILIDADE
       </button>
@@ -517,8 +982,9 @@
 
 
   <!-- =======================================================
-       ESTADO
+       ESTADO DA BATALHA
   ======================================================== -->
+
   <div class="boss-state">
 
     <span class="boss-state-dot"></span>
@@ -533,6 +999,7 @@
   <!-- =======================================================
        BOTÕES DE TESTE
   ======================================================== -->
+
   <div class="boss-test-buttons">
 
     <button id="btn-dano-recebido">
