@@ -1,317 +1,1404 @@
 // =========================================================
-// BOSS SYSTEM — Hræsvelgr · Skoll · Hati · MÓRDRAX
+// BOSS SYSTEM — CONTROLADOR CENTRAL
+// Hræsvelgr + Skoll & Hati
+//
+// Os dados ficam em:
+// bosses/hraesvelgr.js
+// bosses/skoll-hati.js
 // =========================================================
 
-const DADOS_BOSS = {
-  hraesvelgr: {
-    nome: "Hræsvelgr",
-    nivel: 15,
-    afinidade: "VENTO",
-    classeAfinidade: "affinity-vento",
-    imagem: "hraesvelgr.png",
-    hpMax: 120,
-    mpMax: 80,
-    estMax: 50,
-    atk: 8,
-    def: 4,
-    spdBase: 12,
-    passiva: {
-      nome: "Asas do Mundo",
-      descricao: "A cada rodada, ganha +1 de Velocidade acumulável. Se a Vida cair abaixo de 40%, os ventos se enfurecem: todos os ataques ganham dano extra igual à metade da sua Velocidade.",
-      estado: "Acumulando ventos..."
-    },
-    habilidades: [
-      { id: "rajada", nome: "Rajada Cortante", custoMp: 15, custoEst: 0, dano: 10, efeito: "ignora 2 DEF" },
-      { id: "tempestade", nome: "Tempestade Nascente", custoMp: 30, custoEst: 15, dano: 8, efeito: "todos -1 SPD" },
-      { id: "mergulho", nome: "Queda do Céu", custoMp: 50, custoEst: 25, dano: 18, efeito: "×2 se enfurecido" }
-    ]
-  },
 
-  skoll: {
-    nome: "Skoll",
-    nivel: 11,
-    afinidade: "FOGO",
-    classeAfinidade: "affinity-fogo",
-    imagem: "skoll.png",
-    hpMax: 100,
-    mpMax: 60,
-    estMax: 55,
-    atk: 9,
-    def: 3,
-    spdBase: 10,
-    passiva: {
-      nome: "Fúria do Sol",
-      descricao: "A cada rodada, acumula 1 Fogo. Com 3 Fogo, entra em Fúria: Ataque +4, mas recebe +2 de dano. Se a Vida cair abaixo de 30%, a Fúria é permanente.",
-      estado: "Chamas crescentes..."
-    },
-    habilidades: [
-      { id: "mordida_sol", nome: "Mordida Solar", custoMp: 12, custoEst: 8, dano: 12, efeito: "queima 2 rodadas" },
-      { id: "labareda", nome: "Labareda Crescente", custoMp: 25, custoEst: 12, dano: 7, efeito: "todos os alvos" },
-      { id: "explosao", nome: "Coroa Ardente", custoMp: 40, custoEst: 20, dano: 22, efeito: "consome Fogo acumulado" }
-    ]
-  },
+// =========================================================
+// BANCO DE BOSS
+// =========================================================
 
-  hati: {
-    nome: "Hati",
-    nivel: 11,
-    afinidade: "TREVAS",
-    classeAfinidade: "affinity-trevas",
-    imagem: "hati.png",
-    hpMax: 90,
-    mpMax: 70,
-    estMax: 50,
-    atk: 11,
-    def: 2,
-    spdBase: 11,
-    passiva: {
-      nome: "Fome da Lua",
-      descricao: "Cada dano causado cura 1 PV. Se um inimigo cair, ganha +2 ATK permanentemente. Abaixo de 40% de Vida, a fome aumenta: cura o dobro de dano causado.",
-      estado: "A lua observa..."
-    },
-    habilidades: [
-      { id: "garra_lua", nome: "Garra Penumbral", custoMp: 10, custoEst: 5, dano: 11, efeito: "cura igual ao dano" },
-      { id: "sombra", nome: "Passo Sombrio", custoMp: 18, custoEst: 10, dano: 8, efeito: "não pode ser alvo na próxima rodada" },
-      { id: "devorar", nome: "Devorar a Luz", custoMp: 35, custoEst: 22, dano: 18, efeito: "cura o dobro" }
-    ]
-  },
+const BOSS_DATABASE = {
 
-  mordrax: {
-    nome: "Mórdrax",
-    nivel: 12,
-    afinidade: "TERRA",
-    classeAfinidade: "affinity-terra",
-    imagem: "mordrax.png",
-    hpMax: 150,
-    mpMax: 40,
-    estMax: 70,
-    atk: 10,
-    def: 8,
-    spdBase: 4,
-    passiva: {
-      nome: "Casca Profunda",
-      descricao: "Recebe -2 de dano de todas as fontes (mínimo 1). Abaixo de 50% → Defesa dobra, Velocidade -50%. Abaixo de 25% → reflete 3 de dano ao atacante.",
-      estado: "Adormecido sob a pedra..."
-    },
-    habilidades: [
-      { id: "mao_rocha", nome: "Mão da Rocha", custoMp: 0, custoEst: 12, dano: 12, efeito: "alvo age por último" },
-      { id: "fenda", nome: "Fenda Profunda", custoMp: 20, custoEst: 20, dano: 6, efeito: "todos -1 DEF permanente" },
-      { id: "firmamento", nome: "Queda do Firmamento", custoMp: 35, custoEst: 40, dano: 25, efeito: "ignora 5 DEF; +15 se <25% Vida" }
-    ]
-  }
+    hraesvelgr: HRAESVELGR,
+
+    "skoll-hati": SKOLL_HATI
+
 };
 
+
 // =========================================================
-// ESTADO DO BOSS
+// ESTADO ATUAL
 // =========================================================
 
-let bossAtual = "mordrax";
+let bossAtual = "hraesvelgr";
+
+let nivelAtual = 12;
+
 let estado = {};
+
 let rodada = 0;
 
-function inicializarEstado(id) {
-  const b = DADOS_BOSS[id];
-  estado = {
-    id,
-    hp: b.hpMax,
-    mp: b.mpMax,
-    est: b.estMax,
-    atk: b.atk,
-    def: b.def,
-    spd: b.spdBase,
-    spdBase: b.spdBase,
-    defBase: b.def,
-    enfurecido: false,
-    abatido: false,
-    reflexo: false
-  };
-  rodada = 0;
-}
 
 // =========================================================
-// RENDERIZAÇÃO
+// ELEMENTOS DO DOM
+// =========================================================
+
+const $ = id => document.getElementById(id);
+
+
+// =========================================================
+// OBTÉM DADOS DO BOSS
+// =========================================================
+
+function obterBoss() {
+
+    return BOSS_DATABASE[bossAtual];
+
+}
+
+
+// =========================================================
+// OBTÉM DADOS DO NÍVEL
+// =========================================================
+
+function obterNivel() {
+
+    const boss = obterBoss();
+
+    return boss.niveis[nivelAtual];
+
+}
+
+
+// =========================================================
+// IMAGEM DO BOSS
+// =========================================================
+
+function obterImagemBoss() {
+
+    const boss = obterBoss();
+
+    if (nivelAtual >= 400) {
+
+        return boss.imagens.ultimate;
+
+    }
+
+    if (nivelAtual >= 300) {
+
+        return boss.imagens.evolucao;
+
+    }
+
+    return boss.imagens.base;
+
+}
+
+
+// =========================================================
+// INICIALIZA ESTADO
+// =========================================================
+
+function inicializarEstado() {
+
+    const boss = obterBoss();
+
+    const dados = obterNivel();
+
+
+    // =====================================================
+    // HRÆSVELGR
+    // =====================================================
+
+    if (bossAtual === "hraesvelgr") {
+
+        estado = {
+
+            tipo: "single",
+
+            id: bossAtual,
+
+            hp: dados.hp,
+
+            mp: dados.mp,
+
+            est: dados.est,
+
+            hpMax: dados.hp,
+
+            mpMax: dados.mp,
+
+            estMax: dados.est,
+
+            atk: dados.atk,
+
+            atkMgc: dados.atkMgc,
+
+            agi: dados.agi,
+
+            def: dados.def,
+
+            res: dados.res,
+
+            int: dados.int,
+
+            agiBase: dados.agi,
+
+            defBase: dados.def,
+
+            abatido: false,
+
+            enfurecido: false,
+
+            reflexo: false
+
+        };
+
+    }
+
+
+    // =====================================================
+    // SKOLL & HATI
+    // =====================================================
+
+    if (bossAtual === "skoll-hati") {
+
+        estado = {
+
+            tipo: "dual",
+
+            id: bossAtual,
+
+
+            skoll: {
+
+                ...dados.skoll,
+
+                hpMax: dados.skoll.hp,
+
+                mpMax: dados.skoll.mp,
+
+                estMax: dados.skoll.est,
+
+                hpAtual: dados.skoll.hp,
+
+                mpAtual: dados.skoll.mp,
+
+                estAtual: dados.skoll.est,
+
+                abatido: false
+
+            },
+
+
+            hati: {
+
+                ...dados.hati,
+
+                hpMax: dados.hati.hp,
+
+                mpMax: dados.hati.mp,
+
+                estMax: dados.hati.est,
+
+                hpAtual: dados.hati.hp,
+
+                mpAtual: dados.hati.mp,
+
+                estAtual: dados.hati.est,
+
+                abatido: false
+
+            },
+
+
+            furia: false,
+
+            irmaoDerrotado: false
+
+        };
+
+    }
+
+
+    rodada = 0;
+
+}
+
+
+// =========================================================
+// CARREGAR BOSS
 // =========================================================
 
 function carregarBoss(id) {
-  bossAtual = id;
-  inicializarEstado(id);
-  const b = DADOS_BOSS[id];
-  const card = document.getElementById("boss-card");
 
-  // Troca afinidade
-  card.classList.remove("affinity-vento", "affinity-fogo", "affinity-trevas", "affinity-terra");
-  card.classList.add(b.classeAfinidade);
+    if (!BOSS_DATABASE[id]) {
 
-  // Dados básicos
-  document.getElementById("boss-name").textContent = b.nome;
-  document.getElementById("boss-level").textContent = `NÍVEL ${b.nivel} · ${b.afinidade}`;
-  document.getElementById("boss-affinity").textContent = b.afinidade;
-  document.getElementById("boss-image").src = b.imagem;
-  document.getElementById("boss-image").alt = b.nome;
+        console.error("Boss não encontrado:", id);
 
-  // Passiva
-  document.getElementById("passive-name").textContent = b.passiva.nome;
-  document.getElementById("passive-desc").textContent = b.passiva.descricao;
-  document.getElementById("passive-state").textContent = b.passiva.estado;
+        return;
 
-  atualizarInterface();
-  atualizarBotoesSeletor();
+    }
+
+
+    bossAtual = id;
+
+    inicializarEstado();
+
+    atualizarInterface();
+
+    atualizarSeletorBoss();
+
+    atualizarSeletorNivel();
+
+    atualizarStatusGeral();
+
 }
+
+
+// =========================================================
+// TROCAR NÍVEL
+// =========================================================
+
+function carregarNivel(nivel) {
+
+    nivel = Number(nivel);
+
+
+    const boss = obterBoss();
+
+    if (!boss.niveis[nivel]) {
+
+        console.error(
+            `O Boss ${boss.nome} não possui o nível ${nivel}.`
+        );
+
+        return;
+
+    }
+
+
+    nivelAtual = nivel;
+
+    inicializarEstado();
+
+    atualizarInterface();
+
+    atualizarSeletorNivel();
+
+    atualizarStatusGeral();
+
+}
+
+
+// =========================================================
+// ATUALIZA INTERFACE
+// =========================================================
 
 function atualizarInterface() {
-  const b = DADOS_BOSS[estado.id];
 
-  // Recursos
-  document.getElementById("hp-text").textContent = `${estado.hp} / ${b.hpMax}`;
-  document.getElementById("boss-hp").style.width = `${(estado.hp / b.hpMax) * 100}%`;
+    const boss = obterBoss();
 
-  document.getElementById("mp-text").textContent = `${estado.mp} / ${b.mpMax}`;
-  document.getElementById("boss-mp").style.width = `${(estado.mp / b.mpMax) * 100}%`;
+    const dados = obterNivel();
 
-  document.getElementById("est-text").textContent = `${estado.est} / ${b.estMax}`;
-  document.getElementById("boss-est").style.width = `${(estado.est / b.estMax) * 100}%`;
 
-  // Atributos
-  document.getElementById("boss-atk").textContent = estado.atk;
-  document.getElementById("boss-def").textContent = estado.def;
-  document.getElementById("boss-spd").textContent = estado.spd;
+    // =====================================================
+    // CARD
+    // =====================================================
 
-  // Estado da passiva
-  const pctVida = estado.hp / b.hpMax;
-  const estadoEl = document.getElementById("passive-state");
-  const card = document.getElementById("boss-card");
+    const card = $("boss-card");
 
-  if (estado.id === "mordrax") {
-    if (pctVida <= 0.25) {
-      estadoEl.textContent = "A montanha desperta e reflete! (+3 dano ao atacante)";
-      estadoEl.classList.add("furia");
-      estado.reflexo = true;
-    } else if (pctVida <= 0.5) {
-      estadoEl.textContent = "Casca endurecida — Defesa dobrada!";
-      estadoEl.classList.remove("furia");
-      estado.reflexo = false;
-    } else {
-      estadoEl.textContent = b.passiva.estado;
-      estadoEl.classList.remove("furia");
-      estado.reflexo = false;
+
+    if (card) {
+
+        card.classList.remove(
+            "affinity-vento",
+            "affinity-fogo",
+            "affinity-trevas",
+            "affinity-terra",
+            "affinity-luz",
+            "affinity-dual"
+        );
+
+
+        if (boss.classeAfinidade) {
+
+            card.classList.add(
+                boss.classeAfinidade
+            );
+
+        }
+
     }
-  }
+
+
+    // =====================================================
+    // NOME
+    // =====================================================
+
+    if ($("boss-name")) {
+
+        $("boss-name").textContent =
+            boss.nome;
+
+    }
+
+
+    // =====================================================
+    // NÍVEL
+    // =====================================================
+
+    if ($("boss-level")) {
+
+        $("boss-level").textContent =
+            `NÍVEL ${nivelAtual} · ${boss.afinidade}`;
+
+    }
+
+
+    // =====================================================
+    // AFINIDADE
+    // =====================================================
+
+    if ($("boss-affinity")) {
+
+        $("boss-affinity").textContent =
+            boss.afinidade;
+
+    }
+
+
+    // =====================================================
+    // IMAGEM
+    // =====================================================
+
+    if ($("boss-image")) {
+
+        $("boss-image").src =
+            obterImagemBoss();
+
+        $("boss-image").alt =
+            boss.nome;
+
+    }
+
+
+    // =====================================================
+    // BOSS ÚNICO
+    // =====================================================
+
+    if (estado.tipo === "single") {
+
+        atualizarBossUnico(dados);
+
+    }
+
+
+    // =====================================================
+    // BOSS DUPLO
+    // =====================================================
+
+    if (estado.tipo === "dual") {
+
+        atualizarBossDuplo(dados);
+
+    }
+
+
+    // =====================================================
+    // PASSIVA
+    // =====================================================
+
+    atualizarPassiva(dados);
+
+
+    // =====================================================
+    // HABILIDADES
+    // =====================================================
+
+    atualizarHabilidades(dados);
+
 }
 
-function atualizarBotoesSeletor() {
-  document.querySelectorAll(".boss-selector button").forEach(btn => {
-    btn.classList.toggle("ativo", btn.dataset.bossId === bossAtual);
-  });
-}
 
 // =========================================================
-// AÇÕES
+// BOSS ÚNICO
 // =========================================================
 
-function receberDano(valorBruto) {
-  const b = DADOS_BOSS[estado.id];
-  let dano = valorBruto;
+function atualizarBossUnico(dados) {
 
-  // Redução de Mórdrax
-  if (estado.id === "mordrax") {
-    dano = Math.max(1, dano - 2);
-  }
+    atualizarBarra(
+        "hp",
+        estado.hp,
+        estado.hpMax
+    );
 
-  estado.hp = Math.max(0, estado.hp - dano);
+    atualizarBarra(
+        "mp",
+        estado.mp,
+        estado.mpMax
+    );
 
-  // Reflexo de dano
-  if (estado.reflexo) {
-    console.log("💥 Reflexo: 3 de dano retornado ao atacante!");
-  }
+    atualizarBarra(
+        "est",
+        estado.est,
+        estado.estMax
+    );
 
-  // Fases de Mórdrax
-  const pctVida = estado.hp / b.hpMax;
-  if (estado.id === "mordrax" && !estado.abatido) {
-    if (pctVida <= 0.5 && estado.def === estado.defBase) {
-      estado.def = estado.defBase * 2;
-      estado.spd = Math.floor(estado.spdBase / 2);
-      console.log("⛰️ A montanha se endurece! DEF ×2, SPD /2");
-    }
-    if (pctVida <= 0.25 && !estado.enfurecido) {
-      estado.enfurecido = true;
-      console.log("💀 A terra treme! Reflexo ativado!");
-    }
-  }
 
-  if (estado.hp === 0) {
-    estado.abatido = true;
-    document.getElementById("boss-status").textContent = "Derrotado... A montanha repousa.";
-  }
+    atualizarTexto(
+        "boss-atk",
+        estado.atk
+    );
 
-  atualizarInterface();
+    atualizarTexto(
+        "boss-atk-mgc",
+        estado.atkMgc
+    );
+
+    atualizarTexto(
+        "boss-agi",
+        estado.agi
+    );
+
+    atualizarTexto(
+        "boss-def",
+        estado.def
+    );
+
+    atualizarTexto(
+        "boss-res",
+        estado.res
+    );
+
+    atualizarTexto(
+        "boss-int",
+        estado.int
+    );
+
 }
+
+
+// =========================================================
+// BOSS DUPLO
+// =========================================================
+
+function atualizarBossDuplo(dados) {
+
+    /*
+       Aqui o card poderá futuramente possuir
+       dois painéis separados:
+
+       SKOLL
+       HATI
+
+       Por enquanto mantemos os dados no estado
+       para o sistema central.
+    */
+
+
+    console.log(
+        "SKOLL:",
+        estado.skoll
+    );
+
+    console.log(
+        "HATI:",
+        estado.hati
+    );
+
+
+    /*
+       Se o HTML possuir os elementos abaixo,
+       eles serão atualizados automaticamente.
+    */
+
+    atualizarTexto(
+        "skoll-atk",
+        estado.skoll.atk
+    );
+
+    atualizarTexto(
+        "skoll-atk-mgc",
+        estado.skoll.atkMgc
+    );
+
+    atualizarTexto(
+        "skoll-agi",
+        estado.skoll.agi
+    );
+
+    atualizarTexto(
+        "skoll-def",
+        estado.skoll.def
+    );
+
+    atualizarTexto(
+        "skoll-res",
+        estado.skoll.res
+    );
+
+    atualizarTexto(
+        "skoll-int",
+        estado.skoll.int
+    );
+
+
+    atualizarTexto(
+        "hati-atk",
+        estado.hati.atk
+    );
+
+    atualizarTexto(
+        "hati-atk-mgc",
+        estado.hati.atkMgc
+    );
+
+    atualizarTexto(
+        "hati-agi",
+        estado.hati.agi
+    );
+
+    atualizarTexto(
+        "hati-def",
+        estado.hati.def
+    );
+
+    atualizarTexto(
+        "hati-res",
+        estado.hati.res
+    );
+
+    atualizarTexto(
+        "hati-int",
+        estado.hati.int
+    );
+
+}
+
+
+// =========================================================
+// BARRAS
+// =========================================================
+
+function atualizarBarra(tipo, atual, max) {
+
+    const texto =
+        $(`${tipo}-text`);
+
+    const barra =
+        $(`boss-${tipo}`);
+
+
+    if (texto) {
+
+        texto.textContent =
+            `${Math.max(0, atual)} / ${max}`;
+
+    }
+
+
+    if (barra) {
+
+        const porcentagem =
+            Math.max(
+                0,
+                Math.min(
+                    100,
+                    (atual / max) * 100
+                )
+            );
+
+        barra.style.width =
+            `${porcentagem}%`;
+
+    }
+
+}
+
+
+// =========================================================
+// TEXTO
+// =========================================================
+
+function atualizarTexto(id, valor) {
+
+    const elemento = $(id);
+
+    if (elemento) {
+
+        elemento.textContent = valor;
+
+    }
+
+}
+
+
+// =========================================================
+// PASSIVA
+// =========================================================
+
+function atualizarPassiva(dados) {
+
+    if (!dados.passiva) return;
+
+
+    atualizarTexto(
+        "passive-name",
+        dados.passiva.nome
+    );
+
+
+    atualizarTexto(
+        "passive-desc",
+        dados.passiva.descricao
+    );
+
+
+    atualizarTexto(
+        "passive-state",
+        dados.passiva.estado
+    );
+
+}
+
+
+// =========================================================
+// HABILIDADES
+// =========================================================
+
+function atualizarHabilidades(dados) {
+
+    const habilidades =
+        dados.habilidades || [];
+
+
+    for (
+        let i = 0;
+        i < 5;
+        i++
+    ) {
+
+        const habilidade =
+            habilidades[i];
+
+
+        const container =
+            $(`skill-container-${i + 1}`);
+
+
+        const nome =
+            $(`skill-name-${i + 1}`);
+
+
+        const descricao =
+            $(`skill-desc-${i + 1}`);
+
+
+        const mp =
+            $(`skill-mp-${i + 1}`);
+
+
+        const est =
+            $(`skill-est-${i + 1}`);
+
+
+        if (!habilidade) {
+
+            if (container) {
+
+                container.style.display =
+                    "none";
+
+            }
+
+            continue;
+
+        }
+
+
+        if (container) {
+
+            container.style.display =
+                "";
+
+        }
+
+
+        if (nome) {
+
+            let titulo =
+                habilidade.nome;
+
+
+            if (habilidade.usuario) {
+
+                titulo =
+                    `${habilidade.usuario} · ${habilidade.nome}`;
+
+            }
+
+
+            nome.textContent =
+                titulo;
+
+        }
+
+
+        if (descricao) {
+
+            descricao.textContent =
+                habilidade.efeito || "";
+
+        }
+
+
+        if (mp) {
+
+            mp.textContent =
+                habilidade.custoMp > 0
+                    ? `${habilidade.custoMp} ALMA`
+                    : "";
+
+        }
+
+
+        if (est) {
+
+            est.textContent =
+                habilidade.custoEst > 0
+                    ? `${habilidade.custoEst} FORÇA`
+                    : "";
+
+        }
+
+
+        const botao =
+            container?.querySelector(
+                ".boss-skill-button"
+            );
+
+
+        if (botao) {
+
+            botao.dataset.skill =
+                habilidade.id;
+
+        }
+
+    }
+
+}
+
+
+// =========================================================
+// SELETOR DE BOSS
+// =========================================================
+
+function atualizarSeletorBoss() {
+
+    document
+        .querySelectorAll(
+            ".boss-selector button"
+        )
+        .forEach(btn => {
+
+            btn.classList.toggle(
+                "ativo",
+                btn.dataset.bossId === bossAtual
+            );
+
+        });
+
+}
+
+
+// =========================================================
+// SELETOR DE NÍVEL
+// =========================================================
+
+function atualizarSeletorNivel() {
+
+    document
+        .querySelectorAll(
+            ".boss-level-selector button"
+        )
+        .forEach(btn => {
+
+            btn.classList.toggle(
+                "ativo",
+                Number(btn.dataset.level) === nivelAtual
+            );
+
+        });
+
+}
+
+
+// =========================================================
+// DANO
+// =========================================================
+
+function receberDano(valor) {
+
+    if (estado.tipo === "single") {
+
+        estado.hp =
+            Math.max(
+                0,
+                estado.hp - valor
+            );
+
+
+        if (estado.hp === 0) {
+
+            estado.abatido = true;
+
+            atualizarStatusGeral();
+
+        }
+
+    }
+
+
+    if (estado.tipo === "dual") {
+
+        receberDanoDuplo(valor);
+
+    }
+
+
+    atualizarInterface();
+
+}
+
+
+// =========================================================
+// DANO BOSS DUPLO
+// =========================================================
+
+function receberDanoDuplo(valor) {
+
+    /*
+       Por padrão, o dano de teste será aplicado
+       ao Skoll.
+
+       Mais tarde o sistema de combate poderá
+       escolher exatamente qual irmão será atingido.
+    */
+
+
+    if (!estado.skoll.abatido) {
+
+        estado.skoll.hpAtual =
+            Math.max(
+                0,
+                estado.skoll.hpAtual - valor
+            );
+
+
+        if (estado.skoll.hpAtual === 0) {
+
+            estado.skoll.abatido = true;
+
+            ativarFuriaSobrevivente();
+
+        }
+
+    }
+
+}
+
+
+// =========================================================
+// FÚRIA DO SOBREVIVENTE
+// =========================================================
+
+function ativarFuriaSobrevivente() {
+
+    if (estado.furia) return;
+
+
+    estado.furia = true;
+
+    estado.irmaoDerrotado = true;
+
+
+    const sobrevivente =
+        !estado.skoll.abatido
+            ? estado.skoll
+            : estado.hati;
+
+
+    sobrevivente.agi += 2;
+
+    sobrevivente.atk += 2;
+
+    sobrevivente.atkMgc += 2;
+
+
+    console.log(
+        "🔥 IRMÃOS PRA SEMPRE — FÚRIA ATIVADA"
+    );
+
+}
+
+
+// =========================================================
+// AVANÇAR RODADA
+// =========================================================
 
 function avancarRodada() {
-  rodada++;
-  const b = DADOS_BOSS[estado.id];
 
-  // Recupera recursos
-  estado.mp = Math.min(b.mpMax, estado.mp + 5);
-  estado.est = Math.min(b.estMax, estado.est + 8);
+    rodada++;
 
-  // Hræsvelgr ganha SPD
-  if (estado.id === "hraesvelgr") {
-    estado.spd++;
-    if (estado.hp / b.hpMax <= 0.4) {
-      estado.enfurecido = true;
+
+    // =====================================================
+    // RECURSOS
+    // =====================================================
+
+    if (estado.tipo === "single") {
+
+        const dados =
+            obterNivel();
+
+
+        estado.mp =
+            Math.min(
+                estado.mpMax,
+                estado.mp + 5
+            );
+
+
+        estado.est =
+            Math.min(
+                estado.estMax,
+                estado.est + 8
+            );
+
+
+        // Hræsvelgr
+        if (bossAtual === "hraesvelgr") {
+
+            estado.agi++;
+
+
+            if (
+                estado.hp /
+                estado.hpMax <= 0.4
+            ) {
+
+                estado.enfurecido =
+                    true;
+
+            }
+
+        }
+
     }
-  }
 
-  document.getElementById("boss-status").textContent = `Rodada ${rodada} — A terra se move...`;
-  atualizarInterface();
+
+    // =====================================================
+    // SKOLL & HATI
+    // =====================================================
+
+    if (estado.tipo === "dual") {
+
+        estado.skoll.mpAtual =
+            Math.min(
+                estado.skoll.mpMax,
+                estado.skoll.mpAtual + 5
+            );
+
+
+        estado.skoll.estAtual =
+            Math.min(
+                estado.skoll.estMax,
+                estado.skoll.estAtual + 8
+            );
+
+
+        estado.hati.mpAtual =
+            Math.min(
+                estado.hati.mpMax,
+                estado.hati.mpAtual + 5
+            );
+
+
+        estado.hati.estAtual =
+            Math.min(
+                estado.hati.estMax,
+                estado.hati.estAtual + 8
+            );
+
+    }
+
+
+    atualizarStatusGeral();
+
+    atualizarInterface();
+
 }
+
+
+// =========================================================
+// RESTAURAR
+// =========================================================
 
 function restaurar() {
-  carregarBoss(bossAtual);
-  document.getElementById("boss-status").textContent = "A terra repousa...";
+
+    inicializarEstado();
+
+    atualizarInterface();
+
+    atualizarStatusGeral();
+
 }
+
+
+// =========================================================
+// STATUS GERAL
+// =========================================================
+
+function atualizarStatusGeral() {
+
+    const status =
+        $("boss-status");
+
+
+    if (!status) return;
+
+
+    if (estado.tipo === "single") {
+
+        if (estado.abatido) {
+
+            status.textContent =
+                "Derrotado.";
+
+            return;
+
+        }
+
+
+        if (estado.enfurecido) {
+
+            status.textContent =
+                `Rodada ${rodada} — O Boss entrou em fúria!`;
+
+            return;
+
+        }
+
+
+        status.textContent =
+            rodada > 0
+                ? `Rodada ${rodada} — O Boss aguarda sua próxima ação.`
+                : "Aguardando batalha...";
+
+    }
+
+
+    if (estado.tipo === "dual") {
+
+        if (
+            estado.skoll.abatido &&
+            estado.hati.abatido
+        ) {
+
+            status.textContent =
+                "Skoll e Hati foram derrotados.";
+
+            return;
+
+        }
+
+
+        if (estado.furia) {
+
+            status.textContent =
+                "🔥 Um dos irmãos caiu — o sobrevivente entrou em Fúria!";
+
+            return;
+
+        }
+
+
+        status.textContent =
+            rodada > 0
+                ? `Rodada ${rodada} — Skoll e Hati continuam caçando.`
+                : "☀️🌑 Skoll e Hati aguardam...";
+
+    }
+
+}
+
+
+// =========================================================
+// EXECUTAR HABILIDADE
+// =========================================================
+
+function executarHabilidade(id) {
+
+    const dados =
+        obterNivel();
+
+
+    const habilidade =
+        dados.habilidades?.find(
+            habilidade =>
+                habilidade.id === id
+        );
+
+
+    if (!habilidade) {
+
+        console.warn(
+            "Habilidade não encontrada:",
+            id
+        );
+
+        return;
+
+    }
+
+
+    /*
+       Por enquanto o sistema apenas consome
+       recursos e registra a ação.
+
+       O sistema de combate real poderá assumir
+       essa função posteriormente.
+    */
+
+
+    if (estado.tipo === "single") {
+
+        if (
+            estado.mp < habilidade.custoMp ||
+            estado.est < habilidade.custoEst
+        ) {
+
+            alert(
+                "Recursos insuficientes!"
+            );
+
+            return;
+
+        }
+
+
+        estado.mp -=
+            habilidade.custoMp;
+
+
+        estado.est -=
+            habilidade.custoEst;
+
+    }
+
+
+    console.log(
+        `⚔️ ${obterBoss().nome} usa ${habilidade.nome}!`
+    );
+
+
+    atualizarInterface();
+
+}
+
 
 // =========================================================
 // EVENTOS
 // =========================================================
 
-document.addEventListener("DOMContentLoaded", () => {
-  // Seletor de Boss
-  document.querySelectorAll(".boss-selector button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      carregarBoss(btn.dataset.bossId);
-    });
-  });
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-  // Botões de teste
-  document.getElementById("btn-dano-recebido").addEventListener("click", () => receberDano(10));
-  document.getElementById("btn-restaurar").addEventListener("click", restaurar);
-  document.getElementById("btn-rodada-passou").addEventListener("click", avancarRodada);
-  document.getElementById("btn-zerar").addEventListener("click", () => {
-    estado.hp = 0;
-    estado.abatido = true;
-    atualizarInterface();
-  });
 
-  // Botões de habilidade
-  document.querySelectorAll(".boss-skill-button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const idHabilidade = btn.dataset.skill;
-      const b = DADOS_BOSS[estado.id];
-      const hab = b.habilidades.find(h => h.id === idHabilidade);
-      if (!hab) return;
+        // =================================================
+        // BOSS
+        // =================================================
 
-      if (estado.mp >= hab.custoMp && estado.est >= hab.custoEst) {
-        estado.mp -= hab.custoMp;
-        estado.est -= hab.custoEst;
-        console.log(`⚔️ ${b.nome} usa ${hab.nome}!`);
-        alert(`${b.nome} lançou:\n"${hab.nome}"\n💥 Dano base: ${hab.dano}\n📌 Efeito: ${hab.efeito}`);
-        atualizarInterface();
-      } else {
-        alert("Recursos insuficientes!");
-      }
-    });
-  });
+        document
+            .querySelectorAll(
+                ".boss-selector button"
+            )
+            .forEach(btn => {
 
-  // Inicializa
-  carregarBoss("mordrax");
-});
+                btn.addEventListener(
+                    "click",
+                    () => {
+
+                        carregarBoss(
+                            btn.dataset.bossId
+                        );
+
+                    }
+                );
+
+            });
+
+
+        // =================================================
+        // NÍVEL
+        // =================================================
+
+        document
+            .querySelectorAll(
+                ".boss-level-selector button"
+            )
+            .forEach(btn => {
+
+                btn.addEventListener(
+                    "click",
+                    () => {
+
+                        carregarNivel(
+                            btn.dataset.level
+                        );
+
+                    }
+                );
+
+            });
+
+
+        // =================================================
+        // DANO
+        // =================================================
+
+        const dano =
+            $("btn-dano-recebido");
+
+
+        if (dano) {
+
+            dano.addEventListener(
+                "click",
+                () => {
+
+                    receberDano(10);
+
+                }
+            );
+
+        }
+
+
+        // =================================================
+        // RESTAURAR
+        // =================================================
+
+        const restaurarBtn =
+            $("btn-restaurar");
+
+
+        if (restaurarBtn) {
+
+            restaurarBtn.addEventListener(
+                "click",
+                restaurar
+            );
+
+        }
+
+
+        // =================================================
+        // RODADA
+        // =================================================
+
+        const rodadaBtn =
+            $("btn-rodada-passou");
+
+
+        if (rodadaBtn) {
+
+            rodadaBtn.addEventListener(
+                "click",
+                avancarRodada
+            );
+
+        }
+
+
+        // =================================================
+        // ZERAR
+        // =================================================
+
+        const zerar =
+            $("btn-zerar");
+
+
+        if (zerar) {
+
+            zerar.addEventListener(
+                "click",
+                () => {
+
+                    if (
+                        estado.tipo === "single"
+                    ) {
+
+                        estado.hp = 0;
+
+                        estado.abatido = true;
+
+                    }
+
+
+                    if (
+                        estado.tipo === "dual"
+                    ) {
+
+                        estado.skoll.hpAtual = 0;
+
+                        estado.hati.hpAtual = 0;
+
+                        estado.skoll.abatido = true;
+
+                        estado.hati.abatido = true;
+
+                    }
+
+
+                    atualizarInterface();
+
+                    atualizarStatusGeral();
+
+                }
+            );
+
+        }
+
+
+        // =================================================
+        // HABILIDADES
+        // =================================================
+
+        document
+            .querySelectorAll(
+                ".boss-skill-button"
+            )
+            .forEach(btn => {
+
+                btn.addEventListener(
+                    "click",
+                    () => {
+
+                        executarHabilidade(
+                            btn.dataset.skill
+                        );
+
+                    }
+                );
+
+            });
+
+
+        // =================================================
+        // INICIALIZAÇÃO
+        // =================================================
+
+        carregarBoss(
+            "hraesvelgr"
+        );
+
+    }
+);
