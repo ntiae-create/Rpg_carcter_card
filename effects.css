@@ -1,1 +1,93 @@
+/* =========================================================
+   BOSS CARD — CANVAS DE ATMOSFERA
+========================================================= */
 
+.boss-card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+/* =========================================================
+   CANVAS — FUNDO
+   Atmosfera distante
+========================================================= */
+
+.boss-effect-canvas-back {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+/* =========================================================
+   CONTEÚDO ORIGINAL DO CARD
+========================================================= */
+
+.boss-card > *:not(.boss-effect-canvas-back):not(.boss-effect-canvas-front) {
+    position: relative;
+    z-index: 2;
+}
+
+/* =========================================================
+   CANVAS — FRENTE
+   Partículas próximas / efeitos que atravessam a interface
+========================================================= */
+
+.boss-effect-canvas-front {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    pointer-events: none;
+
+    z-index: 3;
+}
+
+/* =========================================================
+   TRANSIÇÃO
+========================================================= */
+
+.boss-effect-canvas-back,
+.boss-effect-canvas-front {
+    opacity: 1;
+
+    transition:
+        opacity .4s ease;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .boss-effect-canvas-back,
+    .boss-effect-canvas-front {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+/* =========================================================
+   ACESSIBILIDADE
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .boss-effect-canvas-back,
+    .boss-effect-canvas-front {
+        opacity: .35;
+    }
+}
