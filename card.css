@@ -1,1842 +1,1690 @@
 /* =========================================================
-   CARD DE BOSS — SISTEMA COMPLETO
-   DARK FANTASY / ELEMENTAL / BOSS DINÂMICO
-   ========================================================= */
+   BOSS CARD — DARK FANTASY
+   VERSÃO REFORMULADA
+   ---------------------------------------------------------
+   IMPORTANTE:
+   Classes e IDs usados pelo JavaScript foram preservados.
+========================================================= */
 
 
 /* =========================================================
-   CONTAINER BASE
-   ========================================================= */
+   BASE
+========================================================= */
 
 .boss-card {
+    --bg-main: #0b0a0f;
+    --bg-panel: #121018;
+    --bg-panel-2: #17131e;
+    --border: rgba(255,255,255,.10);
+    --border-soft: rgba(255,255,255,.06);
+    --text: #eee8f5;
+    --text-soft: #aaa1b5;
+    --text-muted: #746c7d;
+    --accent: #9d78d0;
 
-  background:
-    radial-gradient(
-      circle at 50% -10%,
-      rgba(120, 90, 160, 0.12),
-      transparent 45%
-    ),
-    linear-gradient(
-      145deg,
-      #1a1520,
-      #0f0c14
-    );
+    width: 100%;
+    max-width: 590px;
+    margin: 24px auto;
 
-  border: 2px solid #3a2f47;
+    padding: 0;
 
-  border-radius: 16px;
+    position: relative;
 
-  padding: 16px;
+    color: var(--text);
 
-  width: 100%;
+    font-family:
+        "Segoe UI",
+        system-ui,
+        -apple-system,
+        sans-serif;
 
-  max-width: 560px;
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(150,110,210,.10),
+            transparent 32%
+        ),
+        linear-gradient(
+            160deg,
+            #17131d 0%,
+            #0d0b11 48%,
+            #09080c 100%
+        );
 
-  margin: 0 auto;
+    border:
+        1px solid var(--border);
 
-  color: #e0d6eb;
+    border-radius: 22px;
 
-  font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
 
-  position: relative;
+    box-sizing: border-box;
 
-  overflow: visible;
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.55),
+        inset 0 1px 0 rgba(255,255,255,.04);
 
-  transform: translateY(0);
-
-  transition:
-    transform 0.4s cubic-bezier(
-      0.175,
-      0.885,
-      0.32,
-      1.275
-    ),
-    box-shadow 0.4s ease,
-    border-color 0.3s ease;
-
-  box-sizing: border-box;
-
+    transition:
+        transform .35s ease,
+        box-shadow .35s ease,
+        border-color .35s ease;
 }
 
 
 /* =========================================================
-   BRILHO EXTERNO
-   ========================================================= */
+   BORDA ELEMENTAL
+========================================================= */
 
 .boss-card::before {
+    content: "";
 
-  content: '';
+    position: absolute;
 
-  position: absolute;
+    inset: 0;
 
-  inset: -2px;
+    pointer-events: none;
 
-  border-radius: 18px;
+    border-radius: inherit;
 
-  opacity: 0;
+    padding: 1px;
 
-  transition:
-    opacity 0.4s ease;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.16),
+            transparent 28%,
+            transparent 70%,
+            rgba(255,255,255,.08)
+        );
 
-  z-index: -1;
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
 
-  pointer-events: none;
+    -webkit-mask-composite: xor;
 
+    mask-composite: exclude;
+
+    opacity: .8;
+
+    z-index: 20;
 }
 
 
 .boss-card:hover {
+    transform: translateY(-3px);
 
-  transform:
-    translateY(-6px);
-
-}
-
-
-.boss-card:hover::before {
-
-  opacity: 1;
-
+    box-shadow:
+        0 26px 70px rgba(0,0,0,.65),
+        inset 0 1px 0 rgba(255,255,255,.05);
 }
 
 
 /* =========================================================
    CABEÇALHO
-   ========================================================= */
+========================================================= */
 
 .boss-header {
+    min-height: 76px;
 
-  display: flex;
+    display: flex;
 
-  justify-content: space-between;
+    align-items: center;
 
-  align-items: center;
+    justify-content: space-between;
 
-  gap: 12px;
+    gap: 14px;
 
-  margin-bottom: 12px;
+    padding: 18px 20px;
 
+    position: relative;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.035),
+            rgba(255,255,255,0)
+        );
+
+    border-bottom:
+        1px solid var(--border-soft);
 }
 
 
 .boss-title-area {
-
-  min-width: 0;
-
+    min-width: 0;
 }
 
 
 .boss-title-area h2 {
+    margin: 0;
 
-  margin: 0;
+    color: #f4eefb;
 
-  font-size: 22px;
+    font-size: 25px;
 
-  font-weight: 700;
+    line-height: 1.05;
 
-  color: #f0e6ff;
+    font-weight: 800;
 
-  letter-spacing: 1px;
+    letter-spacing: -.3px;
 
-  text-shadow:
-    0 0 12px rgba(220, 190, 255, 0.12);
-
+    text-shadow:
+        0 3px 16px rgba(0,0,0,.5);
 }
 
 
 .boss-level {
+    display: block;
 
-  font-size: 12px;
+    margin-top: 7px;
 
-  color: #9a8fb4;
+    color: var(--text-muted);
 
-  display: block;
+    font-size: 10px;
 
-  margin-top: 3px;
+    font-weight: 700;
 
+    letter-spacing: 1.7px;
+
+    text-transform: uppercase;
 }
 
 
 .boss-affinity {
+    flex-shrink: 0;
 
-  background:
-    rgba(0, 0, 0, 0.35);
+    padding: 7px 11px;
 
-  padding: 6px 12px;
+    border-radius: 7px;
 
-  border-radius: 20px;
+    background:
+        rgba(255,255,255,.055);
 
-  font-size: 11px;
+    border:
+        1px solid rgba(255,255,255,.10);
 
-  font-weight: 600;
+    color: #ddd5e6;
 
-  text-transform: uppercase;
+    font-size: 9px;
 
-  letter-spacing: 1.5px;
+    font-weight: 800;
 
-  white-space: nowrap;
+    letter-spacing: 1.4px;
 
+    text-transform: uppercase;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.04);
 }
 
 
 /* =========================================================
    IMAGEM
-   ========================================================= */
+========================================================= */
 
 .boss-image-area {
+    height: 330px;
 
-  width: 100%;
+    margin: 0;
 
-  height: 260px;
+    position: relative;
 
-  border-radius: 12px;
+    display: flex;
 
-  overflow: hidden;
+    align-items: center;
 
-  margin-bottom: 16px;
+    justify-content: center;
 
-  background:
-    radial-gradient(
-      circle,
-      #241b2e 0%,
-      #120e17 70%
-    );
+    overflow: hidden;
 
-  border: 1px solid #3a2f47;
+    background:
+        radial-gradient(
+            ellipse at 50% 45%,
+            rgba(70,55,90,.45),
+            transparent 55%
+        ),
+        linear-gradient(
+            180deg,
+            #100d15,
+            #09080c
+        );
 
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  position: relative;
-
+    border-bottom:
+        1px solid var(--border);
 }
 
 
+/* brilho atrás do Boss */
+
+.boss-image-area::before {
+    content: "";
+
+    position: absolute;
+
+    width: 75%;
+    height: 75%;
+
+    left: 12.5%;
+    top: 12.5%;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(155,120,210,.16),
+            transparent 68%
+        );
+
+    filter: blur(18px);
+
+    pointer-events: none;
+}
+
+
+/* sombra inferior */
+
 .boss-image-area::after {
+    content: "";
 
-  content: '';
+    position: absolute;
 
-  position: absolute;
+    inset: 0;
 
-  inset: 0;
+    pointer-events: none;
 
-  pointer-events: none;
-
-  background:
-    linear-gradient(
-      to bottom,
-      transparent 55%,
-      rgba(0,0,0,0.45)
-    );
-
+    background:
+        linear-gradient(
+            180deg,
+            transparent 65%,
+            rgba(5,4,7,.85) 100%
+        );
 }
 
 
 .boss-image {
+    width: 100%;
+    height: 100%;
 
-  width: 100%;
+    object-fit: contain;
 
-  height: 100%;
+    object-position: center bottom;
 
-  /*
-     contain evita cortar a arte do Boss.
-     Isso é importante para artes de corpo inteiro.
-  */
+    position: relative;
 
-  object-fit: contain;
+    z-index: 2;
 
-  object-position: center;
-
-  transition:
-    transform 0.5s ease,
-    filter 0.5s ease;
-
+    transition:
+        transform .6s cubic-bezier(.2,.8,.2,1),
+        filter .4s ease;
 }
 
 
 .boss-card:hover .boss-image {
-
-  transform: scale(1.03);
-
+    transform: scale(1.025);
 }
 
 
 /* =========================================================
    RECURSOS
-   ========================================================= */
+========================================================= */
 
-.boss-resources,
 .boss-single-resources {
+    display: flex;
 
-  display: flex;
+    flex-direction: column;
 
-  flex-direction: column;
+    gap: 9px;
 
-  gap: 10px;
+    margin: 0;
 
-  margin-bottom: 16px;
+    padding: 16px 20px 18px;
 
+    background:
+        rgba(0,0,0,.14);
 }
 
 
 .boss-resource {
+    display: flex;
 
-  display: flex;
+    flex-direction: column;
 
-  flex-direction: column;
-
-  gap: 4px;
-
+    gap: 5px;
 }
 
 
 .resource-header {
+    display: flex;
 
-  display: flex;
+    justify-content: space-between;
 
-  justify-content: space-between;
+    align-items: center;
 
-  align-items: center;
+    color: #aaa2b0;
 
-  font-size: 12px;
+    font-size: 9px;
 
-  font-weight: 600;
+    font-weight: 800;
 
+    letter-spacing: 1.2px;
+
+    text-transform: uppercase;
+}
+
+
+.resource-header span:last-child {
+    color: #ddd6e5;
+
+    font-variant-numeric: tabular-nums;
+
+    letter-spacing: .3px;
 }
 
 
 .resource-bar {
+    width: 100%;
 
-  height: 10px;
+    height: 7px;
 
-  background:
-    #2a2233;
+    overflow: hidden;
 
-  border-radius: 5px;
+    border-radius: 99px;
 
-  overflow: hidden;
+    background:
+        #27232c;
 
-  box-shadow:
-    inset 0 1px 3px rgba(0,0,0,0.5);
-
+    box-shadow:
+        inset 0 1px 3px rgba(0,0,0,.65);
 }
 
 
 .resource-fill {
+    height: 100%;
 
-  height: 100%;
+    min-width: 0;
 
-  border-radius: 5px;
+    border-radius: inherit;
 
-  transition:
-    width 0.4s ease,
-    background 0.3s ease;
-
+    transition:
+        width .45s ease,
+        filter .25s ease;
 }
 
+
+/* HP */
 
 #boss-hp,
 #skoll-hp,
 #hati-hp {
+    background:
+        linear-gradient(
+            90deg,
+            #76243b,
+            #c44761
+        );
 
-  background:
-    linear-gradient(
-      90deg,
-      #992e48,
-      #c93e58
-    );
-
+    box-shadow:
+        0 0 8px rgba(196,71,97,.20);
 }
 
+
+/* MP */
 
 #boss-mp,
 #skoll-mp,
 #hati-mp {
+    background:
+        linear-gradient(
+            90deg,
+            #294c96,
+            #608bea
+        );
 
-  background:
-    linear-gradient(
-      90deg,
-      #2e4899,
-      #4e78d9
-    );
-
+    box-shadow:
+        0 0 8px rgba(96,139,234,.18);
 }
 
+
+/* EST */
 
 #boss-est,
 #skoll-est,
 #hati-est {
+    background:
+        linear-gradient(
+            90deg,
+            #8a5a25,
+            #d79a45
+        );
 
-  background:
-    linear-gradient(
-      90deg,
-      #99662e,
-      #d9963e
-    );
-
+    box-shadow:
+        0 0 8px rgba(215,154,69,.18);
 }
 
 
 /* =========================================================
    SKOLL & HATI — RECURSOS
-   ========================================================= */
+========================================================= */
 
 .boss-dual-resources {
+    display: grid;
 
-  display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0,1fr));
 
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
+    gap: 10px;
 
-  gap: 12px;
+    margin: 0;
 
-  margin-bottom: 16px;
+    padding: 16px 20px 18px;
 
+    background:
+        rgba(0,0,0,.14);
 }
 
 
 .boss-member {
+    position: relative;
 
-  background:
-    rgba(42, 34, 51, 0.55);
+    padding: 13px;
 
-  border: 1px solid #3a2f47;
+    overflow: hidden;
 
-  border-radius: 12px;
+    border:
+        1px solid rgba(255,255,255,.08);
 
-  padding: 12px;
+    border-radius: 12px;
 
-  position: relative;
-
-  overflow: hidden;
-
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.045),
+            rgba(255,255,255,.015)
+        );
 }
 
 
 .boss-member::before {
+    content: "";
 
-  content: '';
+    position: absolute;
 
-  position: absolute;
+    inset: 0;
 
-  inset: 0;
+    pointer-events: none;
 
-  pointer-events: none;
-
-  opacity: 0.25;
-
+    opacity: .5;
 }
 
 
 .boss-member:first-child {
-
-  border-color:
-    rgba(255, 183, 72, 0.55);
-
+    border-color:
+        rgba(240,184,76,.28);
 }
 
 
 .boss-member:first-child::before {
-
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(255, 180, 60, 0.2),
-      transparent 65%
-    );
-
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(255,190,70,.10),
+            transparent 65%
+        );
 }
 
 
 .boss-member:last-child {
-
-  border-color:
-    rgba(130, 90, 210, 0.6);
-
+    border-color:
+        rgba(145,108,220,.30);
 }
 
 
 .boss-member:last-child::before {
-
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(120, 70, 220, 0.2),
-      transparent 65%
-    );
-
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(135,95,220,.12),
+            transparent 65%
+        );
 }
 
 
 .boss-member-header {
+    position: relative;
 
-  display: flex;
+    display: flex;
 
-  justify-content: space-between;
+    justify-content: space-between;
 
-  align-items: center;
+    align-items: center;
 
-  gap: 8px;
-
-  margin-bottom: 10px;
-
+    margin-bottom: 11px;
 }
 
 
 .boss-member-name {
+    font-size: 11px;
 
-  font-size: 13px;
+    font-weight: 900;
 
-  font-weight: 800;
-
-  letter-spacing: 1px;
-
+    letter-spacing: 1.4px;
 }
 
 
 .boss-member-state {
+    color: #77707e;
 
-  font-size: 9px;
+    font-size: 8px;
 
-  text-transform: uppercase;
+    font-weight: 800;
 
-  letter-spacing: 1px;
+    letter-spacing: 1px;
 
-  color: #8a7f9e;
-
+    text-transform: uppercase;
 }
 
 
-.boss-member:first-child
-.boss-member-name {
-
-  color: #ffd36a;
-
+.boss-member:first-child .boss-member-name {
+    color: #f1c86b;
 }
 
 
-.boss-member:last-child
-.boss-member-name {
-
-  color: #b999ff;
-
+.boss-member:last-child .boss-member-name {
+    color: #b69ae8;
 }
 
 
 /* =========================================================
    ATRIBUTOS
-   ========================================================= */
+========================================================= */
 
 .boss-stats {
+    display: grid;
 
-  display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0,1fr));
 
-  grid-template-columns:
-    repeat(3, minmax(0, 1fr));
+    gap: 6px;
 
-  gap: 8px;
+    margin: 0;
+}
 
-  margin-bottom: 16px;
 
+#boss-single-stats {
+    padding: 0 20px 18px;
 }
 
 
 .boss-stat {
+    min-height: 56px;
 
-  background:
-    rgba(42, 34, 51, 0.6);
+    display: flex;
 
-  border-radius: 10px;
+    flex-direction: column;
 
-  padding: 10px 8px;
+    justify-content: center;
 
-  text-align: center;
+    align-items: center;
 
-  border: 1px solid #3a2f47;
+    padding: 8px 5px;
 
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease;
+    border:
+        1px solid rgba(255,255,255,.065);
 
+    border-radius: 8px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    transition:
+        border-color .2s ease,
+        background .2s ease,
+        transform .2s ease;
 }
 
 
 .boss-stat:hover {
+    transform: translateY(-1px);
 
-  transform:
-    translateY(-2px);
+    border-color:
+        rgba(255,255,255,.13);
 
-  border-color:
-    #5a4f6c;
-
-  background:
-    rgba(52, 43, 64, 0.75);
-
+    background:
+        rgba(255,255,255,.045);
 }
 
 
 .boss-stat-label {
+    margin-bottom: 4px;
 
-  font-size: 10px;
+    color: #716a78;
 
-  text-transform: uppercase;
+    font-size: 8px;
 
-  letter-spacing: 1px;
+    font-weight: 800;
 
-  color: #9a8fb4;
+    letter-spacing: 1px;
 
-  display: block;
-
-  margin-bottom: 4px;
-
+    text-transform: uppercase;
 }
 
 
 .boss-stat-value {
+    color: #e9e1ef;
 
-  font-size: 18px;
+    font-size: 17px;
 
-  font-weight: 700;
+    line-height: 1;
 
-  color: #f0e6ff;
+    font-weight: 800;
 
+    font-variant-numeric: tabular-nums;
 }
 
 
 /* =========================================================
-   SKOLL & HATI — STATUS
-   ========================================================= */
+   SKOLL & HATI — ATRIBUTOS
+========================================================= */
 
 .boss-dual-stats {
+    display: grid;
 
-  display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0,1fr));
 
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
+    gap: 10px;
 
-  gap: 12px;
-
-  margin-bottom: 16px;
-
+    padding: 0 20px 18px;
 }
 
 
 .boss-member-stats {
+    padding: 13px;
 
-  background:
-    rgba(26, 21, 32, 0.75);
+    border:
+        1px solid rgba(255,255,255,.07);
 
-  border:
-    1px solid #3a2f47;
+    border-radius: 12px;
 
-  border-radius: 12px;
-
-  padding: 10px;
-
+    background:
+        rgba(255,255,255,.025);
 }
 
 
 .boss-member-stats h3 {
+    margin:
+        0 0 11px;
 
-  margin:
-    0 0 10px;
+    text-align: center;
 
-  text-align: center;
+    font-size: 10px;
 
-  font-size: 12px;
+    font-weight: 900;
 
-  letter-spacing: 1.5px;
+    letter-spacing: 1.5px;
+}
 
+
+.boss-member-stats:first-child {
+    border-color:
+        rgba(240,184,76,.20);
 }
 
 
 .boss-member-stats:first-child h3 {
+    color: #eec568;
+}
 
-  color: #ffd36a;
 
+.boss-member-stats:last-child {
+    border-color:
+        rgba(145,108,220,.22);
 }
 
 
 .boss-member-stats:last-child h3 {
-
-  color: #b999ff;
-
+    color: #ad91df;
 }
 
 
 .boss-member-stats .boss-stats {
+    margin: 0;
 
-  margin-bottom: 0;
-
+    padding: 0;
 }
 
 
 /* =========================================================
    SEÇÕES
-   ========================================================= */
+========================================================= */
 
 .boss-section {
+    margin: 0;
 
-  margin-bottom: 14px;
+    padding:
+        18px 20px 0;
+}
 
+
+.boss-section:last-of-type {
+    padding-bottom: 18px;
 }
 
 
 .boss-section-title {
+    display: flex;
 
-  font-size: 12px;
+    align-items: center;
 
-  text-transform: uppercase;
+    gap: 10px;
 
-  letter-spacing: 1.5px;
+    margin:
+        0 0 11px;
 
-  color: #9a7fd4;
+    color: #847b8e;
 
-  margin:
-    0 0 8px 0;
+    font-size: 9px;
 
-  padding-bottom: 4px;
+    font-weight: 900;
 
-  border-bottom:
-    1px solid #3a2f47;
+    letter-spacing: 2px;
 
+    text-transform: uppercase;
+}
+
+
+.boss-section-title::after {
+    content: "";
+
+    flex: 1;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.10),
+            transparent
+        );
 }
 
 
 /* =========================================================
    PASSIVA
-   ========================================================= */
+========================================================= */
 
 .boss-passive {
+    position: relative;
 
-  background:
-    rgba(58, 47, 71, 0.4);
+    padding: 14px 15px;
 
-  border-radius: 10px;
+    overflow: hidden;
 
-  padding: 12px;
+    border:
+        1px solid rgba(145,108,200,.18);
 
-  border-left:
-    3px solid #7a5fb4;
+    border-left:
+        2px solid #8c68bd;
 
-  transition:
-    all 0.3s ease;
+    border-radius: 10px;
 
+    background:
+        linear-gradient(
+            135deg,
+            rgba(130,95,180,.09),
+            rgba(255,255,255,.018)
+        );
+}
+
+
+.boss-passive::after {
+    content: "";
+
+    position: absolute;
+
+    width: 120px;
+    height: 120px;
+
+    right: -50px;
+    top: -70px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(145,100,220,.08);
+
+    filter: blur(20px);
+
+    pointer-events: none;
 }
 
 
 .boss-passive-name {
+    position: relative;
 
-  font-size: 14px;
+    display: block;
 
-  color: #d4b8ff;
+    margin-bottom: 6px;
 
-  display: block;
+    color: #d3b7f1;
 
-  margin-bottom: 4px;
+    font-size: 13px;
 
+    font-weight: 800;
 }
 
 
 .boss-passive-description {
+    position: relative;
 
-  font-size: 12px;
+    margin: 0 0 9px;
 
-  line-height: 1.5;
+    color: #a69dab;
 
-  color: #b8a8cc;
+    font-size: 11px;
 
-  margin:
-    0 0 8px 0;
-
+    line-height: 1.55;
 }
 
 
 .boss-passive-state {
+    position: relative;
 
-  font-size: 11px;
+    color: #756d7d;
 
-  color: #8a7f9e;
+    font-size: 9px;
 
-  font-style: italic;
+    font-style: normal;
 
-  transition:
-    all 0.3s ease;
-
+    letter-spacing: .4px;
 }
 
 
 /* =========================================================
    HABILIDADES
-   ========================================================= */
+========================================================= */
 
 .boss-skill {
+    position: relative;
 
-  background:
-    rgba(42, 34, 51, 0.5);
+    margin-bottom: 8px;
 
-  border-radius: 10px;
+    padding: 13px;
 
-  padding: 12px;
+    border:
+        1px solid rgba(255,255,255,.065);
 
-  margin-bottom: 8px;
+    border-radius: 10px;
 
-  border:
-    1px solid #3a2f47;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.035),
+            rgba(255,255,255,.015)
+        );
 
-  transition:
-    border-color 0.3s ease,
-    transform 0.2s ease,
-    box-shadow 0.3s ease;
-
+    transition:
+        border-color .25s ease,
+        transform .25s ease,
+        background .25s ease;
 }
 
 
 .boss-skill:hover {
+    transform: translateX(2px);
 
-  border-color:
-    #5a4f6c;
+    border-color:
+        rgba(160,125,205,.25);
 
-  transform:
-    translateX(3px);
-
-  box-shadow:
-    0 4px 14px rgba(0,0,0,0.18);
-
+    background:
+        linear-gradient(
+            145deg,
+            rgba(150,110,200,.065),
+            rgba(255,255,255,.015)
+        );
 }
 
 
 .skill-header {
+    display: flex;
 
-  display: flex;
+    align-items: center;
 
-  justify-content: space-between;
+    justify-content: space-between;
 
-  align-items: center;
+    gap: 10px;
 
-  gap: 8px;
-
-  margin-bottom: 6px;
-
+    margin-bottom: 7px;
 }
 
 
 .skill-header strong {
+    color: #e3dbe9;
 
-  font-size: 14px;
+    font-size: 12px;
 
-  color: #e0d6eb;
+    font-weight: 800;
 
+    line-height: 1.25;
 }
 
 
 .skill-cost {
+    display: flex;
 
-  display: flex;
+    flex-shrink: 0;
 
-  gap: 6px;
+    gap: 4px;
 
-  flex-wrap: wrap;
+    justify-content: flex-end;
+}
 
-  justify-content: flex-end;
 
+.mp-cost,
+.est-cost {
+    padding: 3px 6px;
+
+    border-radius: 5px;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    letter-spacing: .3px;
 }
 
 
 .mp-cost {
+    color: #9cbaff;
 
-  font-size: 10px;
+    background:
+        rgba(73,112,205,.13);
 
-  background:
-    rgba(78, 120, 217, 0.25);
-
-  color: #94b8ff;
-
-  padding:
-    3px 8px;
-
-  border-radius: 10px;
-
+    border:
+        1px solid rgba(90,130,230,.12);
 }
 
 
 .est-cost {
+    color: #e8bd76;
 
-  font-size: 10px;
+    background:
+        rgba(190,130,50,.12);
 
-  background:
-    rgba(217, 150, 62, 0.25);
-
-  color: #ffd494;
-
-  padding:
-    3px 8px;
-
-  border-radius: 10px;
-
+    border:
+        1px solid rgba(210,150,70,.12);
 }
 
 
 .boss-skill p {
+    margin:
+        0 0 11px;
 
-  font-size: 12px;
+    color: #918997;
 
-  color: #a898bc;
+    font-size: 10px;
 
-  margin:
-    0 0 10px 0;
-
-  line-height: 1.4;
-
+    line-height: 1.55;
 }
 
 
 .boss-skill-button {
+    width: 100%;
 
-  width: 100%;
+    min-height: 31px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #4a3f6c,
-      #3a2f5c
-    );
+    padding: 7px 10px;
 
-  border: none;
+    border:
+        1px solid rgba(150,120,195,.20);
 
-  color: #e0d6eb;
+    border-radius: 7px;
 
-  padding: 8px;
+    color: #cfc4dc;
 
-  border-radius: 8px;
+    background:
+        rgba(120,90,160,.10);
 
-  font-size: 12px;
+    font-size: 9px;
 
-  cursor: pointer;
+    font-weight: 800;
 
-  transition:
-    all 0.3s ease;
+    letter-spacing: 1px;
 
+    cursor: pointer;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        transform .2s ease;
 }
 
 
-.boss-skill-button:hover {
+.boss-skill-button:hover:not(:disabled) {
+    transform: translateY(-1px);
 
-  background:
-    linear-gradient(
-      135deg,
-      #5a4f7c,
-      #4a3f6c
-    );
+    color: #f0e8f7;
 
-  transform:
-    translateY(-1px);
+    background:
+        rgba(135,100,185,.22);
 
-  box-shadow:
-    0 4px 10px rgba(0,0,0,0.3);
+    border-color:
+        rgba(170,135,215,.38);
+}
 
+
+.boss-skill-button:disabled {
+    opacity: .35;
+
+    cursor: not-allowed;
 }
 
 
 /* =========================================================
-   ESTADO DA BATALHA
-   ========================================================= */
+   ESTADO
+========================================================= */
 
 .boss-state {
+    display: flex;
 
-  display: flex;
+    align-items: center;
 
-  align-items: center;
+    gap: 8px;
 
-  gap: 8px;
+    margin:
+        0 20px 10px;
 
-  background:
-    rgba(42, 34, 51, 0.5);
+    padding:
+        9px 11px;
 
-  border:
-    1px solid #3a2f47;
+    border:
+        1px solid rgba(255,255,255,.065);
 
-  border-radius: 10px;
+    border-radius: 8px;
 
-  padding: 10px 12px;
+    background:
+        rgba(0,0,0,.16);
 
-  margin-bottom: 12px;
+    color: #827b88;
 
-  font-size: 11px;
+    font-size: 9px;
 
-  color: #aaa0b8;
-
+    letter-spacing: .3px;
 }
 
 
 .boss-state-dot {
+    width: 6px;
+    height: 6px;
 
-  width: 7px;
+    flex-shrink: 0;
 
-  height: 7px;
+    border-radius: 50%;
 
-  border-radius: 50%;
+    background: #62c990;
 
-  background:
-    #5fcf8a;
+    box-shadow:
+        0 0 8px rgba(98,201,144,.6);
 
-  box-shadow:
-    0 0 8px rgba(95,207,138,0.7);
-
-  animation:
-    estado-pulso 2s infinite;
-
+    animation:
+        estado-pulso 2s ease-in-out infinite;
 }
 
 
 @keyframes estado-pulso {
+    0%,
+    100% {
+        opacity: 1;
+    }
 
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.45;
-  }
-
+    50% {
+        opacity: .4;
+    }
 }
 
 
 /* =========================================================
    BOTÕES DE TESTE
-   ========================================================= */
+========================================================= */
 
 .boss-test-buttons {
+    display: grid;
 
-  display: grid;
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
 
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
+    gap: 6px;
 
-  gap: 8px;
-
+    padding:
+        0 20px 20px;
 }
 
 
 .boss-test-buttons button {
+    min-height: 32px;
 
-  border:
-    1px solid #3a2f47;
+    padding: 7px 8px;
 
-  background:
-    rgba(42, 34, 51, 0.7);
+    border:
+        1px solid rgba(255,255,255,.07);
 
-  color:
-    #bfb3cc;
+    border-radius: 7px;
 
-  padding:
-    9px 8px;
+    color: #817986;
 
-  border-radius:
-    8px;
+    background:
+        rgba(255,255,255,.025);
 
-  font-size:
-    11px;
+    font-size: 9px;
 
-  cursor:
-    pointer;
+    font-weight: 700;
 
-  transition:
-    all 0.2s ease;
+    cursor: pointer;
 
+    transition:
+        border-color .2s ease,
+        color .2s ease,
+        background .2s ease;
 }
 
 
 .boss-test-buttons button:hover {
+    color: #cfc5d8;
 
-  border-color:
-    #6a5a7c;
+    background:
+        rgba(255,255,255,.055);
 
-  color:
-    #f0e6ff;
-
-  background:
-    rgba(58, 47, 71, 0.85);
-
+    border-color:
+        rgba(255,255,255,.14);
 }
 
 
 /* =========================================================
-   💨 VENTO — HRÆSVELGR
-   ========================================================= */
+   VENTO — HRÆSVELGR
+========================================================= */
 
 .affinity-vento {
+    --element-main: #54a8ca;
+    --element-glow: rgba(72,168,202,.22);
 
-  border-color:
-    #3a8aaa;
+    border-color:
+        rgba(73,154,188,.48);
 
-  box-shadow:
-    0 0 20px rgba(58, 138, 170, 0.25);
-
-}
-
-
-.affinity-vento::before {
-
-  background:
-    linear-gradient(
-      45deg,
-      #4aa3c2,
-      #87ceeb,
-      #4aa3c2
-    );
-
-  background-size:
-    300% 300%;
-
-  animation:
-    vento-brilho 3s ease infinite;
-
-}
-
-
-@keyframes vento-brilho {
-
-  0% {
-    background-position:
-      0% 50%;
-  }
-
-  50% {
-    background-position:
-      100% 50%;
-  }
-
-  100% {
-    background-position:
-      0% 50%;
-  }
-
+    box-shadow:
+        0 20px 65px rgba(0,0,0,.55),
+        0 0 35px var(--element-glow);
 }
 
 
 .affinity-vento .boss-affinity {
+    color: #bdefff;
 
-  background:
-    linear-gradient(
-      135deg,
-      #2a6b8c,
-      #4a9bbc
-    );
+    border-color:
+        rgba(83,174,210,.25);
 
-  color:
-    #fff;
-
+    background:
+        rgba(53,137,170,.16);
 }
 
 
-.affinity-vento .boss-image {
-
-  animation:
-    vento-flutua 4s ease-in-out infinite;
-
+.affinity-vento .boss-section-title {
+    color: #66aeca;
 }
 
 
-@keyframes vento-flutua {
-
-  0%,
-  100% {
-    transform:
-      translateY(0)
-      rotate(0deg);
-  }
-
-  25% {
-    transform:
-      translateY(-7px)
-      rotate(1deg);
-  }
-
-  75% {
-    transform:
-      translateY(5px)
-      rotate(-1deg);
-  }
-
+.affinity-vento .boss-passive {
+    border-left-color:
+        #4e9fc0;
 }
 
 
-.affinity-vento
-.boss-passive-state.furia {
-
-  color:
-    #87ceeb;
-
-  text-shadow:
-    0 0 8px
-    rgba(135, 206, 235, 0.5);
-
-  animation:
-    vento-rajada 1.5s infinite;
-
+.affinity-vento .boss-image-area::before {
+    background:
+        radial-gradient(
+            circle,
+            rgba(70,170,210,.16),
+            transparent 68%
+        );
 }
 
 
-@keyframes vento-rajada {
+.affinity-vento .boss-skill-button:hover:not(:disabled) {
+    border-color:
+        rgba(75,170,210,.38);
 
-  0%,
-  100% {
-    opacity:
-      1;
-  }
+    background:
+        rgba(55,145,180,.13);
+}
 
-  50% {
-    opacity:
-      0.5;
-  }
 
+.affinity-vento .boss-state-dot {
+    background: #69c8eb;
+
+    box-shadow:
+        0 0 10px rgba(105,200,235,.7);
 }
 
 
 /* =========================================================
-   ☀️🌑 SKOLL & HATI — DUAL
-   ========================================================= */
+   DUAL — SKOLL & HATI
+========================================================= */
 
 .affinity-dual {
+    --element-glow: rgba(150,105,205,.24);
 
-  border-color:
-    #7256a8;
+    border-color:
+        rgba(135,100,190,.48);
 
-  box-shadow:
-    0 0 25px
-    rgba(114, 86, 168, 0.3),
-
-    inset 0 0 40px
-    rgba(90, 60, 150, 0.06);
-
-}
-
-
-.affinity-dual::before {
-
-  background:
-    linear-gradient(
-      110deg,
-      #c78b32 0%,
-      #f2c35c 28%,
-      #684c9c 50%,
-      #8e68d1 72%,
-      #c78b32 100%
-    );
-
-  background-size:
-    300% 300%;
-
-  animation:
-    eclipse-duplo 4s ease infinite;
-
-}
-
-
-@keyframes eclipse-duplo {
-
-  0% {
-    background-position:
-      0% 50%;
-  }
-
-  50% {
-    background-position:
-      100% 50%;
-  }
-
-  100% {
-    background-position:
-      0% 50%;
-  }
-
+    box-shadow:
+        0 20px 65px rgba(0,0,0,.58),
+        0 0 38px var(--element-glow);
 }
 
 
 .affinity-dual .boss-affinity {
+    color: #e2d0ff;
 
-  background:
-    linear-gradient(
-      100deg,
-      #b87928,
-      #e4b64f 45%,
-      #62448e 55%,
-      #8965c6
-    );
+    background:
+        linear-gradient(
+            100deg,
+            rgba(213,161,65,.16),
+            rgba(123,86,174,.18)
+        );
 
-  color:
-    #fff;
-
+    border-color:
+        rgba(170,130,215,.25);
 }
 
 
 .affinity-dual .boss-passive {
-
-  border-left:
-    3px solid #9670c8;
-
+    border-left-color:
+        #9470c5;
 }
 
 
-.affinity-dual .boss-image {
-
-  animation:
-    eclipse-imagem 5s ease-in-out infinite;
-
-}
-
-
-@keyframes eclipse-imagem {
-
-  0%,
-  100% {
-    filter:
-      brightness(1)
-      saturate(1);
-  }
-
-  50% {
-    filter:
-      brightness(1.08)
-      saturate(1.15);
-  }
-
+.affinity-dual .boss-image-area::before {
+    background:
+        radial-gradient(
+            circle,
+            rgba(150,100,210,.16),
+            transparent 68%
+        );
 }
 
 
 /* =========================================================
-   🔥 FOGO
-   Mantido para compatibilidade futura
-   ========================================================= */
+   FOGO
+========================================================= */
 
 .affinity-fogo {
+    border-color:
+        rgba(190,73,43,.48);
 
-  border-color:
-    #b94a2a;
-
-  box-shadow:
-    0 0 20px
-    rgba(185, 74, 42, 0.3);
-
-}
-
-
-.affinity-fogo::before {
-
-  background:
-    linear-gradient(
-      45deg,
-      #e97a3a,
-      #ff4422,
-      #e97a3a
-    );
-
-  background-size:
-    300% 300%;
-
-  animation:
-    fogo-chama 2s ease infinite;
-
-}
-
-
-@keyframes fogo-chama {
-
-  0% {
-    background-position:
-      0% 50%;
-  }
-
-  50% {
-    background-position:
-      100% 80%;
-  }
-
-  100% {
-    background-position:
-      0% 50%;
-  }
-
+    box-shadow:
+        0 20px 65px rgba(0,0,0,.55),
+        0 0 35px rgba(190,73,43,.18);
 }
 
 
 .affinity-fogo .boss-affinity {
+    color: #ffd0bd;
 
-  background:
-    linear-gradient(
-      135deg,
-      #b94a2a,
-      #e97a3a
-    );
+    background:
+        rgba(185,70,40,.14);
 
-  color:
-    #fff;
-
+    border-color:
+        rgba(220,100,70,.22);
 }
 
 
-.affinity-fogo .boss-image {
-
-  animation:
-    fogo-brilho 2s ease-in-out infinite alternate;
-
+.affinity-fogo .boss-section-title {
+    color: #d87958;
 }
 
 
-@keyframes fogo-brilho {
+.affinity-fogo .boss-passive {
+    border-left-color: #c65739;
+}
 
-  0% {
-    filter:
-      brightness(1)
-      saturate(1);
-  }
 
-  100% {
-    filter:
-      brightness(1.2)
-      saturate(1.3);
-  }
-
+.affinity-fogo .boss-image-area::before {
+    background:
+        radial-gradient(
+            circle,
+            rgba(220,80,45,.16),
+            transparent 68%
+        );
 }
 
 
 /* =========================================================
-   🌑 TREVAS
-   Mantido para compatibilidade futura
-   ========================================================= */
+   TREVAS
+========================================================= */
 
 .affinity-trevas {
+    border-color:
+        rgba(85,65,150,.52);
 
-  border-color:
-    #3a2a6c;
-
-  box-shadow:
-    0 0 25px
-    rgba(58, 42, 108, 0.4),
-
-    inset 0 0 40px
-    rgba(80, 50, 140, 0.08);
-
-}
-
-
-.affinity-trevas::before {
-
-  background:
-    linear-gradient(
-      45deg,
-      #2a1a4c,
-      #5a3a8c,
-      #2a1a4c
-    );
-
-  background-size:
-    300% 300%;
-
-  animation:
-    trevas-espiral 4s ease infinite;
-
-}
-
-
-@keyframes trevas-espiral {
-
-  0% {
-    background-position:
-      0% 50%;
-  }
-
-  50% {
-    background-position:
-      100% 50%;
-  }
-
-  100% {
-    background-position:
-      0% 50%;
-  }
-
+    box-shadow:
+        0 20px 65px rgba(0,0,0,.62),
+        0 0 40px rgba(75,50,150,.20);
 }
 
 
 .affinity-trevas .boss-affinity {
+    color: #d6c7ff;
 
-  background:
-    linear-gradient(
-      135deg,
-      #3a2a6c,
-      #5a3a8c
-    );
+    background:
+        rgba(75,55,145,.16);
+}
 
-  color:
-    #d4c8ff;
 
+.affinity-trevas .boss-section-title {
+    color: #9179cf;
+}
+
+
+.affinity-trevas .boss-passive {
+    border-left-color:
+        #6c54a9;
 }
 
 
 /* =========================================================
-   🪨 TERRA
-   Mantido apenas para compatibilidade com outros Bosses
-   ========================================================= */
+   TERRA
+========================================================= */
 
 .affinity-terra {
+    border-color:
+        rgba(130,94,58,.48);
 
-  border-color:
-    #7c5a3a;
-
-  box-shadow:
-    0 0 20px
-    rgba(124, 90, 58, 0.35);
-
-}
-
-
-.affinity-terra::before {
-
-  background:
-    linear-gradient(
-      45deg,
-      #7c5a3a,
-      #aa8855,
-      #7c5a3a
-    );
-
-  background-size:
-    300% 300%;
-
-  animation:
-    terra-peso 5s ease infinite;
-
-}
-
-
-@keyframes terra-peso {
-
-  0% {
-    background-position:
-      0% 50%;
-  }
-
-  50% {
-    background-position:
-      100% 50%;
-  }
-
-  100% {
-    background-position:
-      0% 50%;
-  }
-
+    box-shadow:
+        0 20px 65px rgba(0,0,0,.58),
+        0 0 32px rgba(130,94,58,.16);
 }
 
 
 .affinity-terra .boss-affinity {
+    color: #ddc59f;
 
-  background:
-    linear-gradient(
-      135deg,
-      #7c5a3a,
-      #aa8855
-    );
+    background:
+        rgba(130,94,58,.14);
+}
 
-  color:
-    #fff;
 
+.affinity-terra .boss-section-title {
+    color: #b49468;
+}
+
+
+.affinity-terra .boss-passive {
+    border-left-color:
+        #8f6d44;
 }
 
 
 /* =========================================================
-   NÍVEIS ALTOS
-   ========================================================= */
+   NÍVEL 300
+========================================================= */
 
 .boss-card[data-level="300"] {
-
-  box-shadow:
-    0 0 28px
-    rgba(160, 100, 220, 0.25);
-
+    box-shadow:
+        0 24px 75px rgba(0,0,0,.62),
+        0 0 42px rgba(155,105,215,.20);
 }
 
 
-.boss-card[data-level="400"] {
-
-  box-shadow:
-    0 0 38px
-    rgba(220, 170, 255, 0.32),
-
-    inset 0 0 45px
-    rgba(150, 100, 220, 0.08);
-
-}
-
-
-.boss-card[data-level="400"]
-.boss-title-area h2 {
-
-  text-shadow:
-    0 0 12px
-    rgba(230, 200, 255, 0.45);
-
+.boss-card[data-level="300"] .boss-title-area h2 {
+    text-shadow:
+        0 0 20px rgba(175,130,225,.25);
 }
 
 
 /* =========================================================
-   OCULTAÇÃO SEGURA
-   ========================================================= */
+   NÍVEL 400
+========================================================= */
 
-[style*="display: none"] {
+.boss-card[data-level="400"] {
+    border-color:
+        rgba(205,170,245,.42);
 
-  /*
-     Não sobrescreve o display inline
-     usado pelo JavaScript.
-  */
+    box-shadow:
+        0 28px 90px rgba(0,0,0,.68),
+        0 0 55px rgba(195,150,240,.25),
+        inset 0 1px 0 rgba(255,255,255,.07);
+}
 
+
+.boss-card[data-level="400"] .boss-title-area h2 {
+    color: #fff6ff;
+
+    text-shadow:
+        0 0 12px rgba(230,200,255,.32),
+        0 0 28px rgba(190,140,235,.18);
+}
+
+
+.boss-card[data-level="400"] .boss-image-area::before {
+    width: 85%;
+    height: 85%;
+
+    left: 7.5%;
+    top: 7.5%;
+
+    opacity: 1;
 }
 
 
 /* =========================================================
    RESPONSIVO — TABLET
-   ========================================================= */
+========================================================= */
 
 @media (max-width: 700px) {
 
-  .boss-card {
+    .boss-card {
+        max-width: 100%;
+    }
 
-    max-width:
-      100%;
-
-  }
-
-
-  .boss-image-area {
-
-    height:
-      230px;
-
-  }
-
+    .boss-image-area {
+        height: 300px;
+    }
 }
 
 
 /* =========================================================
    RESPONSIVO — CELULAR
-   ========================================================= */
+========================================================= */
 
 @media (max-width: 480px) {
 
-  .boss-card {
+    .boss-card {
+        margin:
+            12px 7px;
 
-    padding:
-      12px;
+        border-radius:
+            18px;
+    }
 
-    margin:
-      0 8px;
 
-    border-radius:
-      14px;
+    .boss-header {
+        min-height: 68px;
 
-  }
+        padding:
+            15px;
+    }
 
 
-  .boss-title-area h2 {
+    .boss-title-area h2 {
+        font-size:
+            20px;
+    }
 
-    font-size:
-      18px;
 
-  }
+    .boss-level {
+        margin-top:
+            6px;
 
+        font-size:
+            8px;
+    }
 
-  .boss-level {
 
-    font-size:
-      10px;
+    .boss-affinity {
+        padding:
+            6px 8px;
 
-  }
+        font-size:
+            8px;
+    }
 
 
-  .boss-affinity {
+    .boss-image-area {
+        height:
+            255px;
+    }
 
-    padding:
-      5px 9px;
 
-    font-size:
-      9px;
+    .boss-single-resources,
+    .boss-dual-resources {
+        padding:
+            13px 15px 15px;
+    }
 
-  }
 
+    #boss-single-stats {
+        padding:
+            0 15px 15px;
+    }
 
-  .boss-image-area {
 
-    height:
-      190px;
+    .boss-dual-stats {
+        padding:
+            0 15px 15px;
+    }
 
-  }
 
+    .boss-section {
+        padding:
+            15px 15px 0;
+    }
 
-  .boss-stats {
 
-    gap:
-      6px;
+    .boss-state {
+        margin-left:
+            15px;
 
-  }
+        margin-right:
+            15px;
+    }
 
 
-  .boss-stat {
+    .boss-test-buttons {
+        padding:
+            0 15px 15px;
+    }
 
-    padding:
-      8px 4px;
 
-  }
+    .boss-skill {
+        padding:
+            11px;
+    }
 
 
-  .boss-stat-label {
-
-    font-size:
-      8px;
-
-    letter-spacing:
-      0.6px;
-
-  }
-
-
-  .boss-stat-value {
-
-    font-size:
-      15px;
-
-  }
-
-
-  .boss-dual-resources {
-
-    grid-template-columns:
-      1fr;
-
-  }
-
-
-  .boss-dual-stats {
-
-    grid-template-columns:
-      1fr;
-
-  }
-
-
-  .boss-member-stats .boss-stats {
-
-    grid-template-columns:
-      repeat(3, 1fr);
-
-  }
-
-
-  .skill-header {
-
-    align-items:
-      flex-start;
-
-    flex-direction:
-      column;
-
-  }
-
-
-  .skill-cost {
-
-    justify-content:
-      flex-start;
-
-  }
-
-
-  .boss-test-buttons {
-
-    grid-template-columns:
-      1fr;
-
-  }
-
+    .boss-skill-button {
+        min-height:
+            34px;
+    }
 }
 
 
 /* =========================================================
-   CELULARES MUITO PEQUENOS
-   ========================================================= */
+   CELULAR MUITO PEQUENO
+========================================================= */
 
 @media (max-width: 350px) {
 
-  .boss-card {
-
-    padding:
-      10px;
-
-    margin:
-      0 4px;
-
-  }
+    .boss-header {
+        padding:
+            13px;
+    }
 
 
-  .boss-image-area {
-
-    height:
-      165px;
-
-  }
+    .boss-title-area h2 {
+        font-size:
+            18px;
+    }
 
 
-  .boss-stat {
-
-    padding:
-      7px 3px;
-
-  }
+    .boss-image-area {
+        height:
+            225px;
+    }
 
 
-  .boss-stat-value {
+    .boss-single-resources,
+    .boss-dual-resources {
+        padding:
+            12px;
+    }
 
-    font-size:
-      14px;
 
-  }
+    #boss-single-stats,
+    .boss-dual-stats {
+        padding-left:
+            12px;
+
+        padding-right:
+            12px;
+    }
 
 
-  .boss-member {
+    .boss-section {
+        padding-left:
+            12px;
 
-    padding:
-      9px;
+        padding-right:
+            12px;
+    }
 
-  }
 
+    .boss-state {
+        margin-left:
+            12px;
+
+        margin-right:
+            12px;
+    }
+
+
+    .boss-test-buttons {
+        padding-left:
+            12px;
+
+        padding-right:
+            12px;
+    }
 }
 
 
 /* =========================================================
-   ACESSIBILIDADE / REDUÇÃO DE MOVIMENTO
-   ========================================================= */
+   REDUÇÃO DE MOVIMENTO
+========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
 
-  .boss-card,
-  .boss-card *,
-  .boss-card::before {
+    .boss-card,
+    .boss-card *,
+    .boss-card::before {
+        animation-duration:
+            .01ms !important;
 
-    animation-duration:
-      0.01ms !important;
+        animation-iteration-count:
+            1 !important;
 
-    animation-iteration-count:
-      1 !important;
-
-    transition-duration:
-      0.01ms !important;
-
-  }
-
+        transition-duration:
+            .01ms !important;
+    }
 }
