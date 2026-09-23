@@ -1,41 +1,40 @@
-// =========================================================
-// BOSS SYSTEM — EVENTOS
-//
-// Responsável por:
-// - Cliques dos Bosses
-// - Cliques dos níveis
-// - Botões de combate
-// - Botões de habilidades
-// - Atualização da interface
-//
-// NÃO contém:
-// - Dados dos Bosses
-// - Regras de combate
-// - Cálculos de dano
-// - Custos de habilidades
-// =========================================================
+/* =========================================================
+   BOSS EVENTS
+   EVENTOS E INTERAÇÃO DA INTERFACE
+
+   Responsabilidades:
+   - Seleção de Boss
+   - Seleção de nível
+   - Botões de combate
+   - Botões de habilidades
+   - Atualização dos eventos da interface
+
+   IMPORTANTE:
+   Este arquivo NÃO decide qual membro executa
+   uma habilidade de Boss duplo.
+
+   Essa responsabilidade pertence ao BossSkills.
+========================================================= */
 
 
-// =========================================================
-// INICIALIZAÇÃO
-// =========================================================
+/* =========================================================
+   INICIALIZAÇÃO
+========================================================= */
 
 function inicializarEventosBoss() {
 
     configurarSelecaoBoss();
-
     configurarSelecaoNivel();
-
     configurarBotoesCombate();
-
     configurarBotoesHabilidades();
 
+    atualizarEventosInterface();
 }
 
 
-// =========================================================
-// SELEÇÃO DE BOSS
-// =========================================================
+/* =========================================================
+   SELEÇÃO DE BOSS
+========================================================= */
 
 function configurarSelecaoBoss() {
 
@@ -44,55 +43,49 @@ function configurarSelecaoBoss() {
             ".boss-selector button"
         );
 
+    botoes.forEach(botao => {
 
-    botoes.forEach(
-        botao => {
+        botao.addEventListener(
+            "click",
+            () => {
 
-            botao.addEventListener(
-                "click",
-                () => {
+                const bossId =
+                    botao.dataset.bossId;
 
-                    const bossId =
-                        botao.dataset.bossId;
-
-
-                    if (!bossId) {
-                        return;
-                    }
-
-
-                    const sucesso =
-                        BossState.definirBoss(
-                            bossId
-                        );
-
-
-                    if (!sucesso) {
-
-                        console.warn(
-                            "Boss inválido:",
-                            bossId
-                        );
-
-                        return;
-
-                    }
-
-
-                    BossRender.renderizarBoss();
-
+                if (!bossId) {
+                    return;
                 }
-            );
 
-        }
-    );
+                const sucesso =
+                    BossState.definirBoss(
+                        bossId
+                    );
 
+                if (!sucesso) {
+                    return;
+                }
+
+                /*
+                   O Boss mudou.
+
+                   O estado precisa ser reinicializado
+                   antes de atualizar a interface.
+                */
+
+                BossState.inicializarEstado();
+
+                BossRender.renderizarBoss();
+
+                atualizarEventosInterface();
+            }
+        );
+    });
 }
 
 
-// =========================================================
-// SELEÇÃO DE NÍVEL
-// =========================================================
+/* =========================================================
+   SELEÇÃO DE NÍVEL
+========================================================= */
 
 function configurarSelecaoNivel() {
 
@@ -101,212 +94,167 @@ function configurarSelecaoNivel() {
             ".boss-level-selector button"
         );
 
+    botoes.forEach(botao => {
 
-    botoes.forEach(
-        botao => {
+        botao.addEventListener(
+            "click",
+            () => {
 
-            botao.addEventListener(
-                "click",
-                () => {
+                const nivel =
+                    Number(
+                        botao.dataset.level
+                    );
 
-                    const nivel =
-                        Number(
-                            botao.dataset.level
-                        );
-
-
-                    if (!nivel) {
-                        return;
-                    }
-
-
-                    const sucesso =
-                        BossState.definirNivel(
-                            nivel
-                        );
-
-
-                    if (!sucesso) {
-
-                        console.warn(
-                            "Nível inválido:",
-                            nivel
-                        );
-
-                        return;
-
-                    }
-
-
-                    BossRender.renderizarBoss();
-
+                if (!nivel) {
+                    return;
                 }
-            );
 
-        }
-    );
+                const sucesso =
+                    BossState.definirNivel(
+                        nivel
+                    );
 
+                if (!sucesso) {
+                    return;
+                }
+
+                /*
+                   Ao trocar de nível,
+                   reinicializa o estado da batalha.
+                */
+
+                BossState.inicializarEstado();
+
+                BossRender.renderizarBoss();
+
+                atualizarEventosInterface();
+            }
+        );
+    });
 }
 
 
-// =========================================================
-// BOTÕES DE COMBATE
-// =========================================================
+/* =========================================================
+   BOTÕES DE COMBATE
+========================================================= */
 
 function configurarBotoesCombate() {
 
-    // =====================================================
-    // DANO RECEBIDO
-    // =====================================================
-
-    const btnDano =
+    const botaoDano =
         document.getElementById(
             "btn-dano-recebido"
         );
 
-
-    if (btnDano) {
-
-        btnDano.addEventListener(
-            "click",
-            () => {
-
-                const estado =
-                    BossState.obterEstado();
-
-
-                if (!estado) {
-                    return;
-                }
-
-
-                // -----------------------------------------
-                // BOSS ÚNICO
-                // -----------------------------------------
-
-                if (
-                    estado.tipo === "single"
-                ) {
-
-                    BossCombat.receberDanoSingle(
-                        50
-                    );
-
-                }
-
-
-                // -----------------------------------------
-                // BOSS DUPLO
-                // -----------------------------------------
-
-                else if (
-                    estado.tipo === "dual"
-                ) {
-
-                    BossCombat.receberDanoDual(
-                        50
-                    );
-
-                }
-
-            }
-        );
-
-    }
-
-
-    // =====================================================
-    // RESTAURAR
-    // =====================================================
-
-    const btnRestaurar =
+    const botaoRestaurar =
         document.getElementById(
             "btn-restaurar"
         );
 
-
-    if (btnRestaurar) {
-
-        btnRestaurar.addEventListener(
-            "click",
-            () => {
-
-                BossCombat.restaurarBatalha();
-
-            }
-        );
-
-    }
-
-
-    // =====================================================
-    // AVANÇAR RODADA
-    // =====================================================
-
-    const btnRodada =
+    const botaoRodada =
         document.getElementById(
             "btn-rodada-passou"
         );
 
-
-    if (btnRodada) {
-
-        btnRodada.addEventListener(
-            "click",
-            () => {
-
-                BossCombat.avancarRodada();
-
-            }
-        );
-
-    }
-
-
-    // =====================================================
-    // ZERAR BOSS
-    // =====================================================
-
-    const btnZerar =
+    const botaoZerar =
         document.getElementById(
             "btn-zerar"
         );
 
 
-    if (btnZerar) {
+    /* -----------------------------------------------------
+       DANO DE TESTE
+    ----------------------------------------------------- */
 
-        btnZerar.addEventListener(
+    if (botaoDano) {
+
+        botaoDano.addEventListener(
+            "click",
+            () => {
+
+                const boss =
+                    BossState.obterBoss();
+
+                if (!boss) {
+                    return;
+                }
+
+                if (boss.tipo === "Boss Duplo") {
+
+                    BossCombat.receberDanoDual(
+                        50
+                    );
+
+                } else {
+
+                    BossCombat.receberDanoSingle(
+                        50
+                    );
+                }
+
+                atualizarEventosInterface();
+            }
+        );
+    }
+
+
+    /* -----------------------------------------------------
+       RESTAURAR BATALHA
+    ----------------------------------------------------- */
+
+    if (botaoRestaurar) {
+
+        botaoRestaurar.addEventListener(
+            "click",
+            () => {
+
+                BossCombat.restaurarBatalha();
+
+                atualizarEventosInterface();
+            }
+        );
+    }
+
+
+    /* -----------------------------------------------------
+       PASSAR RODADA
+    ----------------------------------------------------- */
+
+    if (botaoRodada) {
+
+        botaoRodada.addEventListener(
+            "click",
+            () => {
+
+                BossCombat.avancarRodada();
+
+                atualizarEventosInterface();
+            }
+        );
+    }
+
+
+    /* -----------------------------------------------------
+       ZERAR BATALHA
+    ----------------------------------------------------- */
+
+    if (botaoZerar) {
+
+        botaoZerar.addEventListener(
             "click",
             () => {
 
                 BossCombat.zerarBatalha();
 
+                atualizarEventosInterface();
             }
         );
-
     }
-
 }
 
 
-// =========================================================
-// BOTÕES DE HABILIDADES
-// =========================================================
-//
-// Os cinco containers existentes no HTML:
-//
-// skill-container-1
-// skill-container-2
-// skill-container-3
-// skill-container-4
-// skill-container-5
-//
-// Cada um possui:
-//
-// .boss-skill-button
-//
-// O índice interno começa em 0.
-// =========================================================
+/* =========================================================
+   BOTÕES DE HABILIDADES
+========================================================= */
 
 function configurarBotoesHabilidades() {
 
@@ -315,9 +263,23 @@ function configurarBotoesHabilidades() {
             ".boss-skill-button"
         );
 
-
     botoes.forEach(
         (botao, indice) => {
+
+            /*
+               Evita múltiplos listeners
+               caso a interface seja atualizada.
+            */
+
+            if (
+                botao.dataset.skillEventConfigured ===
+                "true"
+            ) {
+                return;
+            }
+
+            botao.dataset.skillEventConfigured =
+                "true";
 
             botao.addEventListener(
                 "click",
@@ -326,131 +288,65 @@ function configurarBotoesHabilidades() {
                     usarHabilidadePeloBotao(
                         indice
                     );
-
                 }
             );
-
         }
     );
-
 }
 
 
-// =========================================================
-// USAR HABILIDADE PELO BOTÃO
-// =========================================================
+/* =========================================================
+   USAR HABILIDADE PELO BOTÃO
+========================================================= */
 
 function usarHabilidadePeloBotao(
     indice
 ) {
 
-    const estado =
-        BossState.obterEstado();
+    /*
+       IMPORTANTE:
 
+       Não escolhemos mais Skoll ou Hati aqui.
 
-    if (!estado) {
-        return;
-    }
+       O BossSkills consulta a habilidade atual
+       e descobre automaticamente o membro através
+       de:
 
+           habilidade.membro
 
-    // =====================================================
-    // BOSS ÚNICO
-    // =====================================================
+       Exemplo:
 
-    if (
-        estado.tipo === "single"
-    ) {
+           Hate Cure
+           membro: "hati"
 
-        const resultado =
-            BossSkills.usarHabilidade(
-                indice
-            );
+       Resultado:
+           Hati executa.
 
+       Outro exemplo:
 
-        processarResultadoHabilidade(
-            resultado
+           Feição Luminosa
+           membro: "skoll"
+
+       Resultado:
+           Skoll executa.
+    */
+
+    const resultado =
+        BossSkills.usarHabilidade(
+            indice
         );
 
+    processarResultadoHabilidade(
+        resultado
+    );
 
-        return;
-
-    }
-
-
-    // =====================================================
-    // BOSS DUPLO
-    // =====================================================
-    //
-    // Para o sistema atual de teste:
-    //
-    // - Se Skoll estiver vivo, usa com Skoll.
-    // - Caso contrário, usa com Hati.
-    //
-    // Depois podemos trocar isso por seleção explícita
-    // do membro.
-    // =====================================================
-
-    if (
-        estado.tipo === "dual"
-    ) {
-
-        let membro = null;
-
-
-        if (
-            !estado.skoll.abatido
-        ) {
-
-            membro = "skoll";
-
-        }
-        else if (
-            !estado.hati.abatido
-        ) {
-
-            membro = "hati";
-
-        }
-
-
-        if (!membro) {
-
-            return;
-
-        }
-
-
-        const resultado =
-            BossSkills.usarHabilidade(
-                indice,
-                membro
-            );
-
-
-        processarResultadoHabilidade(
-            resultado
-        );
-
-    }
-
+    atualizarEventosInterface();
 }
 
 
-// =========================================================
-// PROCESSAR RESULTADO DA HABILIDADE
-// =========================================================
-//
-// Por enquanto não usamos alert.
-//
-// O resultado fica disponível no console para testes.
-//
-// Mais tarde podemos colocar:
-// - animação
-// - texto de combate
-// - log da batalha
-// - efeitos
-// - números de dano
-// =========================================================
+/* =========================================================
+   PROCESSAR RESULTADO DA HABILIDADE
+========================================================= */
 
 function processarResultadoHabilidade(
     resultado
@@ -461,55 +357,121 @@ function processarResultadoHabilidade(
     }
 
 
-    if (
-        !resultado.sucesso
-    ) {
+    /* -----------------------------------------------------
+       HABILIDADE NÃO EXECUTADA
+    ----------------------------------------------------- */
+
+    if (!resultado.sucesso) {
 
         console.warn(
-            "Habilidade não executada:",
+            "[BossEvents] Habilidade não executada:",
             resultado.motivo
         );
 
-
-        return;
-
-    }
-
-
-    console.log(
-        "⚔️ Habilidade utilizada:",
-        resultado.habilidade?.nome
-    );
-
-
-    if (
-        resultado.resultado
-    ) {
-
-        console.log(
-            "Resultado:",
-            resultado.resultado
+        atualizarStatusInterface(
+            resultado.motivo ||
+            "Não foi possível usar a habilidade."
         );
 
+        return;
     }
 
+
+    /* -----------------------------------------------------
+       HABILIDADE EXECUTADA
+    ----------------------------------------------------- */
+
+    const habilidade =
+        resultado.habilidade;
+
+    let mensagem =
+        `${habilidade?.nome || "Habilidade"} usada.`;
+
+
+    /*
+       Boss duplo
+    */
+
+    if (resultado.tipo === "dual") {
+
+        mensagem =
+            `${resultado.membro} usou ${habilidade.nome}.`;
+    }
+
+
+    /*
+       Boss único
+    */
+
+    else if (resultado.tipo === "single") {
+
+        mensagem =
+            `${resultado.boss} usou ${habilidade.nome}.`;
+    }
+
+
+    atualizarStatusInterface(
+        mensagem
+    );
 }
 
 
-// =========================================================
-// ATUALIZAÇÃO DINÂMICA DOS BOTÕES
-// =========================================================
-//
-// Desativa o botão quando:
-//
-// - Boss derrotado
-// - habilidade sem MP
-// - habilidade sem EST
-// - membro derrotado
-//
-// Isso é apenas interface.
-// A validação real continua dentro de boss-skills.js.
-// =========================================================
+/* =========================================================
+   STATUS DA INTERFACE
+========================================================= */
+
+function atualizarStatusInterface(
+    mensagem
+) {
+
+    const elemento =
+        document.getElementById(
+            "boss-status"
+        );
+
+    if (!elemento) {
+        return;
+    }
+
+    elemento.textContent =
+        mensagem;
+}
+
+
+/* =========================================================
+   VERIFICAR HABILIDADE PARA INTERFACE
+========================================================= */
+
+function verificarHabilidadeParaInterface(
+    indice
+) {
+
+    const habilidade =
+        BossSkills.obterHabilidade(
+            indice
+        );
+
+    if (!habilidade) {
+        return false;
+    }
+
+
+    /*
+       Boss duplo:
+
+       BossSkills resolve automaticamente
+       o membro através de habilidade.membro.
+    */
+
+    return BossSkills.podeUsarHabilidade(
+        indice
+    );
+}
+
+
+/* =========================================================
+   ATUALIZAR BOTÕES DE HABILIDADES
+========================================================= */
 
 function atualizarBotoesHabilidades() {
 
@@ -518,136 +480,93 @@ function atualizarBotoesHabilidades() {
             ".boss-skill-button"
         );
 
-
     botoes.forEach(
         (botao, indice) => {
+
+            const habilidade =
+                BossSkills.obterHabilidade(
+                    indice
+                );
+
+            /*
+               Slot sem habilidade.
+            */
+
+            if (!habilidade) {
+
+                botao.disabled = true;
+
+                botao.title =
+                    "Habilidade indisponível.";
+
+                return;
+            }
+
+
+            /*
+               Verifica se pode usar.
+            */
 
             const podeUsar =
                 verificarHabilidadeParaInterface(
                     indice
                 );
 
-
             botao.disabled =
                 !podeUsar;
 
 
-            botao.classList.toggle(
-                "indisponivel",
-                !podeUsar
-            );
+            /*
+               Informações extras.
+            */
 
+            if (habilidade.membro) {
+
+                botao.title =
+                    `Habilidade de ${habilidade.membro}.`;
+            }
+
+            else {
+
+                botao.title =
+                    "Usar habilidade.";
+            }
         }
     );
-
 }
 
 
-// =========================================================
-// VERIFICAR HABILIDADE PARA INTERFACE
-// =========================================================
-
-function verificarHabilidadeParaInterface(
-    indice
-) {
-
-    const estado =
-        BossState.obterEstado();
-
-
-    if (!estado) {
-        return false;
-    }
-
-
-    if (
-        estado.tipo === "single"
-    ) {
-
-        return BossSkills.podeUsarHabilidade(
-            indice
-        );
-
-    }
-
-
-    if (
-        estado.tipo === "dual"
-    ) {
-
-        let membro = null;
-
-
-        if (
-            !estado.skoll.abatido
-        ) {
-
-            membro = "skoll";
-
-        }
-        else if (
-            !estado.hati.abatido
-        ) {
-
-            membro = "hati";
-
-        }
-
-
-        if (!membro) {
-            return false;
-        }
-
-
-        return BossSkills.podeUsarHabilidade(
-            indice,
-            membro
-        );
-
-    }
-
-
-    return false;
-
-}
-
-
-// =========================================================
-// OBSERVADOR DE RENDER
-// =========================================================
-//
-// Como o BossRender atualiza o HTML inteiro quando necessário,
-// essa função pode ser chamada manualmente pelo núcleo.
-//
-// Mantemos separada para evitar misturar renderização
-// com eventos.
-// =========================================================
+/* =========================================================
+   ATUALIZAR EVENTOS DA INTERFACE
+========================================================= */
 
 function atualizarEventosInterface() {
 
     atualizarBotoesHabilidades();
-
 }
 
 
-// =========================================================
-// API GLOBAL
-// =========================================================
+/* =========================================================
+   EXPOSIÇÃO GLOBAL
+========================================================= */
 
 window.BossEvents = {
 
     inicializarEventosBoss,
 
     configurarSelecaoBoss,
-
     configurarSelecaoNivel,
 
     configurarBotoesCombate,
-
     configurarBotoesHabilidades,
+
+    usarHabilidadePeloBotao,
+
+    processarResultadoHabilidade,
+
+    verificarHabilidadeParaInterface,
 
     atualizarBotoesHabilidades,
 
     atualizarEventosInterface
-
 };
