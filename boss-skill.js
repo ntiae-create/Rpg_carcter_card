@@ -1,859 +1,1076 @@
 // =========================================================
-// BOSS SYSTEM — HABILIDADES
-//
-// Responsável por:
-// - Encontrar habilidades
-// - Verificar custos
-// - Consumir MP
-// - Consumir EST
-// - Executar habilidade
-// - Preparar sistema para efeitos especiais
-//
-// NÃO controla:
-// - Botões
-// - Seletores
-// - HTML
-// - Dados base dos Bosses
-// - Rodadas
-// - Dano direto
-// =========================================================
-
-
-// =========================================================
-// OBTER HABILIDADE
-// =========================================================
-
-function obterHabilidade(indice) {
-
-    const boss =
-        BossState.obterBoss();
-
-    const nivel =
-        BossState.obterNivel();
-
-
-    if (!boss) {
-        return null;
-    }
-
-
-    const dadosNivel =
-        boss.niveis?.[nivel];
-
-
-    if (!dadosNivel) {
-        return null;
-    }
-
-
-    const habilidades =
-        dadosNivel.habilidades || [];
-
-
-    return habilidades[indice] || null;
-
-}
-
-
-// =========================================================
-// LISTAR HABILIDADES
-// =========================================================
-
-function obterHabilidades() {
-
-    const boss =
-        BossState.obterBoss();
-
-    const nivel =
-        BossState.obterNivel();
-
-
-    if (!boss) {
-        return [];
-    }
-
-
-    const dadosNivel =
-        boss.niveis?.[nivel];
-
-
-    if (!dadosNivel) {
-        return [];
-    }
-
-
-    return dadosNivel.habilidades || [];
-
-}
-
-
-// =========================================================
-// NORMALIZAR CUSTO
+// HRÆSvelgr
+// BOSS DATA
 // =========================================================
 //
-// Aceita diferentes formatos:
+// Este arquivo contém SOMENTE os dados e efeitos próprios
+// do Hræsvelgr.
 //
-// mp
-// est
-//
-// ou:
-//
-// custo: {
-//     mp: 50,
-//     est: 30
-// }
+// O sistema geral fica em:
+// - boss-state.js
+// - boss-render.js
+// - boss-combat.js
+// - boss-skills.js
+// - boss-events.js
 // =========================================================
 
-function obterCustoHabilidade(habilidade) {
 
-    if (!habilidade) {
+const HRAESVELGR = {
 
-        return {
-            mp: 0,
-            est: 0
-        };
+    id: "hraesvelgr",
 
-    }
+    nome: "Hræsvelgr",
 
+    afinidade: "VENTO",
 
-    const custo =
-        habilidade.custo || {};
+    classeAfinidade: "affinity-vento",
 
+    tipo: "Boss",
 
-    return {
-
-        mp:
-            Number(
-                custo.mp ??
-                habilidade.mp ??
-                0
-            ),
-
-        est:
-            Number(
-                custo.est ??
-                habilidade.est ??
-                0
-            )
-
-    };
-
-}
-
-
-// =========================================================
-// VERIFICAR CUSTO — SINGLE
-// =========================================================
-
-function podeUsarHabilidadeSingle(
-    estado,
-    habilidade
-) {
-
-    const custo =
-        obterCustoHabilidade(
-            habilidade
-        );
-
-
-    if (
-        estado.mp < custo.mp
-    ) {
-
-        return false;
-
-    }
-
-
-    if (
-        estado.est < custo.est
-    ) {
-
-        return false;
-
-    }
-
-
-    return true;
-
-}
-
-
-// =========================================================
-// VERIFICAR CUSTO — DUAL
-// =========================================================
-//
-// membro deve ser:
-// "skoll"
-// "hati"
-// =========================================================
-
-function podeUsarHabilidadeDual(
-    estado,
-    membro,
-    habilidade
-) {
-
-    const personagem =
-        estado[membro];
-
-
-    if (!personagem) {
-        return false;
-    }
-
-
-    if (
-        personagem.abatido
-    ) {
-
-        return false;
-
-    }
-
-
-    const custo =
-        obterCustoHabilidade(
-            habilidade
-        );
-
-
-    if (
-        personagem.mpAtual < custo.mp
-    ) {
-
-        return false;
-
-    }
-
-
-    if (
-        personagem.estAtual < custo.est
-    ) {
-
-        return false;
-
-    }
-
-
-    return true;
-
-}
-
-
-// =========================================================
-// CONSUMIR CUSTO — SINGLE
-// =========================================================
-
-function consumirCustoSingle(
-    estado,
-    habilidade
-) {
-
-    const custo =
-        obterCustoHabilidade(
-            habilidade
-        );
-
-
-    if (
-        !podeUsarHabilidadeSingle(
-            estado,
-            habilidade
-        )
-    ) {
-
-        return false;
-
-    }
-
-
-    estado.mp -= custo.mp;
-
-    estado.est -= custo.est;
-
-
-    estado.mp =
-        Math.max(
-            0,
-            estado.mp
-        );
-
-
-    estado.est =
-        Math.max(
-            0,
-            estado.est
-        );
-
-
-    return true;
-
-}
-
-
-// =========================================================
-// CONSUMIR CUSTO — DUAL
-// =========================================================
-
-function consumirCustoDual(
-    estado,
-    membro,
-    habilidade
-) {
-
-    const personagem =
-        estado[membro];
-
-
-    if (!personagem) {
-        return false;
-    }
-
-
-    if (
-        !podeUsarHabilidadeDual(
-            estado,
-            membro,
-            habilidade
-        )
-    ) {
-
-        return false;
-
-    }
-
-
-    const custo =
-        obterCustoHabilidade(
-            habilidade
-        );
-
-
-    personagem.mpAtual -= custo.mp;
-
-    personagem.estAtual -= custo.est;
-
-
-    personagem.mpAtual =
-        Math.max(
-            0,
-            personagem.mpAtual
-        );
-
-
-    personagem.estAtual =
-        Math.max(
-            0,
-            personagem.estAtual
-        );
-
-
-    return true;
-
-}
-
-
-// =========================================================
-// EXECUTAR HABILIDADE — SINGLE
-// =========================================================
-//
-// O efeito da habilidade pode ser:
-//
-// 1. uma função
-// 2. um objeto de configuração
-//
-// Isso permite que cada Boss tenha mecânicas próprias
-// sem transformar boss-skills.js em um arquivo gigante.
-// =========================================================
-
-function executarHabilidadeSingle(
-    indice
-) {
-
-    const boss =
-        BossState.obterBoss();
-
-    const estado =
-        BossState.obterEstado();
-
-
-    if (
-        !boss ||
-        !estado ||
-        estado.tipo !== "single"
-    ) {
-
-        return {
-            sucesso: false,
-            motivo: "Batalha inválida."
-        };
-
-    }
-
-
-    if (
-        estado.abatido
-    ) {
-
-        return {
-            sucesso: false,
-            motivo: "O Boss está derrotado."
-        };
-
-    }
-
-
-    const habilidade =
-        obterHabilidade(indice);
-
-
-    if (!habilidade) {
-
-        return {
-            sucesso: false,
-            motivo: "Habilidade não encontrada."
-        };
-
-    }
+    descricao:
+        "O Devorador dos Céus.",
 
 
     // =====================================================
-    // VERIFICAR CUSTO
+    // IMAGENS
     // =====================================================
 
-    if (
-        !consumirCustoSingle(
-            estado,
-            habilidade
-        )
-    ) {
+    imagens: {
 
-        return {
-            sucesso: false,
-            motivo: "Recursos insuficientes."
-        };
+        base:
+            "hraesvelgr.png",
 
-    }
+        evolucao:
+            "hraesvelgr-evolucao.png",
 
+        ultimate:
+            "hraesvelgr-ultimate.png"
 
-    // =====================================================
-    // EXECUTAR EFEITO
-    // =====================================================
-
-    let resultado = null;
-
-
-    if (
-        typeof habilidade.executar === "function"
-    ) {
-
-        resultado =
-            habilidade.executar({
-                estado,
-                boss,
-                nivel:
-                    BossState.obterNivel(),
-                rodada:
-                    BossState.obterRodada()
-            });
-
-    }
-
-
-    BossRender.renderizarBoss();
-
-
-    return {
-
-        sucesso: true,
-
-        habilidade,
-
-        resultado
-
-    };
-
-}
-
-
-// =========================================================
-// EXECUTAR HABILIDADE — DUAL
-// =========================================================
-
-function executarHabilidadeDual(
-    membro,
-    indice
-) {
-
-    const boss =
-        BossState.obterBoss();
-
-    const estado =
-        BossState.obterEstado();
-
-
-    if (
-        !boss ||
-        !estado ||
-        estado.tipo !== "dual"
-    ) {
-
-        return {
-            sucesso: false,
-            motivo: "Batalha inválida."
-        };
-
-    }
-
-
-    const membroEstado =
-        estado[membro];
-
-
-    if (!membroEstado) {
-
-        return {
-            sucesso: false,
-            motivo: "Membro inválido."
-        };
-
-    }
-
-
-    if (
-        membroEstado.abatido
-    ) {
-
-        return {
-            sucesso: false,
-            motivo:
-                `${membro} está derrotado.`
-        };
-
-    }
-
-
-    const habilidade =
-        obterHabilidade(indice);
-
-
-    if (!habilidade) {
-
-        return {
-            sucesso: false,
-            motivo: "Habilidade não encontrada."
-        };
-
-    }
+    },
 
 
     // =====================================================
-    // VERIFICAR / CONSUMIR CUSTO
+    // NÍVEIS
     // =====================================================
 
-    if (
-        !consumirCustoDual(
-            estado,
-            membro,
-            habilidade
-        )
-    ) {
-
-        return {
-            sucesso: false,
-            motivo: "Recursos insuficientes."
-        };
-
-    }
+    niveis: {
 
 
-    // =====================================================
-    // EXECUTAR EFEITO
-    // =====================================================
+        // =================================================
+        // NÍVEL 12
+        // =================================================
 
-    let resultado = null;
+        12: {
 
+            hp: 180,
+            mp: 180,
+            est: 350,
 
-    if (
-        typeof habilidade.executar === "function"
-    ) {
-
-        resultado =
-            habilidade.executar({
-
-                estado,
-
-                boss,
-
-                membro,
-
-                membroEstado,
-
-                nivel:
-                    BossState.obterNivel(),
-
-                rodada:
-                    BossState.obterRodada()
-
-            });
-
-    }
+            atk: 14,
+            atkMgc: 18,
+            agi: 18,
+            def: 8,
+            res: 35,
+            int: 28,
 
 
-    BossRender.renderizarBoss();
+            passiva: {
+
+                nome:
+                    "Rei dos Céus",
+
+                descricao:
+                    "Enquanto estiver no ar, Hræsvelgr é imune a ataques corpo a corpo."
+
+            },
 
 
-    return {
+            habilidades: [
 
-        sucesso: true,
+                {
 
-        habilidade,
+                    nome:
+                        "Tempestade do Devorador",
 
-        resultado
+                    custo: {
 
-    };
+                        mp: 35,
+                        est: 30
 
-}
+                    },
 
+                    descricao:
+                        "Invoca uma tempestade de vento que atinge todos os inimigos.",
 
-// =========================================================
-// EXECUTOR GENÉRICO
-// =========================================================
-//
-// Permite futuramente fazer:
-//
-// BossSkills.usar(0)
-//
-// sem precisar saber se o Boss é único ou duplo.
-//
-// Para Boss duplo:
-//
-// BossSkills.usar(0, "skoll")
-// =========================================================
+                    executar({
+                        estado
+                    }) {
 
-function usarHabilidade(
-    indice,
-    membro = null
-) {
+                        return {
 
-    const estado =
-        BossState.obterEstado();
+                            tipo: "area",
 
+                            efeito:
+                                "vento",
 
-    if (!estado) {
+                            mensagem:
+                                "Hræsvelgr invoca uma tempestade devastadora."
 
-        return {
-            sucesso: false,
-            motivo: "Estado inexistente."
-        };
+                        };
 
-    }
+                    }
+
+                },
 
 
-    if (
-        estado.tipo === "single"
-    ) {
+                {
 
-        return executarHabilidadeSingle(
-            indice
-        );
+                    nome:
+                        "Asas do Fim",
 
-    }
+                    custo: {
+
+                        mp: 25,
+                        est: 20
+
+                    },
+
+                    descricao:
+                        "Bate suas asas violentamente, lançando uma poderosa rajada de vento.",
+
+                    executar({
+                        estado
+                    }) {
+
+                        return {
+
+                            tipo: "empurrao",
+
+                            mensagem:
+                                "As asas de Hræsvelgr lançam uma rajada que repele os inimigos."
+
+                        };
+
+                    }
+
+                },
 
 
-    if (
-        estado.tipo === "dual"
-    ) {
+                {
 
-        if (!membro) {
+                    nome:
+                        "Queda do Céu",
 
-            return {
-                sucesso: false,
-                motivo:
-                    "É necessário informar o membro."
-            };
+                    custo: {
+
+                        mp: 30,
+                        est: 35
+
+                    },
+
+                    descricao:
+                        "Hræsvelgr mergulha dos céus contra o campo de batalha.",
+
+                    executar({
+                        estado
+                    }) {
+
+                        return {
+
+                            tipo: "impacto",
+
+                            mensagem:
+                                "Hræsvelgr despenca dos céus sobre o campo de batalha."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "O Uivo dos Céus",
+
+                    custo: {
+
+                        mp: 45,
+                        est: 40
+
+                    },
+
+                    descricao:
+                        "Um uivo colossal cria uma onda de vento que empurra todos os inimigos para longe.",
+
+                    executar({
+                        estado
+                    }) {
+
+                        return {
+
+                            tipo: "repulsao",
+
+                            alvo: "todos",
+
+                            distancia:
+                                "grande",
+
+                            mensagem:
+                                "O Uivo dos Céus repele todos os inimigos."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "Sopro do Abismo",
+
+                    custo: {
+
+                        mp: 55,
+                        est: 45
+
+                    },
+
+                    descricao:
+                        "Libera uma rajada concentrada de vento contra uma grande área.",
+
+                    executar({
+                        estado
+                    }) {
+
+                        return {
+
+                            tipo: "area",
+
+                            elemento:
+                                "vento",
+
+                            mensagem:
+                                "Hræsvelgr libera o Sopro do Abismo."
+
+                        };
+
+                    }
+
+                }
+
+            ]
+
+        },
+
+
+        // =================================================
+        // NÍVEL 100
+        // =================================================
+
+        100: {
+
+            hp: 8500,
+            mp: 7000,
+            est: 12000,
+
+            atk: 90,
+            atkMgc: 120,
+            agi: 85,
+            def: 65,
+            res: 140,
+            int: 110,
+
+
+            passiva: {
+
+                nome:
+                    "Rei dos Céus — Domínio Aéreo",
+
+                descricao:
+                    "Enquanto estiver no ar, Hræsvelgr é imune a ataques corpo a corpo. Sua presença nos céus também aumenta sua resistência aos efeitos negativos."
+
+            },
+
+
+            habilidades: [
+
+                {
+
+                    nome:
+                        "Tempestade do Devorador",
+
+                    custo: {
+
+                        mp: 450,
+                        est: 350
+
+                    },
+
+                    descricao:
+                        "Uma tempestade de vento cobre uma grande área do campo.",
+
+                    executar() {
+
+                        return {
+
+                            tipo: "area",
+
+                            mensagem:
+                                "Uma gigantesca tempestade toma o campo."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "Asas do Fim",
+
+                    custo: {
+
+                        mp: 350,
+                        est: 300
+
+                    },
+
+                    descricao:
+                        "Uma poderosa rajada de vento repele os inimigos.",
+
+                    executar() {
+
+                        return {
+
+                            tipo: "repulsao",
+
+                            mensagem:
+                                "As asas de Hræsvelgr lançam todos para trás."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "Queda do Céu",
+
+                    custo: {
+
+                        mp: 500,
+                        est: 450
+
+                    },
+
+                    descricao:
+                        "Hræsvelgr mergulha em velocidade extrema contra o campo.",
+
+                    executar() {
+
+                        return {
+
+                            tipo: "impacto",
+
+                            mensagem:
+                                "Hræsvelgr cai dos céus como um meteoro."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "O Uivo dos Céus",
+
+                    custo: {
+
+                        mp: 700,
+                        est: 600
+
+                    },
+
+                    descricao:
+                        "Seu uivo cria uma onda de choque de vento que afasta todos os inimigos.",
+
+                    executar() {
+
+                        return {
+
+                            tipo: "repulsao",
+
+                            alvo: "todos",
+
+                            mensagem:
+                                "O Uivo dos Céus explode pelo campo."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "Sopro do Abismo",
+
+                    custo: {
+
+                        mp: 850,
+                        est: 700
+
+                    },
+
+                    descricao:
+                        "Um sopro concentrado de vento destrói uma grande área.",
+
+                    executar() {
+
+                        return {
+
+                            tipo: "area",
+
+                            mensagem:
+                                "O Sopro do Abismo atravessa o campo."
+
+                        };
+
+                    }
+
+                }
+
+            ]
+
+        },
+
+
+        // =================================================
+        // NÍVEL 200
+        // =================================================
+
+        200: {
+
+            hp: 40000,
+            mp: 28000,
+            est: 50000,
+
+            atk: 200,
+            atkMgc: 280,
+            agi: 175,
+            def: 150,
+            res: 300,
+            int: 240,
+
+
+            passiva: {
+
+                nome:
+                    "Rei dos Céus — Soberania Aérea",
+
+                descricao:
+                    "Enquanto estiver no ar, Hræsvelgr é imune a ataques corpo a corpo. Sua presença aérea reduz a duração dos efeitos negativos recebidos.",
+
+            },
+
+
+            habilidades: [
+
+                {
+
+                    nome:
+                        "Tempestade do Devorador",
+
+                    custo: {
+                        mp: 1600,
+                        est: 1200
+                    },
+
+                    descricao:
+                        "Uma tempestade colossal envolve o campo.",
+
+                    executar() {
+
+                        return {
+
+                            tipo: "area",
+
+                            mensagem:
+                                "O céu inteiro parece se transformar em uma tempestade."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "Asas do Fim",
+
+                    custo: {
+                        mp: 1200,
+                        est: 1000
+                    },
+
+                    descricao:
+                        "Uma rajada monstruosa repele os inimigos.",
+
+                    executar() {
+
+                        return {
+
+                            tipo: "repulsao",
+
+                            distancia:
+                                "extrema",
+
+                            mensagem:
+                                "Uma rajada brutal arremessa os inimigos para longe."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "Queda do Céu",
+
+                    custo: {
+                        mp: 1800,
+                        est: 1600
+                    },
+
+                    descricao:
+                        "Hræsvelgr mergulha contra o campo em velocidade devastadora.",
+
+                    executar() {
+
+                        return {
+
+                            tipo: "impacto",
+
+                            mensagem:
+                                "Hræsvelgr despenca dos céus."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "O Uivo dos Céus",
+
+                    custo: {
+                        mp: 2200,
+                        est: 1900
+                    },
+
+                    descricao:
+                        "Um uivo colossal repele todos os inimigos.",
+
+                    executar() {
+
+                        return {
+
+                            tipo: "repulsao",
+
+                            alvo:
+                                "todos",
+
+                            mensagem:
+                                "O Uivo dos Céus atravessa todo o campo."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "Sopro do Abismo",
+
+                    custo: {
+                        mp: 2600,
+                        est: 2200
+                    },
+
+                    descricao:
+                        "Concentra uma enorme quantidade de energia de vento em uma área.",
+
+                    executar() {
+
+                        return {
+
+                            tipo: "area",
+
+                            mensagem:
+                                "O Sopro do Abismo devasta uma enorme área."
+
+                        };
+
+                    }
+
+                }
+
+            ]
+
+        },
+
+
+        // =================================================
+        // NÍVEL 300
+        // =================================================
+
+        300: {
+
+            hp: 135000,
+            mp: 95000,
+            est: 165000,
+
+            atk: 460,
+            atkMgc: 650,
+            agi: 360,
+            def: 360,
+            res: 680,
+            int: 520,
+
+
+            passiva: {
+
+                nome:
+                    "Rei da Tempestade",
+
+                descricao:
+                    "Enquanto estiver no ar, Hræsvelgr é imune a ataques corpo a corpo. Sua presença domina o campo aéreo e reduz drasticamente a duração de efeitos negativos.",
+
+            },
+
+
+            habilidades: [
+
+                {
+
+                    nome:
+                        "Tempestade do Devorador",
+
+                    custo: {
+                        mp: 5000,
+                        est: 4000
+                    },
+
+                    descricao:
+                        "Uma tempestade gigantesca cobre o campo de batalha.",
+
+                    executar() {
+
+                        return {
+
+                            tipo: "area",
+
+                            mensagem:
+                                "Uma tempestade colossal desce sobre o campo."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "Asas do Fim",
+
+                    custo: {
+                        mp: 4000,
+                        est: 3500
+                    },
+
+                    descricao:
+                        "Uma explosão de vento repele violentamente todos os inimigos.",
+
+                    executar() {
+
+                        return {
+
+                            tipo: "repulsao",
+
+                            alvo:
+                                "todos",
+
+                            distancia:
+                                "extrema",
+
+                            mensagem:
+                                "As asas de Hræsvelgr varrem o campo."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "Queda do Céu",
+
+                    custo: {
+                        mp: 5500,
+                        est: 5000
+                    },
+
+                    descricao:
+                        "Hræsvelgr cai dos céus em uma investida devastadora.",
+
+                    executar() {
+
+                        return {
+
+                            tipo: "impacto",
+
+                            mensagem:
+                                "O céu treme quando Hræsvelgr inicia sua queda."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "Domínio dos Céus",
+
+                    custo: {
+                        mp: 6500,
+                        est: 5500
+                    },
+
+                    descricao:
+                        "Hræsvelgr assume o domínio absoluto do espaço aéreo.",
+
+                    executar({
+                        estado
+                    }) {
+
+                        estado.reflexo = true;
+
+                        return {
+
+                            tipo:
+                                "estado",
+
+                            estado:
+                                "dominio-dos-ceus",
+
+                            mensagem:
+                                "Hræsvelgr assume o domínio dos céus."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "O Uivo dos Céus",
+
+                    custo: {
+                        mp: 7500,
+                        est: 6500
+                    },
+
+                    descricao:
+                        "Um uivo colossal cria uma onda de choque capaz de afastar todos os inimigos.",
+
+                    executar() {
+
+                        return {
+
+                            tipo:
+                                "repulsao",
+
+                            alvo:
+                                "todos",
+
+                            mensagem:
+                                "O Uivo dos Céus explode pelo campo."
+
+                        };
+
+                    }
+
+                }
+
+            ]
+
+        },
+
+
+        // =================================================
+        // NÍVEL 400
+        // =================================================
+
+        400: {
+
+            hp: 350000,
+            mp: 250000,
+            est: 450000,
+
+            atk: 950,
+            atkMgc: 1300,
+            agi: 720,
+            def: 850,
+            res: 1600,
+            int: 1150,
+
+
+            passiva: {
+
+                nome:
+                    "Rei da Tempestade",
+
+                descricao:
+                    "Enquanto estiver no ar, Hræsvelgr é imune a ataques corpo a corpo. Sua presença domina completamente o campo aéreo e reduz drasticamente a duração dos efeitos negativos.",
+
+            },
+
+
+            habilidades: [
+
+                {
+
+                    nome:
+                        "Tempestade do Devorador",
+
+                    custo: {
+                        mp: 12000,
+                        est: 10000
+                    },
+
+                    descricao:
+                        "Uma tempestade apocalíptica cobre todo o campo.",
+
+                    executar() {
+
+                        return {
+
+                            tipo:
+                                "area",
+
+                            escala:
+                                "apocaliptica",
+
+                            mensagem:
+                                "O céu desaparece sob a Tempestade do Devorador."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "Asas do Fim",
+
+                    custo: {
+                        mp: 10000,
+                        est: 8500
+                    },
+
+                    descricao:
+                        "Hræsvelgr libera uma onda de vento colossal que repele todos os inimigos.",
+
+                    executar() {
+
+                        return {
+
+                            tipo:
+                                "repulsao",
+
+                            alvo:
+                                "todos",
+
+                            distancia:
+                                "extrema",
+
+                            mensagem:
+                                "As Asas do Fim varrem o campo inteiro."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "Queda do Céu",
+
+                    custo: {
+                        mp: 14000,
+                        est: 12000
+                    },
+
+                    descricao:
+                        "Hræsvelgr mergulha dos céus com força devastadora.",
+
+                    executar() {
+
+                        return {
+
+                            tipo:
+                                "impacto",
+
+                            escala:
+                                "apocaliptica",
+
+                            mensagem:
+                                "Hræsvelgr cai dos céus como a própria destruição."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "O Uivo dos Céus",
+
+                    custo: {
+                        mp: 16000,
+                        est: 14000
+                    },
+
+                    descricao:
+                        "Um uivo monstruoso repele todos os inimigos e ativa as Penas do Armagedon.",
+
+                    executar({
+                        estado
+                    }) {
+
+                        estado.reflexo = true;
+
+                        return {
+
+                            tipo:
+                                "repulsao",
+
+                            alvo:
+                                "todos",
+
+                            armagedon:
+                                true,
+
+                            duracao:
+                                2,
+
+                            mensagem:
+                                "O Uivo dos Céus ativa as Penas do Armagedon."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "Fúria do Devorador dos Céus",
+
+                    custo: {
+                        mp: 25000,
+                        est: 22000
+                    },
+
+                    descricao:
+                        "Hræsvelgr libera toda a sua força, transformando o campo em um domínio absoluto de vento.",
+
+                    executar({
+                        estado
+                    }) {
+
+                        estado.enfurecido = true;
+
+                        return {
+
+                            tipo:
+                                "ultimate",
+
+                            elemento:
+                                "vento",
+
+                            mensagem:
+                                "Hræsvelgr libera a Fúria do Devorador dos Céus."
+
+                        };
+
+                    }
+
+                }
+
+            ]
 
         }
 
-
-        return executarHabilidadeDual(
-            membro,
-            indice
-        );
-
     }
-
-
-    return {
-
-        sucesso: false,
-
-        motivo:
-            "Tipo de Boss desconhecido."
-
-    };
-
-}
-
-
-// =========================================================
-// VERIFICAR SE HABILIDADE PODE SER USADA
-// =========================================================
-
-function podeUsarHabilidade(
-    indice,
-    membro = null
-) {
-
-    const estado =
-        BossState.obterEstado();
-
-
-    const habilidade =
-        obterHabilidade(indice);
-
-
-    if (
-        !estado ||
-        !habilidade
-    ) {
-
-        return false;
-
-    }
-
-
-    if (
-        estado.tipo === "single"
-    ) {
-
-        if (
-            estado.abatido
-        ) {
-
-            return false;
-
-        }
-
-
-        return podeUsarHabilidadeSingle(
-            estado,
-            habilidade
-        );
-
-    }
-
-
-    if (
-        estado.tipo === "dual"
-    ) {
-
-        if (!membro) {
-            return false;
-        }
-
-
-        return podeUsarHabilidadeDual(
-            estado,
-            membro,
-            habilidade
-        );
-
-    }
-
-
-    return false;
-
-}
-
-
-// =========================================================
-// FORMATAR CUSTO
-// =========================================================
-//
-// Retorna algo como:
-//
-// "50 MP / 30 EST"
-//
-// ou:
-//
-// "100 MP"
-//
-// ou:
-//
-// "40 EST"
-// =========================================================
-
-function formatarCustoHabilidade(
-    habilidade
-) {
-
-    const custo =
-        obterCustoHabilidade(
-            habilidade
-        );
-
-
-    const partes = [];
-
-
-    if (
-        custo.mp > 0
-    ) {
-
-        partes.push(
-            `${custo.mp} MP`
-        );
-
-    }
-
-
-    if (
-        custo.est > 0
-    ) {
-
-        partes.push(
-            `${custo.est} EST`
-        );
-
-    }
-
-
-    if (
-        partes.length === 0
-    ) {
-
-        return "SEM CUSTO";
-
-    }
-
-
-    return partes.join(" / ");
-
-}
-
-
-// =========================================================
-// API GLOBAL
-// =========================================================
-
-window.BossSkills = {
-
-    obterHabilidade,
-
-    obterHabilidades,
-
-    obterCustoHabilidade,
-
-    podeUsarHabilidade,
-
-    usarHabilidade,
-
-    executarHabilidadeSingle,
-
-    executarHabilidadeDual,
-
-    formatarCustoHabilidade
 
 };
+
+
+// =========================================================
+// REGISTRO GLOBAL
+// =========================================================
+//
+// O boss-state.js utiliza HRAESVELGR diretamente.
+// Mantemos também uma referência global para facilitar
+// futuras integrações.
+// =========================================================
+
+window.HRAESVELGR = HRAESVELGR;
