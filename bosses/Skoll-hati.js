@@ -1,8 +1,20 @@
 // =========================================================
-// BOSS — SKOLL & HATI
-// SISTEMA DE NÍVEIS
-// 12 / 100 / 200 / 300 / 400
+// SKOLL & HATI
+// BOSS DATA
+//
+// Um único Boss formado por dois membros.
+//
+// Skoll = Luz
+// Hati  = Trevas
+//
+// As regras gerais ficam nos módulos:
+// - boss-state.js
+// - boss-render.js
+// - boss-combat.js
+// - boss-skills.js
+// - boss-events.js
 // =========================================================
+
 
 const SKOLL_HATI = {
 
@@ -16,33 +28,40 @@ const SKOLL_HATI = {
 
     tipo: "Boss Duplo",
 
+    descricao:
+        "Os irmãos eternamente ligados pelo eclipse.",
+
+
     // =====================================================
     // IMAGENS
     // =====================================================
+
     imagens: {
 
-        // Lv.12 / 100 / 200
-        base: "skoll-hati.png",
+        base:
+            "skoll-hati.png",
 
-        // Lv.300
-        evolucao: "skoll-hati-evolucao.png",
+        evolucao:
+            "skoll-hati-evolucao.png",
 
-        // Lv.400
-        ultimate: "skoll-hati-ultimate.png"
+        ultimate:
+            "skoll-hati-ultimate.png"
+
     },
 
 
     // =====================================================
     // NÍVEIS
     // =====================================================
+
     niveis: {
 
-        // =================================================
-        // LV.12
-        // =================================================
-        12: {
 
-            nivel: 12,
+        // =================================================
+        // NÍVEL 12
+        // =================================================
+
+        12: {
 
             skoll: {
 
@@ -56,7 +75,9 @@ const SKOLL_HATI = {
                 def: 4,
                 res: 46,
                 int: 32
+
             },
+
 
             hati: {
 
@@ -70,154 +91,292 @@ const SKOLL_HATI = {
                 def: 9,
                 res: 30,
                 int: 21
+
             },
 
 
-            // =============================================
-            // PASSIVA
-            // =============================================
             passiva: {
 
-                nome: "Irmãos pra Sempre",
+                nome:
+                    "Irmãos pra Sempre",
 
                 descricao:
-                    "Skoll e Hati estão ligados por um pacto ancestral. " +
-                    "Enquanto os dois estiverem vivos, ambos lutam normalmente. " +
-                    "Quando um dos irmãos é derrotado, o outro entra em Fúria.",
+                    "Quando um dos irmãos é derrotado, o sobrevivente entra em Fúria, recebendo +2 ATK, +2 ATK MGC e +2 AGI."
 
-                efeito:
-                    "O irmão sobrevivente recebe +2 AGI, +2 ATK e +2 ATK MGC.",
-
-                estado:
-                    "Os irmãos caçam juntos..."
             },
 
 
-            // =============================================
-            // HABILIDADES
-            // =============================================
             habilidades: [
 
                 {
-                    id: "skoll-feicao-luminosa",
 
-                    usuario: "Skoll",
+                    nome:
+                        "Feição Luminosa",
 
-                    nome: "Feição Luminosa",
+                    membro:
+                        "skoll",
 
-                    custoMp: 25,
-                    custoEst: 20,
+                    custo: {
 
-                    dano: 18,
+                        mp: 30,
+                        est: 25
 
-                    alvo: "Área — até 3 jogadores",
+                    },
 
-                    efeito:
-                        "Dispara um poderoso raio de luz. " +
-                        "Os alvos atingidos ficam queimados."
+                    descricao:
+                        "Skoll dispara um raio de luz que causa dano de Luz e pode atingir até 3 jogadores.",
+
+                    executar({
+                        membroEstado
+                    }) {
+
+                        return {
+
+                            tipo:
+                                "area",
+
+                            elemento:
+                                "luz",
+
+                            alvos:
+                                3,
+
+                            mensagem:
+                                "Skoll libera um raio de luz sobre o campo."
+
+                        };
+
+                    }
+
                 },
 
+
                 {
-                    id: "hati-hate-cure",
 
-                    usuario: "Hati",
+                    nome:
+                        "Hate Cure",
 
-                    nome: "Hate Cure",
+                    membro:
+                        "hati",
 
-                    custoMp: 20,
-                    custoEst: 20,
+                    custo: {
 
-                    dano: 20,
+                        mp: 30,
+                        est: 25
 
-                    alvo: "1 alvo",
+                    },
 
-                    efeito:
-                        "Ataque sombrio que infecta o alvo e causa sangramento. " +
-                        "Enquanto Infectado, o alvo não pode receber efeitos de cura ou recuperação."
+                    descricao:
+                        "Hati desfere um ataque de Trevas que infecta o alvo e aplica sangramento.",
+
+                    executar() {
+
+                        return {
+
+                            tipo:
+                                "debuff",
+
+                            elemento:
+                                "trevas",
+
+                            efeitos: [
+
+                                "infeccao",
+
+                                "sangramento"
+
+                            ],
+
+                            mensagem:
+                                "Hati infecta o alvo com Hate Cure."
+
+                        };
+
+                    }
+
                 },
 
+
                 {
-                    id: "skoll-uivo-sagrado",
 
-                    usuario: "Skoll",
+                    nome:
+                        "Uivo Sagrado",
 
-                    nome: "Uivo Sagrado",
+                    membro:
+                        "skoll",
 
-                    custoMp: 30,
-                    custoEst: 15,
+                    custo: {
 
-                    dano: 0,
+                        mp: 35,
+                        est: 20
 
-                    alvo: "1 aliado",
+                    },
 
-                    efeito:
-                        "O uivo fortalece um aliado. " +
-                        "O alvo recebe +1 em todos os status."
+                    descricao:
+                        "Skoll fortalece um aliado com seu uivo sagrado, concedendo +1 em todos os atributos.",
+
+                    executar() {
+
+                        return {
+
+                            tipo:
+                                "buff",
+
+                            alvo:
+                                "aliado",
+
+                            bonus:
+                                1,
+
+                            atributos:
+                                "todos",
+
+                            mensagem:
+                                "O Uivo Sagrado fortalece seu aliado."
+
+                        };
+
+                    }
+
                 },
 
+
                 {
-                    id: "hati-sombra-odiosa",
 
-                    usuario: "Hati",
+                    nome:
+                        "Sombra Odiosa",
 
-                    nome: "Sombra Odiosa",
+                    membro:
+                        "hati",
 
-                    custoMp: 25,
-                    custoEst: 15,
+                    custo: {
 
-                    dano: 24,
+                        mp: 25,
+                        est: 30
 
-                    alvo: "1 alvo",
+                    },
 
-                    efeito:
-                        "Hati cria garras de sombra e desfere um ataque concentrado."
+                    descricao:
+                        "Hati desfere uma garra de sombra contra um único alvo.",
+
+                    executar() {
+
+                        return {
+
+                            tipo:
+                                "single",
+
+                            elemento:
+                                "trevas",
+
+                            mensagem:
+                                "Hati desfere sua Sombra Odiosa."
+
+                        };
+
+                    }
+
                 },
 
+
                 {
-                    id: "skoll-odor-sangue",
 
-                    usuario: "Skoll",
+                    nome:
+                        "Odor de Sangue",
 
-                    nome: "Odor de Sangue",
+                    membro:
+                        "skoll",
 
-                    custoMp: 35,
-                    custoEst: 30,
+                    custo: {
 
-                    dano: 0,
+                        mp: 40,
+                        est: 35
 
-                    alvo: "Área — 2 blocos",
+                    },
 
-                    efeito:
-                        "Inimigos dentro da área sofrem -1 ATK, -1 ATK MGC e -1 AGI."
+                    descricao:
+                        "Skoll espalha o odor de sangue em uma área de 2 blocos. Inimigos atingidos sofrem -1 ATK, -1 ATK MGC e -1 AGI.",
+
+                    executar() {
+
+                        return {
+
+                            tipo:
+                                "debuff",
+
+                            area:
+                                2,
+
+                            penalidades: {
+
+                                atk: -1,
+
+                                atkMgc: -1,
+
+                                agi: -1
+
+                            },
+
+                            mensagem:
+                                "O Odor de Sangue enfraquece os inimigos."
+
+                        };
+
+                    }
+
                 },
 
+
                 {
-                    id: "hati-uivo-grotesco",
 
-                    usuario: "Hati",
+                    nome:
+                        "Uivo Grotesco",
 
-                    nome: "Uivo Grotesco",
+                    membro:
+                        "hati",
 
-                    custoMp: 40,
-                    custoEst: 35,
+                    custo: {
 
-                    dano: 0,
+                        mp: 40,
+                        est: 35
 
-                    alvo: "Área — 2 blocos",
+                    },
 
-                    efeito:
-                        "Hati libera um uivo sobrenatural que atordoa todos os inimigos dentro da área."
+                    descricao:
+                        "Hati emite um uivo grotesco que atordoa todos os inimigos em até 2 blocos.",
+
+                    executar() {
+
+                        return {
+
+                            tipo:
+                                "controle",
+
+                            efeito:
+                                "stun",
+
+                            area:
+                                2,
+
+                            mensagem:
+                                "O Uivo Grotesco paralisa os inimigos próximos."
+
+                        };
+
+                    }
+
                 }
+
             ]
+
         },
 
 
         // =================================================
-        // LV.100
+        // NÍVEL 100
         // =================================================
-        100: {
 
-            nivel: 100,
+        100: {
 
             skoll: {
 
@@ -231,7 +390,9 @@ const SKOLL_HATI = {
                 def: 55,
                 res: 240,
                 int: 180
+
             },
+
 
             hati: {
 
@@ -245,144 +406,223 @@ const SKOLL_HATI = {
                 def: 90,
                 res: 160,
                 int: 125
+
             },
+
 
             passiva: {
 
-                nome: "Irmãos pra Sempre — Pacto Lunar",
+                nome:
+                    "Irmãos pra Sempre — Pacto Lunar",
 
                 descricao:
-                    "A ligação entre os irmãos se fortalece. " +
-                    "Quando um deles é derrotado, o sobrevivente entra imediatamente em Fúria.",
+                    "Quando um irmão é derrotado, o sobrevivente recebe +3 ATK, +3 ATK MGC e +3 AGI, além de resistência aos efeitos negativos."
 
-                efeito:
-                    "O sobrevivente recebe +3 AGI, +3 ATK e +3 ATK MGC. " +
-                    "Além disso, recebe resistência aumentada contra efeitos negativos.",
-
-                estado:
-                    "A caça está apenas começando..."
             },
+
 
             habilidades: [
 
                 {
-                    id: "skoll-feicao-luminosa",
 
-                    usuario: "Skoll",
+                    nome:
+                        "Feição Luminosa",
 
-                    nome: "Feição Luminosa",
+                    membro:
+                        "skoll",
 
-                    custoMp: 600,
-                    custoEst: 450,
+                    custo: {
+                        mp: 500,
+                        est: 400
+                    },
 
-                    dano: 280,
+                    descricao:
+                        "Um raio luminoso atinge até 3 jogadores e queima o campo.",
 
-                    alvo: "Área — até 3 jogadores",
+                    executar() {
 
-                    efeito:
-                        "Um raio solar atravessa a área e causa queimadura."
+                        return {
+
+                            tipo:
+                                "area",
+
+                            elemento:
+                                "luz",
+
+                            alvos:
+                                3,
+
+                            mensagem:
+                                "Skoll ilumina o campo com sua Feição Luminosa."
+
+                        };
+
+                    }
+
                 },
 
+
                 {
-                    id: "hati-hate-cure",
 
-                    usuario: "Hati",
+                    nome:
+                        "Hate Cure",
 
-                    nome: "Hate Cure",
+                    membro:
+                        "hati",
 
-                    custoMp: 500,
-                    custoEst: 450,
+                    custo: {
+                        mp: 450,
+                        est: 400
+                    },
 
-                    dano: 320,
+                    descricao:
+                        "Ataque de Trevas que infecta o alvo e causa sangramento.",
 
-                    alvo: "1 alvo",
+                    executar() {
 
-                    efeito:
-                        "Causa dano, Infecta e aplica Sangramento. " +
-                        "Alvos Infectados não podem receber cura."
+                        return {
+
+                            tipo:
+                                "debuff",
+
+                            efeitos: [
+                                "infeccao",
+                                "sangramento"
+                            ],
+
+                            mensagem:
+                                "Hati espalha a infecção pelo alvo."
+
+                        };
+
+                    }
+
                 },
 
+
                 {
-                    id: "skoll-uivo-sagrado",
 
-                    usuario: "Skoll",
+                    nome:
+                        "Uivo Sagrado",
 
-                    nome: "Uivo Sagrado",
+                    membro:
+                        "skoll",
 
-                    custoMp: 750,
-                    custoEst: 400,
+                    custo: {
+                        mp: 600,
+                        est: 350
+                    },
 
-                    dano: 0,
+                    descricao:
+                        "Fortalece um aliado com +2 em todos os atributos.",
 
-                    alvo: "1 aliado",
+                    executar() {
 
-                    efeito:
-                        "Concede +2 em todos os status ao alvo."
+                        return {
+
+                            tipo:
+                                "buff",
+
+                            bonus:
+                                2,
+
+                            atributos:
+                                "todos",
+
+                            mensagem:
+                                "Skoll fortalece seu irmão com o Uivo Sagrado."
+
+                        };
+
+                    }
+
                 },
 
+
                 {
-                    id: "hati-sombra-odiosa",
 
-                    usuario: "Hati",
+                    nome:
+                        "Sombra Odiosa",
 
-                    nome: "Sombra Odiosa",
+                    membro:
+                        "hati",
 
-                    custoMp: 600,
-                    custoEst: 400,
+                    custo: {
+                        mp: 400,
+                        est: 450
+                    },
 
-                    dano: 380,
+                    descricao:
+                        "Uma poderosa garra de sombra atinge um único alvo.",
 
-                    alvo: "1 alvo",
+                    executar() {
 
-                    efeito:
-                        "Ataque sombrio concentrado."
+                        return {
+
+                            tipo:
+                                "single",
+
+                            elemento:
+                                "trevas",
+
+                            mensagem:
+                                "Hati desfere uma poderosa Sombra Odiosa."
+
+                        };
+
+                    }
+
                 },
 
-                {
-                    id: "skoll-odor-sangue",
-
-                    usuario: "Skoll",
-
-                    nome: "Odor de Sangue",
-
-                    custoMp: 850,
-                    custoEst: 650,
-
-                    dano: 0,
-
-                    alvo: "Área — 2 blocos",
-
-                    efeito:
-                        "Inimigos na área sofrem -2 ATK, -2 ATK MGC e -2 AGI."
-                },
 
                 {
-                    id: "hati-uivo-grotesco",
 
-                    usuario: "Hati",
+                    nome:
+                        "Uivo Grotesco",
 
-                    nome: "Uivo Grotesco",
+                    membro:
+                        "hati",
 
-                    custoMp: 1000,
-                    custoEst: 700,
+                    custo: {
+                        mp: 700,
+                        est: 600
+                    },
 
-                    dano: 0,
+                    descricao:
+                        "Atordoa inimigos em uma área de 2 blocos.",
 
-                    alvo: "Área — 2 blocos",
+                    executar() {
 
-                    efeito:
-                        "Atordoa todos os inimigos dentro da área."
+                        return {
+
+                            tipo:
+                                "controle",
+
+                            efeito:
+                                "stun",
+
+                            area:
+                                2,
+
+                            mensagem:
+                                "O Uivo Grotesco paralisa os inimigos próximos."
+
+                        };
+
+                    }
+
                 }
+
             ]
+
         },
 
 
         // =================================================
-        // LV.200
+        // NÍVEL 200
         // =================================================
-        200: {
 
-            nivel: 200,
+        200: {
 
             skoll: {
 
@@ -396,7 +636,9 @@ const SKOLL_HATI = {
                 def: 180,
                 res: 620,
                 int: 480
+
             },
+
 
             hati: {
 
@@ -410,142 +652,233 @@ const SKOLL_HATI = {
                 def: 280,
                 res: 480,
                 int: 350
+
             },
+
 
             passiva: {
 
-                nome: "Irmãos pra Sempre — Eclipse Duplo",
+                nome:
+                    "Irmãos pra Sempre — Eclipse Duplo",
 
                 descricao:
-                    "A presença de Skoll e Hati começa a alterar o campo de batalha. " +
-                    "Enquanto os dois estiverem vivos, suas habilidades recebem efeitos ampliados.",
+                    "Quando um irmão cai, o sobrevivente recebe +4 ATK, +4 ATK MGC e +4 AGI, tornando-se muito mais resistente aos efeitos negativos."
 
-                efeito:
-                    "Quando um irmão cai, o sobrevivente recebe +4 AGI, +4 ATK e +4 ATK MGC.",
-
-                estado:
-                    "O Sol e a Lua se aproximam..."
             },
+
 
             habilidades: [
 
                 {
-                    id: "skoll-feicao-luminosa",
 
-                    usuario: "Skoll",
+                    nome:
+                        "Feição Luminosa",
 
-                    nome: "Feição Luminosa",
+                    membro:
+                        "skoll",
 
-                    custoMp: 3000,
-                    custoEst: 2200,
+                    custo: {
+                        mp: 2500,
+                        est: 1800
+                    },
 
-                    dano: 1100,
+                    descricao:
+                        "Um enorme raio de Luz atinge até 3 jogadores.",
 
-                    alvo: "Área — até 3 jogadores",
+                    executar() {
 
-                    efeito:
-                        "Raio de luz massivo. Aplica queimadura intensa."
+                        return {
+
+                            tipo:
+                                "area",
+
+                            elemento:
+                                "luz",
+
+                            alvos:
+                                3,
+
+                            mensagem:
+                                "Skoll dispara uma poderosa Feição Luminosa."
+
+                        };
+
+                    }
+
                 },
 
+
                 {
-                    id: "hati-hate-cure",
 
-                    usuario: "Hati",
+                    nome:
+                        "Hate Cure",
 
-                    nome: "Hate Cure",
+                    membro:
+                        "hati",
 
-                    custoMp: 2800,
-                    custoEst: 2200,
+                    custo: {
+                        mp: 2200,
+                        est: 2000
+                    },
 
-                    dano: 1300,
+                    descricao:
+                        "Ataque de Trevas que infecta e causa sangramento.",
 
-                    alvo: "1 alvo",
+                    executar() {
 
-                    efeito:
-                        "Infecta profundamente o alvo e aplica Sangramento."
+                        return {
+
+                            tipo:
+                                "debuff",
+
+                            efeitos: [
+                                "infeccao",
+                                "sangramento"
+                            ],
+
+                            mensagem:
+                                "Hati espalha sua maldição pelo alvo."
+
+                        };
+
+                    }
+
                 },
 
+
                 {
-                    id: "skoll-uivo-sagrado",
 
-                    usuario: "Skoll",
+                    nome:
+                        "Uivo Sagrado",
 
-                    nome: "Uivo Sagrado",
+                    membro:
+                        "skoll",
 
-                    custoMp: 3500,
-                    custoEst: 1800,
+                    custo: {
+                        mp: 3000,
+                        est: 1800
+                    },
 
-                    dano: 0,
+                    descricao:
+                        "Concede +3 em todos os atributos ao irmão.",
 
-                    alvo: "1 aliado",
+                    executar() {
 
-                    efeito:
-                        "Concede +3 em todos os status ao alvo."
+                        return {
+
+                            tipo:
+                                "buff",
+
+                            bonus:
+                                3,
+
+                            atributos:
+                                "todos",
+
+                            mensagem:
+                                "O Eclipse é fortalecido pelo Uivo Sagrado."
+
+                        };
+
+                    }
+
                 },
 
+
                 {
-                    id: "hati-sombra-odiosa",
 
-                    usuario: "Hati",
+                    nome:
+                        "Odor de Sangue",
 
-                    nome: "Sombra Odiosa",
+                    membro:
+                        "skoll",
 
-                    custoMp: 3000,
-                    custoEst: 1800,
+                    custo: {
+                        mp: 3500,
+                        est: 2800
+                    },
 
-                    dano: 1600,
+                    descricao:
+                        "Cria uma área de 2 blocos que reduz ATK, ATK MGC e AGI dos inimigos.",
 
-                    alvo: "1 alvo",
+                    executar() {
 
-                    efeito:
-                        "Ataque sombrio de alta concentração."
+                        return {
+
+                            tipo:
+                                "debuff",
+
+                            area:
+                                2,
+
+                            penalidades: {
+
+                                atk: -2,
+
+                                atkMgc: -2,
+
+                                agi: -2
+
+                            },
+
+                            mensagem:
+                                "O Odor de Sangue enfraquece o campo."
+
+                        };
+
+                    }
+
                 },
 
-                {
-                    id: "skoll-odor-sangue",
-
-                    usuario: "Skoll",
-
-                    nome: "Odor de Sangue",
-
-                    custoMp: 4000,
-                    custoEst: 3000,
-
-                    dano: 0,
-
-                    alvo: "Área — 2 blocos",
-
-                    efeito:
-                        "Inimigos sofrem -3 ATK, -3 ATK MGC e -3 AGI."
-                },
 
                 {
-                    id: "hati-uivo-grotesco",
 
-                    usuario: "Hati",
+                    nome:
+                        "Uivo Grotesco",
 
-                    nome: "Uivo Grotesco",
+                    membro:
+                        "hati",
 
-                    custoMp: 4500,
-                    custoEst: 3200,
+                    custo: {
+                        mp: 3500,
+                        est: 3000
+                    },
 
-                    dano: 0,
+                    descricao:
+                        "Atordoa todos os inimigos em uma área de 2 blocos.",
 
-                    alvo: "Área — 2 blocos",
+                    executar() {
 
-                    efeito:
-                        "Atordoa todos os inimigos dentro da área."
+                        return {
+
+                            tipo:
+                                "controle",
+
+                            efeito:
+                                "stun",
+
+                            area:
+                                2,
+
+                            mensagem:
+                                "Hati paralisa o campo com seu Uivo Grotesco."
+
+                        };
+
+                    }
+
                 }
+
             ]
+
         },
 
 
         // =================================================
-        // LV.300
+        // NÍVEL 300
         // =================================================
-        300: {
 
-            nivel: 300,
+        300: {
 
             skoll: {
 
@@ -559,7 +892,9 @@ const SKOLL_HATI = {
                 def: 480,
                 res: 1250,
                 int: 950
+
             },
+
 
             hati: {
 
@@ -573,144 +908,233 @@ const SKOLL_HATI = {
                 def: 650,
                 res: 1000,
                 int: 720
+
             },
+
 
             passiva: {
 
-                nome: "Irmãos pra Sempre — Eclipse da Ruína",
+                nome:
+                    "Irmãos pra Sempre — Eclipse da Ruína",
 
                 descricao:
-                    "Skoll e Hati passam a agir como uma única entidade durante o eclipse. " +
-                    "Enquanto ambos estiverem vivos, suas habilidades podem combinar efeitos.",
+                    "Quando um irmão é derrotado, o sobrevivente recebe +6 ATK, +6 ATK MGC e +6 AGI. A duração dos efeitos negativos recebidos é drasticamente reduzida."
 
-                efeito:
-                    "Quando um irmão é derrotado, o sobrevivente recebe +6 AGI, +6 ATK e +6 ATK MGC. " +
-                    "O sobrevivente também reduz a duração de efeitos negativos recebidos.",
-
-                estado:
-                    "O eclipse começou..."
             },
+
 
             habilidades: [
 
                 {
-                    id: "skoll-feicao-luminosa",
 
-                    usuario: "Skoll",
+                    nome:
+                        "Feição Luminosa",
 
-                    nome: "Feição Luminosa — Eclipse Solar",
+                    membro:
+                        "skoll",
 
-                    custoMp: 10000,
-                    custoEst: 7500,
+                    custo: {
+                        mp: 8000,
+                        est: 6500
+                    },
 
-                    dano: 4200,
+                    descricao:
+                        "Um raio de Luz colossal atinge até 3 jogadores.",
 
-                    alvo: "Área — até 3 jogadores",
+                    executar() {
 
-                    efeito:
-                        "Uma explosão de luz atravessa a área e aplica queimadura."
+                        return {
+
+                            tipo:
+                                "area",
+
+                            elemento:
+                                "luz",
+
+                            alvos:
+                                3,
+
+                            mensagem:
+                                "A Feição Luminosa cobre o campo de luz."
+
+                        };
+
+                    }
+
                 },
 
+
                 {
-                    id: "hati-hate-cure",
 
-                    usuario: "Hati",
+                    nome:
+                        "Hate Cure",
 
-                    nome: "Hate Cure — Lua Negra",
+                    membro:
+                        "hati",
 
-                    custoMp: 9000,
-                    custoEst: 7500,
+                    custo: {
+                        mp: 7000,
+                        est: 6500
+                    },
 
-                    dano: 4800,
+                    descricao:
+                        "Uma poderosa maldição infecta o alvo e causa sangramento.",
 
-                    alvo: "1 alvo",
+                    executar() {
 
-                    efeito:
-                        "Aplica Infectado e Sangramento. " +
-                        "A cura do alvo fica bloqueada."
+                        return {
+
+                            tipo:
+                                "debuff",
+
+                            efeitos: [
+                                "infeccao",
+                                "sangramento"
+                            ],
+
+                            mensagem:
+                                "Hate Cure infecta o alvo."
+
+                        };
+
+                    }
+
                 },
 
+
                 {
-                    id: "skoll-uivo-sagrado",
 
-                    usuario: "Skoll",
+                    nome:
+                        "Uivo Sagrado",
 
-                    nome: "Uivo Sagrado — Benção Solar",
+                    membro:
+                        "skoll",
 
-                    custoMp: 12000,
-                    custoEst: 6500,
+                    custo: {
+                        mp: 9000,
+                        est: 6000
+                    },
 
-                    dano: 0,
+                    descricao:
+                        "Concede +5 em todos os atributos ao irmão.",
 
-                    alvo: "1 aliado",
+                    executar() {
 
-                    efeito:
-                        "Concede +4 em todos os status."
+                        return {
+
+                            tipo:
+                                "buff",
+
+                            bonus:
+                                5,
+
+                            atributos:
+                                "todos",
+
+                            mensagem:
+                                "Skoll fortalece Hati com o Uivo Sagrado."
+
+                        };
+
+                    }
+
                 },
 
+
                 {
-                    id: "hati-sombra-odiosa",
 
-                    usuario: "Hati",
+                    nome:
+                        "Odor de Sangue",
 
-                    nome: "Sombra Odiosa — Garras do Eclipse",
+                    membro:
+                        "skoll",
 
-                    custoMp: 10500,
-                    custoEst: 6500,
+                    custo: {
+                        mp: 10000,
+                        est: 8500
+                    },
 
-                    dano: 6000,
+                    descricao:
+                        "Cria uma zona de 2 blocos que reduz ATK, ATK MGC e AGI dos inimigos.",
 
-                    alvo: "1 alvo",
+                    executar() {
 
-                    efeito:
-                        "Ataque sombrio devastador."
+                        return {
+
+                            tipo:
+                                "debuff",
+
+                            area:
+                                2,
+
+                            penalidades: {
+
+                                atk: -3,
+
+                                atkMgc: -3,
+
+                                agi: -3
+
+                            },
+
+                            mensagem:
+                                "O Odor de Sangue domina a área."
+
+                        };
+
+                    }
+
                 },
 
-                {
-                    id: "skoll-odor-sangue",
-
-                    usuario: "Skoll",
-
-                    nome: "Odor de Sangue — Eclipse",
-
-                    custoMp: 14000,
-                    custoEst: 10000,
-
-                    dano: 0,
-
-                    alvo: "Área — 2 blocos",
-
-                    efeito:
-                        "Inimigos sofrem -4 ATK, -4 ATK MGC e -4 AGI."
-                },
 
                 {
-                    id: "hati-uivo-grotesco",
 
-                    usuario: "Hati",
+                    nome:
+                        "Uivo Grotesco",
 
-                    nome: "Uivo Grotesco — Eclipse",
+                    membro:
+                        "hati",
 
-                    custoMp: 15000,
-                    custoEst: 11000,
+                    custo: {
+                        mp: 10000,
+                        est: 9000
+                    },
 
-                    dano: 0,
+                    descricao:
+                        "Um uivo aterrador atordoa todos os inimigos em 2 blocos.",
 
-                    alvo: "Área — 2 blocos",
+                    executar() {
 
-                    efeito:
-                        "Atordoa todos os inimigos dentro da área."
+                        return {
+
+                            tipo:
+                                "controle",
+
+                            efeito:
+                                "stun",
+
+                            area:
+                                2,
+
+                            mensagem:
+                                "O Uivo Grotesco domina o campo."
+
+                        };
+
+                    }
+
                 }
+
             ]
+
         },
 
 
         // =================================================
-        // LV.400 — ULTIMATE
+        // NÍVEL 400
         // =================================================
-        400: {
 
-            nivel: 400,
+        400: {
 
             skoll: {
 
@@ -724,7 +1148,9 @@ const SKOLL_HATI = {
                 def: 1100,
                 res: 2800,
                 int: 2200
+
             },
+
 
             hati: {
 
@@ -738,168 +1164,245 @@ const SKOLL_HATI = {
                 def: 1450,
                 res: 2300,
                 int: 1700
+
             },
 
 
-            // =============================================
-            // PASSIVA ULTIMATE
-            // =============================================
             passiva: {
 
-                nome: "Irmãos pra Sempre — Fim do Eclipse",
+                nome:
+                    "Irmãos pra Sempre — Fim do Eclipse",
 
                 descricao:
-                    "Skoll e Hati alcançam sua forma máxima. " +
-                    "Sol e Lua passam a existir simultaneamente no campo de batalha.",
+                    "Enquanto ambos estiverem vivos, os irmãos possuem alta resistência aos efeitos negativos. Quando um é derrotado, o sobrevivente recebe +10 ATK, +10 ATK MGC e +10 AGI.",
 
-                efeito:
-                    "Enquanto os dois estiverem vivos, recebem resistência elevada a efeitos negativos. " +
-                    "Quando um irmão é derrotado, o sobrevivente entra em Fúria Absoluta: " +
-                    "+10 AGI, +10 ATK e +10 ATK MGC.",
-
-                estado:
-                    "☀️🌑 O ECLIPSE FINAL COMEÇOU."
             },
 
 
-            // =============================================
-            // HABILIDADES ULTIMATE
-            // =============================================
             habilidades: [
 
                 {
-                    id: "skoll-feicao-luminosa",
 
-                    usuario: "Skoll",
+                    nome:
+                        "Feição Luminosa",
 
-                    nome: "FEIÇÃO LUMINOSA — SOL FINAL",
+                    membro:
+                        "skoll",
 
-                    custoMp: 35000,
-                    custoEst: 25000,
+                    custo: {
+                        mp: 30000,
+                        est: 22000
+                    },
 
-                    dano: 15000,
+                    descricao:
+                        "Um raio de Luz colossal cobre uma grande área e atinge até 3 jogadores.",
 
-                    alvo: "Área — até 3 jogadores",
+                    executar() {
 
-                    efeito:
-                        "Skoll libera a força do Sol. " +
-                        "Uma enorme explosão luminosa atinge a área e aplica queimadura."
-                },
+                        return {
 
-                {
-                    id: "hati-hate-cure",
+                            tipo:
+                                "area",
 
-                    usuario: "Hati",
+                            elemento:
+                                "luz",
 
-                    nome: "HATE CURE — LUA DEVORADORA",
+                            alvos:
+                                3,
 
-                    custoMp: 32000,
-                    custoEst: 25000,
+                            escala:
+                                "colossal",
 
-                    dano: 17000,
+                            mensagem:
+                                "Skoll libera a Feição Luminosa Suprema."
 
-                    alvo: "1 alvo",
+                        };
 
-                    efeito:
-                        "Hati envolve o alvo em sombras lunares. " +
-                        "Aplica Infectado e Sangramento."
-                },
+                    }
 
-                {
-                    id: "skoll-uivo-sagrado",
-
-                    usuario: "Skoll",
-
-                    nome: "UIVO SAGRADO — AURORA DIVINA",
-
-                    custoMp: 40000,
-                    custoEst: 20000,
-
-                    dano: 0,
-
-                    alvo: "1 aliado",
-
-                    efeito:
-                        "Concede +5 em todos os status."
-                },
-
-                {
-                    id: "hati-sombra-odiosa",
-
-                    usuario: "Hati",
-
-                    nome: "SOMBRA ODIOSA — ABISMO LUNAR",
-
-                    custoMp: 38000,
-                    custoEst: 22000,
-
-                    dano: 22000,
-
-                    alvo: "1 alvo",
-
-                    efeito:
-                        "Hati desfere um ataque concentrado de trevas."
-                },
-
-                {
-                    id: "skoll-odor-sangue",
-
-                    usuario: "Skoll",
-
-                    nome: "ODOR DE SANGUE — SOL ETERNO",
-
-                    custoMp: 45000,
-                    custoEst: 35000,
-
-                    dano: 0,
-
-                    alvo: "Área — 2 blocos",
-
-                    efeito:
-                        "Inimigos na área sofrem -5 ATK, -5 ATK MGC e -5 AGI."
-                },
-
-                {
-                    id: "hati-uivo-grotesco",
-
-                    usuario: "Hati",
-
-                    nome: "UIVO GROTESCO — LUA DO FIM",
-
-                    custoMp: 50000,
-                    custoEst: 38000,
-
-                    dano: 0,
-
-                    alvo: "Área — 2 blocos",
-
-                    efeito:
-                        "Um uivo sobrenatural atinge todos os inimigos dentro de 2 blocos e os atordoa."
                 },
 
 
-                // =========================================
-                // HABILIDADE EXCLUSIVA DO LV.400
-                // =========================================
                 {
-                    id: "eclipse-final",
 
-                    usuario: "Skoll & Hati",
+                    nome:
+                        "Hate Cure",
 
-                    nome: "☀️🌑 ECLIPSE FINAL",
+                    membro:
+                        "hati",
 
-                    custoMp: 80000,
-                    custoEst: 60000,
+                    custo: {
+                        mp: 28000,
+                        est: 24000
+                    },
 
-                    dano: 35000,
+                    descricao:
+                        "Uma maldição de Trevas infecta o alvo e causa sangramento.",
 
-                    alvo: "Todos os inimigos",
+                    executar() {
 
-                    efeito:
-                        "Skoll e Hati unem Sol e Lua em um único ataque. " +
-                        "A área inteira é tomada pela energia do eclipse."
+                        return {
+
+                            tipo:
+                                "debuff",
+
+                            efeitos: [
+                                "infeccao",
+                                "sangramento"
+                            ],
+
+                            escala:
+                                "suprema",
+
+                            mensagem:
+                                "Hati lança Hate Cure sobre o alvo."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "Uivo Sagrado",
+
+                    membro:
+                        "skoll",
+
+                    custo: {
+                        mp: 35000,
+                        est: 25000
+                    },
+
+                    descricao:
+                        "Fortalece o irmão com um grande aumento em todos os atributos.",
+
+                    executar() {
+
+                        return {
+
+                            tipo:
+                                "buff",
+
+                            bonus:
+                                8,
+
+                            atributos:
+                                "todos",
+
+                            mensagem:
+                                "O Uivo Sagrado desperta o poder do eclipse."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "Odor de Sangue",
+
+                    membro:
+                        "skoll",
+
+                    custo: {
+                        mp: 40000,
+                        est: 30000
+                    },
+
+                    descricao:
+                        "Uma zona de 2 blocos reduz fortemente ATK, ATK MGC e AGI dos inimigos.",
+
+                    executar() {
+
+                        return {
+
+                            tipo:
+                                "debuff",
+
+                            area:
+                                2,
+
+                            penalidades: {
+
+                                atk: -4,
+
+                                atkMgc: -4,
+
+                                agi: -4
+
+                            },
+
+                            mensagem:
+                                "O Odor de Sangue cobre o campo."
+
+                        };
+
+                    }
+
+                },
+
+
+                {
+
+                    nome:
+                        "ECLIPSE FINAL",
+
+                    membro:
+                        "hati",
+
+                    custo: {
+                        mp: 60000,
+                        est: 50000
+                    },
+
+                    descricao:
+                        "Skoll e Hati sincronizam Luz e Trevas em um eclipse absoluto. Disponível exclusivamente no nível 400.",
+
+                    executar({
+                        estado
+                    }) {
+
+                        return {
+
+                            tipo:
+                                "ultimate",
+
+                            elemento:
+                                "luz-trevas",
+
+                            alvo:
+                                "todos",
+
+                            eclipse:
+                                true,
+
+                            mensagem:
+                                "Skoll e Hati desencadeiam o Eclipse Final."
+
+                        };
+
+                    }
+
                 }
+
             ]
+
         }
+
     }
+
 };
+
+
+// =========================================================
+// REGISTRO GLOBAL
+// =========================================================
+
+window.SKOLL_HATI = SKOLL_HATI;
