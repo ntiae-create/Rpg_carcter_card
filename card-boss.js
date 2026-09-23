@@ -1,21 +1,27 @@
 /* =========================================================
-BOSS CARD — INTERFACE DA CARTA
+BOSS CARD — INTERFACE PRINCIPAL
 
-Responsável por:
+Responsabilidade deste arquivo:
 
-- interação da carta
-- virar / desvirar
-- frente e verso
-- sincronização visual
-- interação das habilidades
-- integração com BossState / BossEffects
+• Controlar a interface da carta
+• Interação com a carta
+• Virar / desvirar a carta
+• Atualizar elementos visuais da interface
+• Sincronizar a interface com BossState
+• Sincronizar efeitos com a afinidade/nível
+• Controlar estados visuais
+• Gerenciar interação das habilidades
+• Suportar Boss único e Boss duplo
+• Atualizar a interface quando o Boss mudar
 
-NÃO controla:
+NÃO substitui:
 
-- dados do Boss
-- combate
-- cálculo de habilidades
-- renderização dos atributos
+boss-state.js
+boss-render.js
+boss-combat.js
+boss-skills.js
+boss-events.js
+effects.js
 
 ========================================================= */
 
@@ -25,47 +31,121 @@ NÃO controla:
 
 
 /* =====================================================
-   REFERÊNCIAS
+   ESTADO DA INTERFACE
 ===================================================== */
 
-let card = null;
-let inner = null;
+const CardBoss = {
 
-let inicializado = false;
+    card: null,
+
+    inicializado: false,
+
+    virada: false,
+
+    elementos: {},
+
+    ultimoBoss: null,
+
+    ultimoNivel: null,
+
+    ultimaAfinidade: null,
+
+    ultimoEstado: null
+
+};
 
 
 /* =====================================================
-   LOCALIZAR CARTA
+   LOCALIZAR ELEMENTOS
 ===================================================== */
 
-function localizarCarta() {
+function localizarElementos() {
 
-    card =
-        document.getElementById("boss-card") ||
-        document.querySelector(".boss-card");
+    CardBoss.card =
+        document.querySelector(".boss-card") ||
+        document.querySelector("#boss-card");
 
-    if (!card) {
+    if (!CardBoss.card) {
 
         console.warn(
-            "[CardBoss] #boss-card não encontrado."
+            "[CardBoss] Boss Card não encontrado."
         );
 
         return false;
     }
 
 
-    inner =
-        card.querySelector(".boss-card-inner");
+    const q = (seletor) =>
+        CardBoss.card.querySelector(seletor);
 
 
-    if (!inner) {
+    CardBoss.elementos = {
 
-        console.warn(
-            "[CardBoss] .boss-card-inner não encontrado."
-        );
+        card: CardBoss.card,
 
-        return false;
-    }
+        nome:
+            q("#boss-name"),
+
+        nivel:
+            q("#boss-level"),
+
+        afinidade:
+            q("#boss-affinity"),
+
+        imagem:
+            q("#boss-image"),
+
+        status:
+            q("#boss-status"),
+
+        statusDot:
+            q(".boss-state-dot"),
+
+        /* Recursos */
+
+        singleResources:
+            q("#boss-single-resources"),
+
+        dualResources:
+            q("#boss-dual-resources"),
+
+        /* Atributos */
+
+        singleStats:
+            q("#boss-single-stats"),
+
+        dualStats:
+            q("#boss-dual-stats"),
+
+        /* Passiva */
+
+        passiveName:
+            q("#passive-name"),
+
+        passiveDescription:
+            q("#passive-desc"),
+
+        passiveState:
+            q("#passive-state"),
+
+        /* Habilidades */
+
+        skills:
+            CardBoss.card.querySelectorAll(
+                ".boss-skill"
+            ),
+
+        skillContainers:
+            CardBoss.card.querySelectorAll(
+                ".skill-container"
+            ),
+
+        skillButtons:
+            CardBoss.card.querySelectorAll(
+                ".boss-skill-button"
+            )
+
+    };
 
 
     return true;
@@ -73,180 +153,439 @@ function localizarCarta() {
 
 
 /* =====================================================
-   VIRAR CARTA
+   OBTER DADOS DO BOSS
 ===================================================== */
 
-function virar() {
+function obterBoss() {
 
-    if (!inner) return;
+    if (
+        !window.BossState ||
+        typeof BossState.obterBoss !== "function"
+    ) {
+        return null;
+    }
 
-    inner.classList.add("flipped");
+    return BossState.obterBoss();
+
+}
+
+
+function obterNivel() {
+
+    if (
+        !window.BossState ||
+        typeof BossState.obterNivel !== "function"
+    ) {
+        return null;
+    }
+
+    return BossState.obterNivel();
+
+}
+
+
+function obterEstado() {
+
+    if (
+        !window.BossState ||
+        typeof BossState.obterEstado !== "function"
+    ) {
+        return null;
+    }
+
+    return BossState.obterEstado();
 
 }
 
 
 /* =====================================================
-   DESVIRAR CARTA
+   INTERAÇÃO DA CARTA
 ===================================================== */
 
-function desvirar() {
+function configurarInteracao() {
 
-    if (!inner) return;
+    if (!CardBoss.card) return;
 
-    inner.classList.remove("flipped");
-
-}
-
-
-/* =====================================================
-   ALTERNAR
-===================================================== */
-
-function alternar() {
-
-    if (!inner) return;
-
-    inner.classList.toggle("flipped");
-
-}
-
-
-/* =====================================================
-   VERIFICAR SE ESTÁ VIRADA
-===================================================== */
-
-function estaVirada() {
-
-    if (!inner) return false;
-
-    return inner.classList.contains("flipped");
-
-}
-
-
-/* =====================================================
-   CLIQUE NA CARTA
-===================================================== */
-
-function configurarClique() {
-
-    if (!card) return;
-
-
-    card.addEventListener(
+    CardBoss.card.addEventListener(
         "click",
-        function (evento) {
-
-            /*
-             * Não virar quando clicar em controles.
-             */
-
-            const controle =
-                evento.target.closest(
-                    [
-                        "button",
-                        "input",
-                        "select",
-                        "textarea",
-                        "a",
-
-                        ".boss-selector",
-                        ".boss-level-selector",
-                        ".boss-test-buttons",
-                        ".boss-skill-button",
-
-                        ".master-controls",
-                        ".master-toggle"
-
-                    ].join(",")
-                );
-
-
-            if (controle) {
-                return;
-            }
-
-
-            alternar();
-
-        }
+        tratarCliqueCarta
     );
 
 }
 
 
+function tratarCliqueCarta(evento) {
+
+    /*
+     * Elementos interativos não devem
+     * virar a carta.
+     */
+
+    const elementoInterativo =
+        evento.target.closest(
+            [
+                "button",
+                "input",
+                "select",
+                "textarea",
+                "a",
+
+                ".boss-selector",
+                ".boss-level-selector",
+                ".boss-test-buttons",
+
+                ".boss-skill-button",
+
+                ".master-controls",
+                ".master-toggle"
+
+            ].join(",")
+        );
+
+
+    if (elementoInterativo) {
+        return;
+    }
+
+
+    alternarCarta();
+
+}
+
+
+function virarCarta() {
+
+    if (!CardBoss.card) return;
+
+    CardBoss.card.classList.add("flipped");
+
+    CardBoss.virada = true;
+
+}
+
+
+function desvirarCarta() {
+
+    if (!CardBoss.card) return;
+
+    CardBoss.card.classList.remove("flipped");
+
+    CardBoss.virada = false;
+
+}
+
+
+function alternarCarta() {
+
+    if (!CardBoss.card) return;
+
+    CardBoss.card.classList.toggle("flipped");
+
+    CardBoss.virada =
+        CardBoss.card.classList.contains(
+            "flipped"
+        );
+
+}
+
+
 /* =====================================================
-   EFEITOS
+   ATUALIZAÇÃO DO CABEÇALHO
 ===================================================== */
 
-function sincronizarEfeitos() {
+function atualizarCabecalho() {
+
+    const boss = obterBoss();
+    const nivel = obterNivel();
+
+    if (!boss || !nivel) return;
+
+
+    const nome =
+        boss.nome ||
+        boss.name ||
+        "Boss";
+
+
+    const nivelNumerico =
+        nivel.nivel ??
+        nivel.level ??
+        BossState.obterNivel?.();
+
+
+    const afinidade =
+        boss.afinidade ||
+        boss.affinity ||
+        "—";
+
+
+    if (CardBoss.elementos.nome) {
+
+        CardBoss.elementos.nome.textContent =
+            nome;
+
+    }
+
+
+    if (CardBoss.elementos.nivel) {
+
+        CardBoss.elementos.nivel.textContent =
+            `NÍVEL ${nivelNumerico} · ${String(
+                afinidade
+            ).toUpperCase()}`;
+
+    }
+
+
+    if (CardBoss.elementos.afinidade) {
+
+        CardBoss.elementos.afinidade.textContent =
+            String(
+                afinidade
+            ).toUpperCase();
+
+    }
+
+}
+
+
+/* =====================================================
+   IMAGEM
+===================================================== */
+
+function atualizarImagem() {
+
+    const boss = obterBoss();
 
     if (
-        !window.BossEffects ||
-        !window.BossState
+        !boss ||
+        !CardBoss.elementos.imagem
     ) {
         return;
     }
 
 
-    try {
-
-        const boss =
-            BossState.obterBoss();
+    let imagem = null;
 
 
-        const nivel =
-            BossState.obterNivel();
+    /*
+     * Prioridade:
+     *
+     * BossState.obterImagemBoss()
+     * ↓
+     * boss.imagem
+     * ↓
+     * boss.imagens.base
+     */
 
+    if (
+        window.BossState &&
+        typeof BossState.obterImagemBoss === "function"
+    ) {
 
-        if (boss) {
-
-            if (
-                typeof BossEffects.definirAfinidade ===
-                "function"
-            ) {
-
-                BossEffects.definirAfinidade(
-                    boss.afinidade ||
-                    boss.affinity ||
-                    ""
-                );
-
-            }
-
-        }
-
-
-        if (nivel) {
-
-            const valor =
-                Number(
-                    nivel.nivel ??
-                    nivel.level ??
-                    0
-                );
-
-
-            if (
-                typeof BossEffects.definirNivel ===
-                "function"
-            ) {
-
-                BossEffects.definirNivel(
-                    valor
-                );
-
-            }
-
-        }
+        imagem =
+            BossState.obterImagemBoss();
 
     }
 
-    catch (erro) {
 
-        console.warn(
-            "[CardBoss] Erro ao sincronizar efeitos:",
-            erro
+    if (!imagem) {
+
+        imagem =
+            boss.imagem ||
+            boss.image ||
+            boss.imagens?.base ||
+            null;
+
+    }
+
+
+    if (!imagem) return;
+
+
+    if (
+        CardBoss.elementos.imagem.src !==
+        new URL(
+            imagem,
+            window.location.href
+        ).href
+    ) {
+
+        CardBoss.elementos.imagem.src =
+            imagem;
+
+    }
+
+
+    CardBoss.elementos.imagem.alt =
+        boss.nome ||
+        "Boss";
+
+}
+
+
+/* =====================================================
+   AFINIDADE / TEMA
+===================================================== */
+
+function atualizarAfinidade() {
+
+    const boss = obterBoss();
+
+    if (!boss || !CardBoss.card) {
+        return;
+    }
+
+
+    const afinidade =
+        String(
+            boss.afinidade ||
+            boss.affinity ||
+            ""
+        )
+        .toLowerCase();
+
+
+    /*
+     * Remove classes antigas
+     */
+
+    CardBoss.card.classList.remove(
+        "affinity-agua",
+        "affinity-vento",
+        "affinity-fogo",
+        "affinity-gelo",
+        "affinity-raio",
+        "affinity-eletric",
+        "affinity-trevas",
+        "affinity-sombra",
+        "affinity-luz",
+        "affinity-terra",
+        "affinity-fisico",
+        "affinity-magico",
+        "affinity-dual"
+    );
+
+
+    let classe = "";
+
+
+    if (
+        afinidade.includes("/") ||
+        (
+            afinidade.includes("luz") &&
+            afinidade.includes("trevas")
+        )
+    ) {
+
+        classe =
+            "affinity-dual";
+
+    }
+
+    else if (afinidade.includes("vento")) {
+
+        classe =
+            "affinity-vento";
+
+    }
+
+    else if (afinidade.includes("fogo")) {
+
+        classe =
+            "affinity-fogo";
+
+    }
+
+    else if (afinidade.includes("água") ||
+             afinidade.includes("agua")) {
+
+        classe =
+            "affinity-agua";
+
+    }
+
+    else if (afinidade.includes("gelo")) {
+
+        classe =
+            "affinity-gelo";
+
+    }
+
+    else if (
+        afinidade.includes("raio") ||
+        afinidade.includes("elétr") ||
+        afinidade.includes("eletr")
+    ) {
+
+        classe =
+            "affinity-raio";
+
+    }
+
+    else if (
+        afinidade.includes("trevas") ||
+        afinidade.includes("sombra")
+    ) {
+
+        classe =
+            "affinity-trevas";
+
+    }
+
+    else if (afinidade.includes("luz")) {
+
+        classe =
+            "affinity-luz";
+
+    }
+
+    else if (afinidade.includes("terra")) {
+
+        classe =
+            "affinity-terra";
+
+    }
+
+    else if (afinidade.includes("físico") ||
+             afinidade.includes("fisico")) {
+
+        classe =
+            "affinity-fisico";
+
+    }
+
+    else if (afinidade.includes("mágico") ||
+             afinidade.includes("magico")) {
+
+        classe =
+            "affinity-magico";
+
+    }
+
+
+    if (classe) {
+
+        CardBoss.card.classList.add(
+            classe
+        );
+
+    }
+
+
+    /*
+     * Atualiza também o sistema Canvas.
+     */
+
+    if (
+        window.BossEffects &&
+        typeof BossEffects.definirAfinidade ===
+            "function"
+    ) {
+
+        BossEffects.definirAfinidade(
+            boss.afinidade ||
+            boss.affinity
         );
 
     }
@@ -255,42 +594,166 @@ function sincronizarEfeitos() {
 
 
 /* =====================================================
-   ATUALIZAR INTERFACE
+   NÍVEL
 ===================================================== */
 
-function atualizar() {
+function atualizarNivelVisual() {
 
-    sincronizarEfeitos();
+    const nivel = obterNivel();
+
+    if (!nivel || !CardBoss.card) {
+        return;
+    }
+
+
+    const valor =
+        Number(
+            nivel.nivel ??
+            nivel.level ??
+            0
+        );
 
 
     /*
-     * O boss-render.js continua sendo o responsável
-     * por preencher os dados da carta.
-     *
-     * Aqui apenas garantimos que a interface
-     * permaneça sincronizada.
+     * Classes especiais de nível.
+     */
+
+    CardBoss.card.classList.remove(
+        "boss-level-12",
+        "boss-level-100",
+        "boss-level-200",
+        "boss-level-300",
+        "boss-level-400"
+    );
+
+
+    if (
+        [12, 100, 200, 300, 400]
+        .includes(valor)
+    ) {
+
+        CardBoss.card.classList.add(
+            `boss-level-${valor}`
+        );
+
+    }
+
+
+    /*
+     * Canvas
      */
 
     if (
-        window.BossRender &&
-        typeof BossRender.renderizarBoss ===
-        "function"
+        window.BossEffects &&
+        typeof BossEffects.definirNivel ===
+            "function"
     ) {
 
-        try {
+        BossEffects.definirNivel(
+            valor
+        );
 
-            BossRender.renderizarBoss();
+    }
 
-        }
+}
 
-        catch (erro) {
 
-            console.warn(
-                "[CardBoss] Erro ao atualizar BossRender:",
-                erro
-            );
+/* =====================================================
+   ESTADO DE BATALHA
+===================================================== */
 
-        }
+function atualizarEstadoBatalha() {
+
+    const estado =
+        obterEstado();
+
+    if (!estado) return;
+
+
+    let texto =
+        estado.status ||
+        estado.mensagem ||
+        estado.estado ||
+        null;
+
+
+    if (
+        !texto &&
+        estado.derrotado === true
+    ) {
+
+        texto =
+            "Boss derrotado.";
+
+    }
+
+
+    if (!texto) {
+
+        texto =
+            "Aguardando batalha...";
+
+    }
+
+
+    if (CardBoss.elementos.status) {
+
+        CardBoss.elementos.status.textContent =
+            texto;
+
+    }
+
+
+    atualizarEstadoVisual(
+        estado
+    );
+
+}
+
+
+function atualizarEstadoVisual(
+    estado
+) {
+
+    if (!CardBoss.card) return;
+
+
+    CardBoss.card.classList.remove(
+        "boss-vivo",
+        "boss-derrotado",
+        "boss-ativo",
+        "boss-morto",
+        "boss-combate"
+    );
+
+
+    if (
+        estado.derrotado === true ||
+        estado.morto === true
+    ) {
+
+        CardBoss.card.classList.add(
+            "boss-derrotado"
+        );
+
+        return;
+
+    }
+
+
+    CardBoss.card.classList.add(
+        "boss-vivo"
+    );
+
+
+    if (
+        estado.emCombate === true ||
+        estado.emBatalha === true
+    ) {
+
+        CardBoss.card.classList.add(
+            "boss-combate"
+        );
 
     }
 
@@ -303,33 +766,23 @@ function atualizar() {
 
 function configurarHabilidades() {
 
-    if (!card) return;
+    if (!CardBoss.elementos.skillButtons) {
+        return;
+    }
 
 
-    const botoes =
-        card.querySelectorAll(
-            ".boss-skill-button"
-        );
-
-
-    botoes.forEach(
+    CardBoss.elementos.skillButtons.forEach(
         function (botao) {
 
-            /*
-             * Não duplicar eventos.
-             */
-
             if (
-                botao.dataset.cardBossReady ===
+                botao.dataset.cardBossConfigured ===
                 "true"
             ) {
-
                 return;
-
             }
 
 
-            botao.dataset.cardBossReady =
+            botao.dataset.cardBossConfigured =
                 "true";
 
 
@@ -337,13 +790,40 @@ function configurarHabilidades() {
                 "click",
                 function (evento) {
 
+                    evento.stopPropagation();
+
+
+                    const indice =
+                        Number(
+                            botao.dataset.skillIndex
+                        );
+
+
+                    if (
+                        !Number.isInteger(
+                            indice
+                        )
+                    ) {
+                        return;
+                    }
+
+
                     /*
-                     * Impede que o clique
-                     * seja interpretado como
-                     * clique na carta.
+                     * O sistema oficial de habilidades
+                     * continua sendo BossSkills.
                      */
 
-                    evento.stopPropagation();
+                    if (
+                        window.BossSkills &&
+                        typeof BossSkills.usarHabilidade ===
+                            "function"
+                    ) {
+
+                        BossSkills.usarHabilidade(
+                            indice
+                        );
+
+                    }
 
                 }
             );
@@ -355,33 +835,364 @@ function configurarHabilidades() {
 
 
 /* =====================================================
+   ATUALIZAR HABILIDADES
+===================================================== */
+
+function atualizarHabilidades() {
+
+    const nivel =
+        obterNivel();
+
+    if (!nivel) return;
+
+
+    /*
+     * boss-render.js já é responsável
+     * por montar os dados das habilidades.
+     *
+     * Aqui cuidamos apenas da interface.
+     */
+
+    const botoes =
+        CardBoss.card.querySelectorAll(
+            ".boss-skill-button"
+        );
+
+
+    botoes.forEach(
+        function (botao) {
+
+            const indice =
+                Number(
+                    botao.dataset.skillIndex
+                );
+
+
+            if (
+                !Number.isInteger(indice)
+            ) {
+                botao.disabled = true;
+                return;
+            }
+
+
+            /*
+             * O BossSkills decide se a habilidade
+             * pode realmente ser usada.
+             */
+
+            if (
+                window.BossSkills &&
+                typeof BossSkills.podeUsarHabilidade ===
+                    "function"
+            ) {
+
+                try {
+
+                    const pode =
+                        BossSkills.podeUsarHabilidade(
+                            indice
+                        );
+
+
+                    botao.classList.toggle(
+                        "skill-unavailable",
+                        !pode
+                    );
+
+                }
+
+                catch (erro) {
+
+                    console.warn(
+                        "[CardBoss] Erro ao verificar habilidade:",
+                        erro
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   OBSERVAR MUDANÇAS DE ESTADO
+===================================================== */
+
+function detectarMudancas() {
+
+    const boss =
+        obterBoss();
+
+    const nivel =
+        obterNivel();
+
+    const estado =
+        obterEstado();
+
+
+    if (!boss || !nivel) {
+        return;
+    }
+
+
+    const idBoss =
+        boss.id ||
+        boss.nome;
+
+
+    const nivelAtual =
+        nivel.nivel ??
+        nivel.level;
+
+
+    const afinidadeAtual =
+        boss.afinidade ||
+        boss.affinity;
+
+
+    /*
+     * Boss mudou
+     */
+
+    if (
+        CardBoss.ultimoBoss !==
+        idBoss
+    ) {
+
+        atualizarCabecalho();
+        atualizarImagem();
+        atualizarAfinidade();
+
+        CardBoss.ultimoBoss =
+            idBoss;
+
+    }
+
+
+    /*
+     * Nível mudou
+     */
+
+    if (
+        CardBoss.ultimoNivel !==
+        nivelAtual
+    ) {
+
+        atualizarCabecalho();
+        atualizarImagem();
+        atualizarNivelVisual();
+
+        CardBoss.ultimoNivel =
+            nivelAtual;
+
+    }
+
+
+    /*
+     * Afinidade mudou
+     */
+
+    if (
+        CardBoss.ultimaAfinidade !==
+        afinidadeAtual
+    ) {
+
+        atualizarAfinidade();
+
+        CardBoss.ultimaAfinidade =
+            afinidadeAtual;
+
+    }
+
+
+    /*
+     * Estado mudou
+     */
+
+    if (
+        CardBoss.ultimoEstado !==
+        estado
+    ) {
+
+        atualizarEstadoBatalha();
+        atualizarHabilidades();
+
+        CardBoss.ultimoEstado =
+            estado;
+
+    }
+
+}
+
+
+/* =====================================================
+   ATUALIZAÇÃO COMPLETA
+===================================================== */
+
+function atualizarTudo() {
+
+    if (!CardBoss.card) {
+
+        if (!localizarElementos()) {
+            return;
+        }
+
+    }
+
+
+    atualizarCabecalho();
+
+    atualizarImagem();
+
+    atualizarAfinidade();
+
+    atualizarNivelVisual();
+
+    atualizarEstadoBatalha();
+
+    atualizarHabilidades();
+
+}
+
+
+/* =====================================================
+   INTEGRAÇÃO COM O SISTEMA EXISTENTE
+===================================================== */
+
+function conectarSistema() {
+
+    /*
+     * Se BossEvents possuir atualização própria,
+     * usamos a interface deste arquivo como camada
+     * adicional sem substituir BossEvents.
+     */
+
+    if (
+        window.BossEvents &&
+        typeof BossEvents.atualizarEventosInterface ===
+            "function"
+    ) {
+
+        try {
+
+            BossEvents.atualizarEventosInterface();
+
+        }
+
+        catch (erro) {
+
+            console.warn(
+                "[CardBoss] Não foi possível atualizar BossEvents:",
+                erro
+            );
+
+        }
+
+    }
+
+
+    /*
+     * Inicializa efeitos visuais.
+     */
+
+    if (
+        window.BossEffects &&
+        typeof BossEffects.iniciar ===
+            "function"
+    ) {
+
+        try {
+
+            BossEffects.iniciar();
+
+        }
+
+        catch (erro) {
+
+            console.warn(
+                "[CardBoss] Erro ao iniciar efeitos:",
+                erro
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   LOOP DE SINCRONIZAÇÃO
+===================================================== */
+
+let intervalo = null;
+
+
+function iniciarSincronizacao() {
+
+    if (intervalo) {
+        clearInterval(intervalo);
+    }
+
+
+    intervalo =
+        setInterval(
+            detectarMudancas,
+            150
+        );
+
+}
+
+
+function pararSincronizacao() {
+
+    if (!intervalo) return;
+
+    clearInterval(intervalo);
+
+    intervalo = null;
+
+}
+
+
+/* =====================================================
    INICIALIZAÇÃO
 ===================================================== */
 
 function inicializar() {
 
-    if (inicializado) {
+    if (CardBoss.inicializado) {
         return;
     }
 
 
-    if (!localizarCarta()) {
+    if (!localizarElementos()) {
         return;
     }
 
 
-    configurarClique();
+    configurarInteracao();
 
     configurarHabilidades();
 
-    sincronizarEfeitos();
+    atualizarTudo();
+
+    conectarSistema();
+
+    iniciarSincronizacao();
 
 
-    inicializado = true;
+    CardBoss.inicializado =
+        true;
 
 
     console.log(
-        "[CardBoss] Interface do Boss Card pronta."
+        "[CardBoss] Interface do Boss Card inicializada."
     );
 
 }
@@ -395,15 +1206,44 @@ window.CardBoss = {
 
     inicializar,
 
-    atualizar,
+    atualizar:
+        atualizarTudo,
 
-    virar,
+    atualizarCabecalho,
 
-    desvirar,
+    atualizarImagem,
 
-    alternar,
+    atualizarAfinidade,
 
-    estaVirada
+    atualizarNivel:
+        atualizarNivelVisual,
+
+    atualizarEstado:
+        atualizarEstadoBatalha,
+
+    atualizarHabilidades,
+
+    virar:
+        virarCarta,
+
+    desvirar:
+        desvirarCarta,
+
+    alternar:
+        alternarCarta,
+
+    estaVirada:
+        function () {
+
+            return CardBoss.virada;
+
+        },
+
+    sincronizar:
+        detectarMudancas,
+
+    parar:
+        pararSincronizacao
 
 };
 
@@ -419,10 +1259,22 @@ if (
 
     document.addEventListener(
         "DOMContentLoaded",
-        inicializar
+        function () {
+
+            /*
+             * O BossSystem também inicializa
+             * os sistemas do Boss. Aqui apenas
+             * inicializamos a camada da interface.
+             */
+
+            inicializar();
+
+        }
     );
 
-} else {
+}
+
+else {
 
     inicializar();
 

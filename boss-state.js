@@ -199,7 +199,7 @@ function inicializarEstado() {
     // =====================================================
 
     if (
-        bossAtual === "hraesvelgr"
+        !(dados.skoll && dados.hati)
     ) {
 
         estado = {
@@ -244,7 +244,7 @@ function inicializarEstado() {
     // =====================================================
 
     else if (
-        bossAtual === "skoll-hati"
+        true
     ) {
 
         estado = {
