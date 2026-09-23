@@ -1,132 +1,565 @@
-<!-- SELEÇÃO DE BOSS -->
+<!-- =========================================================
+     SELEÇÃO DE BOSS
+========================================================= -->
 <div class="boss-selector">
-  <button data-boss-id="hraesvelgr">🦅 Hræsvelgr Lv.15</button>
-  <button data-boss-id="skoll">☀️ Skoll Lv.11</button>
-  <button data-boss-id="hati">🌑 Hati Lv.11</button>
-  <button data-boss-id="mordrax" class="ativo">⛰️ Mórdrax Lv.12</button>
+
+  <button data-boss-id="hraesvelgr" class="ativo">
+    🦅 Hræsvelgr
+  </button>
+
+  <button data-boss-id="skoll">
+    ☀️ Skoll
+  </button>
+
+  <button data-boss-id="hati">
+    🌑 Hati
+  </button>
+
+  <button data-boss-id="mordrax">
+    ⛰️ Mórdrax
+  </button>
+
 </div>
 
-<!-- CARD DO BOSS -->
-<div class="boss-card dimension affinity-terra" id="boss-card">
+
+<!-- =========================================================
+     SELEÇÃO DE NÍVEL
+========================================================= -->
+<div class="boss-level-selector">
+
+  <span class="level-selector-title">
+    NÍVEL DO BOSS
+  </span>
+
+  <button data-level="12" class="ativo">
+    12
+  </button>
+
+  <button data-level="100">
+    100
+  </button>
+
+  <button data-level="200">
+    200
+  </button>
+
+  <button data-level="300">
+    300
+  </button>
+
+  <button data-level="400">
+    400
+  </button>
+
+</div>
+
+
+<!-- =========================================================
+     CARD DO BOSS
+========================================================= -->
+<div
+  class="boss-card dimension affinity-terra"
+  id="boss-card"
+>
+
+  <!-- CABEÇALHO -->
   <div class="boss-header">
+
     <div class="boss-title-area">
-      <h2 id="boss-name">Mórdrax</h2>
-      <span class="boss-level" id="boss-level">NÍVEL 12 · TERRA</span>
+
+      <h2 id="boss-name">
+        Hræsvelgr
+      </h2>
+
+      <span
+        class="boss-level"
+        id="boss-level"
+      >
+        NÍVEL 12 · VENTO
+      </span>
+
     </div>
-    <span class="boss-affinity" id="boss-affinity">TERRA</span>
+
+    <span
+      class="boss-affinity"
+      id="boss-affinity"
+    >
+      VENTO
+    </span>
+
   </div>
 
+
+  <!-- =======================================================
+       IMAGEM
+  ======================================================== -->
   <div class="boss-image-area">
-    <img src="mordrax.png" alt="Mórdrax, o Corpo da Montanha" class="boss-image" id="boss-image" loading="lazy">
+
+    <img
+      src=""
+      alt="Boss"
+      class="boss-image"
+      id="boss-image"
+      loading="lazy"
+    >
+
   </div>
 
+
+  <!-- =======================================================
+       RECURSOS
+  ======================================================== -->
   <div class="boss-resources">
+
+    <!-- HP -->
     <div class="boss-resource">
+
       <div class="resource-header">
+
         <span>VIDA</span>
-        <span id="hp-text">150 / 150</span>
+
+        <span id="hp-text">
+          0 / 0
+        </span>
+
       </div>
+
       <div class="resource-bar">
-        <div class="resource-fill" id="boss-hp" style="width: 100%"></div>
+
+        <div
+          class="resource-fill"
+          id="boss-hp"
+          style="width: 100%"
+        ></div>
+
       </div>
+
     </div>
+
+
+    <!-- MP -->
     <div class="boss-resource">
+
       <div class="resource-header">
+
         <span>ALMA</span>
-        <span id="mp-text">40 / 40</span>
+
+        <span id="mp-text">
+          0 / 0
+        </span>
+
       </div>
+
       <div class="resource-bar">
-        <div class="resource-fill" id="boss-mp" style="width: 100%"></div>
+
+        <div
+          class="resource-fill"
+          id="boss-mp"
+          style="width: 100%"
+        ></div>
+
       </div>
+
     </div>
+
+
+    <!-- EST -->
     <div class="boss-resource">
+
       <div class="resource-header">
+
         <span>FORÇA</span>
-        <span id="est-text">70 / 70</span>
+
+        <span id="est-text">
+          0 / 0
+        </span>
+
       </div>
+
       <div class="resource-bar">
-        <div class="resource-fill" id="boss-est" style="width: 100%"></div>
+
+        <div
+          class="resource-fill"
+          id="boss-est"
+          style="width: 100%"
+        ></div>
+
       </div>
+
     </div>
+
   </div>
 
+
+  <!-- =======================================================
+       STATUS
+  ======================================================== -->
   <div class="boss-stats">
+
     <div class="boss-stat">
-      <span class="boss-stat-label">ATAQUE</span>
-      <span class="boss-stat-value" id="boss-atk">10</span>
+
+      <span class="boss-stat-label">
+        ATAQUE
+      </span>
+
+      <span
+        class="boss-stat-value"
+        id="boss-atk"
+      >
+        0
+      </span>
+
     </div>
+
+
     <div class="boss-stat">
-      <span class="boss-stat-label">DEFESA</span>
-      <span class="boss-stat-value" id="boss-def">8</span>
+
+      <span class="boss-stat-label">
+        DEFESA
+      </span>
+
+      <span
+        class="boss-stat-value"
+        id="boss-def"
+      >
+        0
+      </span>
+
     </div>
+
+
     <div class="boss-stat">
-      <span class="boss-stat-label">VELOCIDADE</span>
-      <span class="boss-stat-value" id="boss-spd">4</span>
+
+      <span class="boss-stat-label">
+        VELOCIDADE
+      </span>
+
+      <span
+        class="boss-stat-value"
+        id="boss-spd"
+      >
+        0
+      </span>
+
     </div>
+
   </div>
 
+
+  <!-- =======================================================
+       PODER ANCESTRAL
+  ======================================================== -->
   <div class="boss-section">
-    <h3 class="boss-section-title">PODER ANCESTRAL</h3>
+
+    <h3 class="boss-section-title">
+      PODER ANCESTRAL
+    </h3>
+
     <div class="boss-passive">
-      <strong class="boss-passive-name" id="passive-name">Casca Profunda</strong>
-      <p class="boss-passive-description" id="passive-desc">
-        Recebe -2 de dano de todas as fontes (mínimo 1). Quando a Vida cai abaixo de 50%, a montanha desperta: Defesa dobra, mas Velocidade cai pela metade. Abaixo de 25%, a terra treme — cada ataque recebido retorna 3 de dano ao atacante.
+
+      <strong
+        class="boss-passive-name"
+        id="passive-name"
+      >
+        —
+      </strong>
+
+      <p
+        class="boss-passive-description"
+        id="passive-desc"
+      >
+        —
       </p>
-      <span class="boss-passive-state" id="passive-state">Adormecido sob a pedra...</span>
+
+      <span
+        class="boss-passive-state"
+        id="passive-state"
+      >
+        —
+      </span>
+
     </div>
+
   </div>
 
+
+  <!-- =======================================================
+       HABILIDADES
+  ======================================================== -->
   <div class="boss-section">
-    <h3 class="boss-section-title">HABILIDADES</h3>
-    
+
+    <h3 class="boss-section-title">
+      HABILIDADES
+    </h3>
+
+
+    <!-- HABILIDADE 1 -->
     <div class="boss-skill">
+
       <div class="skill-header">
-        <strong>🪨 Mão da Rocha</strong>
+
+        <strong id="skill-name-1">
+          —
+        </strong>
+
         <div class="skill-cost">
-          <span class="est-cost">12 FORÇA</span>
+
+          <span
+            class="mp-cost"
+            id="skill-mp-1"
+          >
+            —
+          </span>
+
+          <span
+            class="est-cost"
+            id="skill-est-1"
+          >
+            —
+          </span>
+
         </div>
+
       </div>
-      <p>Uma mão gigante emerge do solo. Causa 12 + (Defesa ÷ 2) de dano e atrasa o alvo: ele age por último na próxima rodada.</p>
-      <button class="boss-skill-button" data-skill="mao_rocha">USAR HABILIDADE</button>
+
+      <p id="skill-desc-1">
+        —
+      </p>
+
+      <button
+        class="boss-skill-button"
+        data-skill="1"
+      >
+        USAR HABILIDADE
+      </button>
+
     </div>
 
+
+    <!-- HABILIDADE 2 -->
     <div class="boss-skill">
+
       <div class="skill-header">
-        <strong>🌋 Fenda Profunda</strong>
+
+        <strong id="skill-name-2">
+          —
+        </strong>
+
         <div class="skill-cost">
-          <span class="mp-cost">20 ALMA</span>
-          <span class="est-cost">20 FORÇA</span>
+
+          <span
+            class="mp-cost"
+            id="skill-mp-2"
+          >
+            —
+          </span>
+
+          <span
+            class="est-cost"
+            id="skill-est-2"
+          >
+            —
+          </span>
+
         </div>
+
       </div>
-      <p>O chão se abre. Todos os inimigos recebem 6 de dano e perdem 1 ponto de Defesa permanentemente (acumulável).</p>
-      <button class="boss-skill-button" data-skill="fenda">USAR HABILIDADE</button>
+
+      <p id="skill-desc-2">
+        —
+      </p>
+
+      <button
+        class="boss-skill-button"
+        data-skill="2"
+      >
+        USAR HABILIDADE
+      </button>
+
     </div>
 
+
+    <!-- HABILIDADE 3 -->
     <div class="boss-skill">
+
       <div class="skill-header">
-        <strong>⛰️ Queda do Firmamento</strong>
+
+        <strong id="skill-name-3">
+          —
+        </strong>
+
         <div class="skill-cost">
-          <span class="mp-cost">35 ALMA</span>
-          <span class="est-cost">40 FORÇA</span>
+
+          <span
+            class="mp-cost"
+            id="skill-mp-3"
+          >
+            —
+          </span>
+
+          <span
+            class="est-cost"
+            id="skill-est-3"
+          >
+            —
+          </span>
+
         </div>
+
       </div>
-      <p>Desaba peso de mil montanhas. Causa 25 de dano a um alvo — ignora até 5 de Defesa. Se a Vida estiver abaixo de 25%, o dano aumenta para 40.</p>
-      <button class="boss-skill-button" data-skill="firmamento">USAR HABILIDADE</button>
+
+      <p id="skill-desc-3">
+        —
+      </p>
+
+      <button
+        class="boss-skill-button"
+        data-skill="3"
+      >
+        USAR HABILIDADE
+      </button>
+
     </div>
+
+
+    <!-- HABILIDADE 4 -->
+    <div
+      class="boss-skill"
+      id="skill-container-4"
+    >
+
+      <div class="skill-header">
+
+        <strong id="skill-name-4">
+          —
+        </strong>
+
+        <div class="skill-cost">
+
+          <span
+            class="mp-cost"
+            id="skill-mp-4"
+          >
+            —
+          </span>
+
+          <span
+            class="est-cost"
+            id="skill-est-4"
+          >
+            —
+          </span>
+
+        </div>
+
+      </div>
+
+      <p id="skill-desc-4">
+        —
+      </p>
+
+      <button
+        class="boss-skill-button"
+        data-skill="4"
+      >
+        USAR HABILIDADE
+      </button>
+
+    </div>
+
+
+    <!-- HABILIDADE 5 -->
+    <div
+      class="boss-skill"
+      id="skill-container-5"
+    >
+
+      <div class="skill-header">
+
+        <strong id="skill-name-5">
+          —
+        </strong>
+
+        <div class="skill-cost">
+
+          <span
+            class="mp-cost"
+            id="skill-mp-5"
+          >
+            —
+          </span>
+
+          <span
+            class="est-cost"
+            id="skill-est-5"
+          >
+            —
+          </span>
+
+        </div>
+
+      </div>
+
+      <p id="skill-desc-5">
+        —
+      </p>
+
+      <button
+        class="boss-skill-button"
+        data-skill="5"
+      >
+        USAR HABILIDADE
+      </button>
+
+    </div>
+
   </div>
 
+
+  <!-- =======================================================
+       ESTADO
+  ======================================================== -->
   <div class="boss-state">
+
     <span class="boss-state-dot"></span>
-    <span id="boss-status">A terra repousa...</span>
+
+    <span id="boss-status">
+      Aguardando batalha...
+    </span>
+
   </div>
 
+
+  <!-- =======================================================
+       BOTÕES DE TESTE
+  ======================================================== -->
   <div class="boss-test-buttons">
-    <button id="btn-dano-recebido">Receber Dano (-10)</button>
-    <button id="btn-restaurar">Restaurar Chefe</button>
-    <button id="btn-rodada-passou">Avançar Rodada</button>
-    <button id="btn-zerar">Zerar Batalha</button>
+
+    <button id="btn-dano-recebido">
+      Receber Dano (-10)
+    </button>
+
+    <button id="btn-restaurar">
+      Restaurar Chefe
+    </button>
+
+    <button id="btn-rodada-passou">
+      Avançar Rodada
+    </button>
+
+    <button id="btn-zerar">
+      Zerar Batalha
+    </button>
+
   </div>
+
 </div>
+
+
+<!-- =========================================================
+     SCRIPTS
+========================================================= -->
 
 <script src="boss.js"></script>
+
 <script src="bosses/hraesvelgr.js"></script>
